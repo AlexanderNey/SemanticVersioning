@@ -35,7 +35,6 @@
 		AC1B79CB1A842D80002DD206 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AC1B79CC1A842D80002DD206 /* SemanticVersioningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticVersioningTests.swift; sourceTree = "<group>"; };
 		AC1B79D61A842DB5002DD206 /* SemanticVersioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SemanticVersioning.swift; sourceTree = "<group>"; };
-		AC1B79D81A84368E002DD206 /* Semver.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Semver.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +81,6 @@
 				AC1B79D61A842DB5002DD206 /* SemanticVersioning.swift */,
 				AC108A4B1A866DE800BAC3CD /* SemanticVersioningParser.swift */,
 				AC1B79BD1A842D80002DD206 /* Supporting Files */,
-				AC1B79D81A84368E002DD206 /* Semver.playground */,
 			);
 			path = SemanticVersioning;
 			sourceTree = "<group>";

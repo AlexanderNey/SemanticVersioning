@@ -1,9 +1,8 @@
 //
 //  SemanticVersion.swift
-//  Bizzby
 //
 //  Created by Alexander Ney on 05/02/2015.
-//  Copyright (c) 2015 Bizzby. All rights reserved.
+//  Copyright (c) 2015 Alexander Ney. All rights reserved.
 //
 
 import Foundation
