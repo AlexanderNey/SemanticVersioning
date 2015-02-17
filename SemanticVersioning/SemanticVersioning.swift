@@ -15,16 +15,10 @@ public struct SemanticVersion: Comparable, Printable
     public var major: Int
     public var minor: Int
     public var patch: Int
-    public var preReleaseIdentifier: [String]?
-    public var buildMetadataIdentifier: [String]?
+    public var preReleaseIdentifier: [String]
+    public var buildMetadataIdentifier: [String]
     
-    public var isPrerelease: Bool {
-        if let indentifier = self.preReleaseIdentifier
-        {
-            return !indentifier.isEmpty
-        }
-        else { return false }
-    }
+    public var isPrerelease: Bool { return !self.preReleaseIdentifier.isEmpty }
     
     /**
     :returns: returns a SemanticVersion defining the specification that is implemented (http://semver.org/spec/v2.0.0.html)
@@ -35,20 +29,21 @@ public struct SemanticVersion: Comparable, Printable
     
     public var description: String {
         var versionString = "\(self.major).\(self.minor).\(self.patch)"
-        if let indetifier = self.preReleaseIdentifier
+        
+        if !self.preReleaseIdentifier.isEmpty
         {
-            versionString += "-" + ".".join(indetifier)
+            versionString += "-" + ".".join(self.preReleaseIdentifier)
         }
         
-        if let indetifier = self.buildMetadataIdentifier
+        if !self.buildMetadataIdentifier.isEmpty
         {
-            versionString += "=" + ".".join(indetifier)
+            versionString += "=" + ".".join(self.buildMetadataIdentifier)
         }
         
         return versionString
     }
     
-    public init(major: Int, minor: Int = 0, patch: Int = 0, preReleaseIdentifier: [String]? = nil, buildMetadataIdentifier: [String]? = nil)
+    public init(major: Int, minor: Int = 0, patch: Int = 0, preReleaseIdentifier: [String] = [], buildMetadataIdentifier: [String] = [])
     {
         self.major = major
         self.minor = minor
@@ -58,11 +53,9 @@ public struct SemanticVersion: Comparable, Printable
         self.buildMetadataIdentifier = buildMetadataIdentifier
     }
     
-    public init()
+    private init()
     {
-        self.major = 0
-        self.minor = 0
-        self.patch = 0
+        self = SemanticVersion(major: 0)
     }
 }
 
@@ -85,7 +78,7 @@ func ≉ (left: SemanticVersion, right: SemanticVersion) -> Bool
 public func == (left: SemanticVersion, right: SemanticVersion) -> Bool
 {
     return  left ≈ right &&
-            (left.preReleaseIdentifier ==? right.preReleaseIdentifier)
+            (left.preReleaseIdentifier == right.preReleaseIdentifier)
 }
 
 
@@ -115,7 +108,35 @@ public func < (left: SemanticVersion, right: SemanticVersion) -> Bool
                 }
                 else if left.isPrerelease && right.isPrerelease
                 {
-                    return left.preReleaseIdentifier! < right.preReleaseIdentifier!
+                    // Compare prerelease identifier
+                    let identifiers = Zip2(left.preReleaseIdentifier, right.preReleaseIdentifier)
+                    for pair in identifiers
+                    {
+                        let numericLeft = pair.0.toInt()
+                        let numericRight = pair.1.toInt()
+                        
+                        if let numericLeft = numericLeft, numericRight = numericRight where numericLeft != numericRight
+                        {
+                            // identifiers consisting of only digits are compared numerically
+                            return numericLeft < numericRight
+                        }
+                        else if numericLeft != nil && numericRight == nil
+                        {
+                            return true // Numeric identifiers always have lower precedence than non-numeric identifiers
+                        }
+                        else if numericLeft == nil && numericRight != nil
+                        {
+                            return false
+                        }
+                        else if pair.0 != pair.1
+                        {
+                            // identifiers with letters or hyphens are compared lexically in ASCII sort order
+                            return pair.0 < pair.1
+                        }
+                    }
+                    
+                    // A larger set of pre-release fields has a higher precedence than a smaller set, if all of the preceding identifiers are equal
+                    return count(left.preReleaseIdentifier) < count(right.preReleaseIdentifier)
                 }
             }
             else { return false }
@@ -126,69 +147,3 @@ public func < (left: SemanticVersion, right: SemanticVersion) -> Bool
     return false
 }
 
-// MARK: private comparison operators
-
-infix operator ==? { associativity left precedence 140 }
-private func ==? <T: Comparable>(a: [T]?, b: [T]?) -> Bool
-{
-    switch (a, b) {
-    case (let a, let b) where a != nil && b != nil:
-        return a! == b!
-    case (let a, let b) where a == nil && b == nil:
-        return true
-    default: return false
-    }
-}
-
-private func < (left: [String], right: [String]) -> Bool
-{
-    for i in 0..<count(left)
-    {
-        let leftFragment = left[i]
-        let rightFragment: String? = Int(i) < count(right) ? right[i] : nil
-        
-        if leftFragment <? rightFragment
-        {
-            return true
-        }
-        else if leftFragment == rightFragment
-        {
-            continue
-        }
-        else
-        {
-            return false
-        }
-    }
-    
-    // A larger set of pre-release fields has a higher precedence than a smaller set, if all of the preceding identifiers are equal
-    return count(left) < count(right)
-}
-
-infix operator <? { associativity left}
-private func <? (left: String, optionalRight: String?) -> Bool
-{
-    if let right = optionalRight
-    {
-        let numericLeft = left.toInt()
-        let numericRight = right.toInt()
-        
-        if let numericLeft = numericLeft, numericRight = numericRight
-        {
-            return numericLeft < numericRight // identifiers consisting of only digits are compared numerically
-        }
-        else if numericLeft != nil && numericRight == nil
-        {
-            return true // Numeric identifiers always have lower precedence than non-numeric identifiers
-        }
-        else if numericLeft == nil && numericRight != nil
-        {
-            return false
-        }
-        else
-        {
-            return left < right // identifiers with letters or hyphens are compared lexically in ASCII sort order
-        }
-    }
-    else { return false } // Optional value have lower precedence
-}

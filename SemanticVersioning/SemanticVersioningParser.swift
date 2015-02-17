@@ -296,7 +296,7 @@ extension SemanticVersion: StringLiteralConvertible
         }
         else
         {
-            self = SemanticVersion()
+            self = SemanticVersion(major: 0)
         }
     }
     
@@ -347,12 +347,12 @@ extension SemanticVersion: StringLiteralConvertible
             case .PrereleaseIdentifier(let identifer):
                 if let prereleaseIdentifier = identifer
                 {
-                    self.preReleaseIdentifier = count(prereleaseIdentifier) > 0 ? prereleaseIdentifier : nil
+                    self.preReleaseIdentifier = prereleaseIdentifier
                 }
             case .BuildMetadataIdentifier(let identifer):
-                if let BuildMetadataIdentifier = identifer
+                if let buildMetadataIdentifier = identifer
                 {
-                    self.buildMetadataIdentifier = count(BuildMetadataIdentifier) > 0 ? BuildMetadataIdentifier : nil
+                    self.buildMetadataIdentifier = buildMetadataIdentifier
                 }
             }
         }

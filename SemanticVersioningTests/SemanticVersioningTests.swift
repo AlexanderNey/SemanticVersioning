@@ -22,9 +22,9 @@ class SemanticVersioningTests: XCTestCase
         XCTAssertEqual(ver.patch, 0, "patch should be 0")
         
         XCTAssertEqual(ver.isPrerelease, false, "sould not be a prerelase version")
-        XCTAssertNil(ver.preReleaseIdentifier, "prerelase identifiers should be nil")
+        XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
         
-        XCTAssertNil(ver.buildMetadataIdentifier, "build meta data identifiers should be nil")
+        XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
     }
     
     func testBasicInitialisationWithMajorMinor()
@@ -35,9 +35,9 @@ class SemanticVersioningTests: XCTestCase
         XCTAssertEqual(ver.patch, 0, "patch should be 0")
         
         XCTAssertEqual(ver.isPrerelease, false, "sould not be a prerelase version")
-        XCTAssertNil(ver.preReleaseIdentifier, "prerelase identifiers should be nil")
+        XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
         
-        XCTAssertNil(ver.buildMetadataIdentifier, "build meta data identifiers should be nil")
+        XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
     }
     
     func testBasicInitialisationWithMajorMinorPatch()
@@ -48,9 +48,9 @@ class SemanticVersioningTests: XCTestCase
         XCTAssertEqual(ver.patch, 300, "patch should be 300")
         
         XCTAssertEqual(ver.isPrerelease, false, "sould not be a prerelase version")
-        XCTAssertNil(ver.preReleaseIdentifier, "prerelase identifiers should be nil")
+        XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
         
-        XCTAssertNil(ver.buildMetadataIdentifier, "build meta data identifiers should be nil")
+        XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
     }
     
     func testBasicInitialisationWithMajorMinorPatchPrerelase()
@@ -61,11 +61,10 @@ class SemanticVersioningTests: XCTestCase
         XCTAssertEqual(ver.patch, 0, "patch should be 0")
         
         XCTAssertEqual(ver.isPrerelease, true, "sould be a prerelase version")
-        XCTAssertNotNil(ver.preReleaseIdentifier, "prerelease identifiers should not be nil")
-        let hasAllPreRelease = contains(ver.preReleaseIdentifier!, "alpha") && contains(ver.preReleaseIdentifier!, "2")
+        let hasAllPreRelease = contains(ver.preReleaseIdentifier, "alpha") && contains(ver.preReleaseIdentifier, "2")
         XCTAssert(hasAllPreRelease, "prerelease identifiers should contain 'alpha' and '2'")
         
-        XCTAssertNil(ver.buildMetadataIdentifier, "build meta data identifiers should be nil")
+        XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
     }
     
     func testBasicInitialisationWithMajorMinorPatchBuildMetadata()
@@ -76,10 +75,9 @@ class SemanticVersioningTests: XCTestCase
         XCTAssertEqual(ver.patch, 3, "patch should be 3")
         
         XCTAssertEqual(ver.isPrerelease, false, "sould not be a prerelase version")
-        XCTAssertNil(ver.preReleaseIdentifier, "prerelase identifiers should be nil")
+        XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
         
-        XCTAssertNotNil(ver.buildMetadataIdentifier , "prerelase identifiers should be nil")
-        let hasAllMetadata = contains(ver.buildMetadataIdentifier!, "build12") && contains(ver.buildMetadataIdentifier!, "meta")
+        let hasAllMetadata = contains(ver.buildMetadataIdentifier, "build12") && contains(ver.buildMetadataIdentifier, "meta")
         XCTAssert(hasAllMetadata, "build meta data should contain 'build12' and 'meta'")
     }
 
@@ -91,12 +89,10 @@ class SemanticVersioningTests: XCTestCase
         XCTAssertEqual(ver.patch, 00, "patch should be 0")
         
         XCTAssertEqual(ver.isPrerelease, true, "sould be a prerelase version")
-        XCTAssertNotNil(ver.preReleaseIdentifier, "prerelease identifiers should not be nil")
-        let hasAllPreRelease = contains(ver.preReleaseIdentifier!, "prerelease")
+        let hasAllPreRelease = contains(ver.preReleaseIdentifier, "prerelease")
         XCTAssert(hasAllPreRelease, "prerelease identifiers should contain 'prerelease'")
         
-        XCTAssertNotNil(ver.buildMetadataIdentifier , "prerelase identifiers should be nil")
-        let hasAllMetadata = contains(ver.buildMetadataIdentifier!, "meta")
+        let hasAllMetadata = contains(ver.buildMetadataIdentifier, "meta")
         XCTAssert(hasAllMetadata, "build meta data should contain 'meta'")
     }
 
