@@ -53,7 +53,8 @@ You can add a git submodule and drag and drop the sources into the project navig
 
 Create version 2.0.0
 
-```Swift let version = SemanticVersion(major: 2)
+```Swift 
+let version = SemanticVersion(major: 2)
 ```
 
 Create version 1.2.3
@@ -65,7 +66,8 @@ let version = SemanticVersion(major: 1, minor: 2, patch: 3)
 Create version 1.0.0-alpha.2
 
 ```Swift
-let version = SemanticVersion(major: 1, preReleaseIdentifier: ["alpha", "2"]) ```
+let version = SemanticVersion(major: 1, preReleaseIdentifier: ["alpha", "2"])
+```
 
 Create version from a String
 
@@ -85,17 +87,31 @@ Check if is prerelease version or not
 if version.isPrerelease { ... } 
 ```
 
-Access the prerelease identifier
+Access the prerelease identifier via the preReleaseIdentifier Array
 
-``` ... ``` 
+```Swift
+for identifier in version.preReleaseIdentifier
+{
+    // ...
+}
+```
 
-Access the build meta data
+Access the build metadata identifier via the buildMetadataIdentifier Array
 
-``` ... ``` 
+```Swift
+for identifier in version.buildMetadataIdentifier
+{
+    // ...
+} 
+```
 
-Conforms to Printable so you can simply get a String representation
+Conforms to Printable so you can simply get a String representation by accessing the description property
 
-``` println(version) ```
+```Swift
+println(version)
+// OR
+let stringRepresentation = version.description
+```
 
 mutability / immutability
 
