@@ -28,17 +28,6 @@ import SemanticVersioning
 
 class SemanticVersioningParserTests: XCTestCase
 {
-    override func setUp()
-    {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown()
-    {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
     
     func testParserWithBasicVersion()
     {
@@ -66,8 +55,6 @@ class SemanticVersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTFail("failed to scan at \(location) failed component \(failedComponent)")
         }
-        
-        XCTAssert(true, "Pass")
     }
     
     func testParserWithBasicPrereleaseVersion()
@@ -96,10 +83,8 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         case .Failure(let location, let failedComponent, let parsedComponents):
-            XCTFail("parse should succeed")
+            XCTFail("parsing should succeed")
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     func testParserWithBasicPrereleaseVersionMultipleIdentifier()
@@ -129,10 +114,8 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         case .Failure(let location, let failedComponent, let parsedComponents):
-            XCTFail("parse should succeed")
+            XCTFail("parsing should succeed")
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     func testParserWithBasicVersionAndBuildMetadata()
@@ -161,10 +144,8 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         case .Failure(let location, let failedComponent, let parsedComponents):
-            XCTFail("parse should succeed")
+            XCTFail("parsing should succeed")
         }
-        
-        XCTAssert(true, "Pass")
     }
     
     func testParserWithBasicVersionAndMultipleBuildMetadata()
@@ -194,10 +175,8 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         case .Failure(let location, let failedComponent, let parsedComponents):
-            XCTFail("parse should succeed")
+            XCTFail("parsing should succeed")
         }
-        
-        XCTAssert(true, "Pass")
     }
     
     func testParserWithBasicPrereleaseVersionAndMetadata()
@@ -230,10 +209,8 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         case .Failure(let location, let failedComponent, let parsedComponents):
-            XCTFail("parse should succeed")
+            XCTFail("parsing should succeed")
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     func testParserWithBasicPrereleaseVersionMultipleIdentifierAndMultipleMetadataIndentifier()
@@ -268,10 +245,8 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         case .Failure(let location, let failedComponent, let parsedComponents):
-            XCTFail("parse should succeed")
+            XCTFail("parsing should succeed")
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     
@@ -290,8 +265,6 @@ class SemanticVersioningParserTests: XCTestCase
             XCTAssert(failedComponent == SemanticVersionParser.Component.Major(nil), "should have failed on parsing Major")
             XCTAssert(parsedComponents.first! == SemanticVersionParser.Component.Major(4), "should have parsed Major version 4")
         }
-        
-        XCTAssert(true, "Pass")
     }
     
     func testParserFailWithOnlyMajorDelimeterVersion()
@@ -307,8 +280,6 @@ class SemanticVersioningParserTests: XCTestCase
             XCTAssert(failedComponent == SemanticVersionParser.Component.Minor(nil), "should have failed on parsing Minor")
             XCTAssert(parsedComponents.first! == SemanticVersionParser.Component.Major(10), "should have parsed Major version 10")
         }
-        
-        XCTAssert(true, "Pass")
     }
     
     func testParserFailWithOnlyMajorDelimeterMinor()
@@ -335,8 +306,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     func testParserFailWithOnlyMajorDelimeterMinorDelimeter()
@@ -363,8 +332,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
     
     func testParserFailWithOnlyMajorDelimeterMinorDelimeterPatchWrongDelimeter()
@@ -393,8 +360,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     func testParserFailWithOnlyMajorDelimeterMinorDelimeterPatchPrereleaseDelimeter()
@@ -423,8 +388,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     func testParserFailWithEmptyPrereleaseIdentifier()
@@ -457,8 +420,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     func testParserFailWithPrereleaseVersionMalformedBuildMetadata()
@@ -491,8 +452,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-
-        XCTAssert(true, "Pass")
     }
     
     func testParserFailWithPrereleaseVersionEmptyBuildMetadataIdentifier()
@@ -529,8 +488,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
     
     func testParserFailWithPrereleaseVersionEndsWithDelimeter()
@@ -567,8 +524,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
 
 
@@ -602,14 +557,9 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
 
-
-    
     // MARK: Malformed
-    
 
     func testParserWithMalformedMajorVersionA()
     {
@@ -631,8 +581,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
     
     func testParserWithMalformedMajorVersionB()
@@ -657,8 +605,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     func testParserWithMalformedMinorVersionA()
@@ -683,8 +629,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     func testParserWithMalformedMinorVersionB()
@@ -711,8 +655,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
     
     func testParserWithMalformedPatchVersionA()
@@ -739,8 +681,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     func testParserWithMalformedPatchVersionB()
@@ -769,8 +709,6 @@ class SemanticVersioningParserTests: XCTestCase
                 }
             }
         }
-        
-        XCTAssert(true, "Pass")
     }
 
     // MARK: Comparsion
