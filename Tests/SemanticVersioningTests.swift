@@ -40,6 +40,7 @@ class SemanticVersioningTests: XCTestCase
         XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
         
         XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
+        XCTAssertEqual(ver.description, "2.0.0", "printable version should match")
     }
     
     func testBasicInitialisationWithMajorMinor()
@@ -53,6 +54,7 @@ class SemanticVersioningTests: XCTestCase
         XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
         
         XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
+         XCTAssertEqual(ver.description, "1.3.0", "printable version should match")
     }
     
     func testBasicInitialisationWithMajorMinorPatch()
@@ -66,6 +68,7 @@ class SemanticVersioningTests: XCTestCase
         XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
         
         XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
+         XCTAssertEqual(ver.description, "0.22.300", "printable version should match")
     }
     
     func testBasicInitialisationWithMajorMinorPatchPrerelase()
@@ -80,6 +83,7 @@ class SemanticVersioningTests: XCTestCase
         XCTAssert(hasAllPreRelease, "prerelease identifiers should contain 'alpha' and '2'")
         
         XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
+         XCTAssertEqual(ver.description, "1.0.0-alpha.2", "printable version should match")
     }
     
     func testBasicInitialisationWithMajorMinorPatchBuildMetadata()
@@ -94,6 +98,7 @@ class SemanticVersioningTests: XCTestCase
         
         let hasAllMetadata = contains(ver.buildMetadataIdentifier, "build12") && contains(ver.buildMetadataIdentifier, "meta")
         XCTAssert(hasAllMetadata, "build meta data should contain 'build12' and 'meta'")
+         XCTAssertEqual(ver.description, "1.0.3+build12.meta", "printable version should match")
     }
 
     func testBasicInitialisationWithMajorMinorPatchPrereleaseBuildMetadata()
@@ -101,7 +106,7 @@ class SemanticVersioningTests: XCTestCase
         let ver = SemanticVersion(major: 0, preReleaseIdentifier: ["prerelease"], buildMetadataIdentifier: ["meta"])
         XCTAssertEqual(ver.major, 0, "major should be 0")
         XCTAssertEqual(ver.minor, 0, "minor should be 0")
-        XCTAssertEqual(ver.patch, 00, "patch should be 0")
+        XCTAssertEqual(ver.patch, 0, "patch should be 0")
         
         XCTAssertEqual(ver.isPrerelease, true, "sould be a prerelase version")
         let hasAllPreRelease = contains(ver.preReleaseIdentifier, "prerelease")
@@ -109,6 +114,7 @@ class SemanticVersioningTests: XCTestCase
         
         let hasAllMetadata = contains(ver.buildMetadataIdentifier, "meta")
         XCTAssert(hasAllMetadata, "build meta data should contain 'meta'")
+         XCTAssertEqual(ver.description, "0.0.0-prerelease+meta", "printable version should match")
     }
 
     // MARK: comparison
