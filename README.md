@@ -1,4 +1,8 @@
 #Semantic Versioning
+[![Twitter: @ajax64](https://img.shields.io/badge/Author-Alexander%20Ney-00B893.svg)](https://twitter.com/ajax64)
+![platform](https://img.shields.io/cocoapods/v/SemanticVersioning.svg)
+![platform](https://img.shields.io/cocoapods/p/SemanticVersioning.svg)
+![license](https://img.shields.io/cocoapods/l/SemanticVersioning.svg)
 
 Semantic Versioning implementation in Swift!
 Use the struct `SemanticVersion` to represents a version according to the [Semantic Versioning Specification 2.0.0](http://semver.org/spec/v2.0.0.html). 
@@ -14,7 +18,8 @@ Fully Unit tested
 ### Requirements
 
 - iOS 7.0+ / Mac OS X 10.9+
-- Xcode 6.1
+- Xcode 6.3+
+- Swift 1.2
 
 ###Installation
 The easiest way to use SemanticVersion in your project is using the CocaPods package manager.
@@ -135,13 +140,3 @@ The implementation includes a full-fledged component ot parse String representat
 ##Tests
 
 The libary includes a suite of tests showing how to use the different initialiser and the Parser
-
-
-##Author
-
-Find me on Twitter as [@Ajax64](https://twitter.com/ajax64).
-
-
-##License
-
-Version is available under the MIT license. See the LICENSE file for more info.
