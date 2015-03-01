@@ -59,8 +59,8 @@
 		AC1B79B01A842D80002DD206 = {
 			isa = PBXGroup;
 			children = (
-				AC1B79BC1A842D80002DD206 /* SemanticVersioning */,
-				AC1B79C91A842D80002DD206 /* SemanticVersioningTests */,
+				AC1B79BC1A842D80002DD206 /* Source */,
+				AC1B79C91A842D80002DD206 /* Tests */,
 				AC1B79BB1A842D80002DD206 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,7 +74,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		AC1B79BC1A842D80002DD206 /* SemanticVersioning */ = {
+		AC1B79BC1A842D80002DD206 /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				AC1B79BF1A842D80002DD206 /* SemanticVersioning.h */,
@@ -82,7 +82,7 @@
 				AC108A4B1A866DE800BAC3CD /* SemanticVersioningParser.swift */,
 				AC1B79BD1A842D80002DD206 /* Supporting Files */,
 			);
-			path = SemanticVersioning;
+			path = Source;
 			sourceTree = "<group>";
 		};
 		AC1B79BD1A842D80002DD206 /* Supporting Files */ = {
@@ -93,14 +93,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		AC1B79C91A842D80002DD206 /* SemanticVersioningTests */ = {
+		AC1B79C91A842D80002DD206 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				AC1B79CC1A842D80002DD206 /* SemanticVersioningTests.swift */,
 				AC108A4D1A86840A00BAC3CD /* SemanticVersioningParserTest.swift */,
 				AC1B79CA1A842D80002DD206 /* Supporting Files */,
 			);
-			path = SemanticVersioningTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		AC1B79CA1A842D80002DD206 /* Supporting Files */ = {
@@ -336,7 +336,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = SemanticVersioning/Info.plist;
+				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -354,7 +354,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = SemanticVersioning/Info.plist;
+				INFOPLIST_FILE = Source/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -374,7 +374,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SemanticVersioningTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -387,7 +387,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SemanticVersioningTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
