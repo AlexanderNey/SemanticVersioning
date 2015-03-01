@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name = 'SemanticVersion'
+  s.name = 'SemanticVersioning'
   s.version = '0.8.0'
   s.license = { :type => "MIT" }
   s.summary = 'Elegant Semantic Versioning in Swift'
