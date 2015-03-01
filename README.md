@@ -140,3 +140,5 @@ The implementation includes a full-fledged component ot parse String representat
 ##Tests
 
 The libary includes a suite of tests showing how to use the different initialiser and the Parser
+
+Travis CI is currently not running as Xcode 6.3 is still in beta. 😕
