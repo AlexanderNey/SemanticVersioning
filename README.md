@@ -1,4 +1,4 @@
-# Semantic Versioning
+#Semantic Versioning
 ---
 
 Semantic Version implementation in Swift!
@@ -10,14 +10,19 @@ Fully Unit tested
 100% Swift
  
 
-#Getting Started
+##Getting Started
 ---
 
-##Installation
+### Requirements
+
+- iOS 7.0+ / Mac OS X 10.9+
+- Xcode 6.1
+
+###Installation
 The easiest way to use SemanticVersion in your project is using the CocaPods package manager.
 
 
-##CocoaPods
+###CocoaPods
 See installation instructions for [CocoaPods](http://cocoapods.org) if not already installed
 
 CocoaPods 0.36 beta adds supports for Swift and embedded frameworks. You can install it with the following command:
@@ -40,13 +45,13 @@ run pod install
 pod install
 ```
 
-## Source File
+### Source File
 
 For application targets that do not support embedded frameworks, such as iOS 7, You can add all *.swift source files directly into your project. 
 
 You can add a git submodule and drag and drop the sources into the project navigator.
 
-#Usage
+##Usage
 ---
 
 Create version 2.0.0
@@ -98,7 +103,7 @@ Conforms to Printable so you can simply get a String representation
 mutability / immutability
 
 
-## Comparsion
+### Comparsion
 
 The default operators for comparsion are implemented
 `<` , `<=` , `>` ,`>=` ,`==` , `!=`
@@ -110,12 +115,24 @@ Additionally there are experimental operators `≈` and `!≈`
 They will only comapre the major, minor and patch version but not the prerelease identifiers.
 
 
-#Parser
+##Parser
 ---
 
 The implementation includes a full-fledged component ot parse String representation of a version. Please have a look at the tests and the soruce of `SemanticVersionParser` for now 😉
 
-# Tests
+##Tests
 ---
 
 The libary includes a suite of tests showing how to use the different initialiser and the Parser
+
+
+##Author
+---
+
+Find me on Twitter as [@Ajax64](https://twitter.com/ajax64).
+
+
+##License
+---
+
+Version is available under the MIT license. See the LICENSE file for more info.
