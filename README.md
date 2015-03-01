@@ -1,8 +1,7 @@
 #Semantic Versioning
----
 
-Semantic Version implementation in Swift!
-Use the struct `SemanticVersion` to represents a version according to the [Semantic Versioning Sepcification 2.0.0](http://semver.org/spec/v2.0.0.html). 
+Semantic Versioning implementation in Swift!
+Use the struct `SemanticVersion` to represents a version according to the [Semantic Versioning Specification 2.0.0](http://semver.org/spec/v2.0.0.html). 
 
 
 Fully Unit tested
@@ -11,7 +10,6 @@ Fully Unit tested
  
 
 ##Getting Started
----
 
 ### Requirements
 
@@ -52,11 +50,11 @@ For application targets that do not support embedded frameworks, such as iOS 7, 
 You can add a git submodule and drag and drop the sources into the project navigator.
 
 ##Usage
----
 
 Create version 2.0.0
 
-```Swift let version = SemanticVersion(major: 2)
+```Swift 
+let version = SemanticVersion(major: 2)
 ```
 
 Create version 1.2.3
@@ -68,7 +66,8 @@ let version = SemanticVersion(major: 1, minor: 2, patch: 3)
 Create version 1.0.0-alpha.2
 
 ```Swift
-let version = SemanticVersion(major: 1, preReleaseIdentifier: ["alpha", "2"]) ```
+let version = SemanticVersion(major: 1, preReleaseIdentifier: ["alpha", "2"])
+```
 
 Create version from a String
 
@@ -88,17 +87,31 @@ Check if is prerelease version or not
 if version.isPrerelease { ... } 
 ```
 
-Access the prerelease identifier
+Access the prerelease identifier via the preReleaseIdentifier Array
 
-``` ... ``` 
+```Swift
+for identifier in version.preReleaseIdentifier
+{
+    // ...
+}
+```
 
-Access the build meta data
+Access the build metadata identifier via the buildMetadataIdentifier Array
 
-``` ... ``` 
+```Swift
+for identifier in version.buildMetadataIdentifier
+{
+    // ...
+} 
+```
 
-Conforms to Printable so you can simply get a String representation
+Conforms to Printable so you can simply get a String representation by accessing the description property
 
-``` println(version) ```
+```Swift
+println(version)
+// OR
+let stringRepresentation = version.description
+```
 
 mutability / immutability
 
@@ -116,23 +129,19 @@ They will only comapre the major, minor and patch version but not the prerelease
 
 
 ##Parser
----
 
 The implementation includes a full-fledged component ot parse String representation of a version. Please have a look at the tests and the soruce of `SemanticVersionParser` for now 😉
 
 ##Tests
----
 
 The libary includes a suite of tests showing how to use the different initialiser and the Parser
 
 
 ##Author
----
 
 Find me on Twitter as [@Ajax64](https://twitter.com/ajax64).
 
 
 ##License
----
 
 Version is available under the MIT license. See the LICENSE file for more info.
