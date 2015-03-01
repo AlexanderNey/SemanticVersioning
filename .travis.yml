@@ -1,3 +1,3 @@
 language: objective-c
 xcode_project: SemanticVersioning.xcodeproj
-xcode_scheme: SemanticVersioningTests
+xcode_scheme: SemanticVersioning
