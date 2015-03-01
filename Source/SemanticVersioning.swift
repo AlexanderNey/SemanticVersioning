@@ -54,7 +54,7 @@ public struct SemanticVersion: Comparable, Printable
         
         if !self.buildMetadataIdentifier.isEmpty
         {
-            versionString += "=" + ".".join(self.buildMetadataIdentifier)
+            versionString += "+" + ".".join(self.buildMetadataIdentifier)
         }
         
         return versionString
