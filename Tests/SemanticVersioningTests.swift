@@ -1,5 +1,5 @@
 //
-//  SemanticVersioningTests.swift
+//  VersioningTests.swift
 //
 //  Copyright (c) 2015 Alexander Ney. All rights reserved.
 //
@@ -21,17 +21,16 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import UIKit
 import XCTest
 import SemanticVersioning
 
 
-class SemanticVersioningTests: XCTestCase
+class VersioningTests: XCTestCase
 {
     
     func testBasicInitialisationWithMajor()
     {
-        let ver = SemanticVersion(major: 2)
+        let ver = Version(major: 2)
         XCTAssertEqual(ver.major, 2, "major should be 2")
         XCTAssertEqual(ver.minor, 0, "minor should be 0")
         XCTAssertEqual(ver.patch, 0, "patch should be 0")
@@ -45,7 +44,7 @@ class SemanticVersioningTests: XCTestCase
     
     func testBasicInitialisationWithMajorMinor()
     {
-        let ver = SemanticVersion(major: 1, minor: 3)
+        let ver = Version(major: 1, minor: 3)
         XCTAssertEqual(ver.major, 1, "major should be 1")
         XCTAssertEqual(ver.minor, 3, "minor should be 3")
         XCTAssertEqual(ver.patch, 0, "patch should be 0")
@@ -59,7 +58,7 @@ class SemanticVersioningTests: XCTestCase
     
     func testBasicInitialisationWithMajorMinorPatch()
     {
-        let ver = SemanticVersion(major: 0, minor: 22, patch: 300)
+        let ver = Version(major: 0, minor: 22, patch: 300)
         XCTAssertEqual(ver.major, 0, "major should be 0")
         XCTAssertEqual(ver.minor, 22, "minor should be 22")
         XCTAssertEqual(ver.patch, 300, "patch should be 300")
@@ -73,7 +72,7 @@ class SemanticVersioningTests: XCTestCase
     
     func testBasicInitialisationWithMajorMinorPatchPrerelase()
     {
-        let ver = SemanticVersion(major: 1, preReleaseIdentifier: ["alpha", "2"])
+        let ver = Version(major: 1, preReleaseIdentifier: ["alpha", "2"])
         XCTAssertEqual(ver.major, 1, "major should be 1")
         XCTAssertEqual(ver.minor, 0, "minor should be 0")
         XCTAssertEqual(ver.patch, 0, "patch should be 0")
@@ -88,7 +87,7 @@ class SemanticVersioningTests: XCTestCase
     
     func testBasicInitialisationWithMajorMinorPatchBuildMetadata()
     {
-        let ver = SemanticVersion(major: 1, patch: 3, buildMetadataIdentifier: ["build12", "meta"])
+        let ver = Version(major: 1, patch: 3, buildMetadataIdentifier: ["build12", "meta"])
         XCTAssertEqual(ver.major, 1, "major should be 1")
         XCTAssertEqual(ver.minor, 0, "minor should be 0")
         XCTAssertEqual(ver.patch, 3, "patch should be 3")
@@ -103,7 +102,7 @@ class SemanticVersioningTests: XCTestCase
 
     func testBasicInitialisationWithMajorMinorPatchPrereleaseBuildMetadata()
     {
-        let ver = SemanticVersion(major: 0, preReleaseIdentifier: ["prerelease"], buildMetadataIdentifier: ["meta"])
+        let ver = Version(major: 0, preReleaseIdentifier: ["prerelease"], buildMetadataIdentifier: ["meta"])
         XCTAssertEqual(ver.major, 0, "major should be 0")
         XCTAssertEqual(ver.minor, 0, "minor should be 0")
         XCTAssertEqual(ver.patch, 0, "patch should be 0")
@@ -121,9 +120,9 @@ class SemanticVersioningTests: XCTestCase
     
     func testEqualityOfMajor()
     {
-        let a = SemanticVersion(major: 1)
-        let b = SemanticVersion(major: 2)
-        let c = SemanticVersion(major: 1)
+        let a = Version(major: 1)
+        let b = Version(major: 2)
+        let c = Version(major: 1)
         
         XCTAssert(a == c, "a must equal c")
         XCTAssertFalse(a < c, "a must not be smaller than c")
@@ -134,9 +133,9 @@ class SemanticVersioningTests: XCTestCase
     
     func testEqualityOfMajorMinor()
     {
-        let a = SemanticVersion(major: 1, minor: 1)
-        let b = SemanticVersion(major: 1, minor: 10)
-        let c = SemanticVersion(major: 1, minor: 1)
+        let a = Version(major: 1, minor: 1)
+        let b = Version(major: 1, minor: 10)
+        let c = Version(major: 1, minor: 1)
         
         XCTAssert(a == c, "a must equal c")
         XCTAssertFalse(a < c, "a must not be smaller than c")
@@ -147,9 +146,9 @@ class SemanticVersioningTests: XCTestCase
     
     func testEqualityOfMajorMinorPatch()
     {
-        let a = SemanticVersion(major: 0, minor: 1, patch: 2)
-        let b = SemanticVersion(major: 0, minor: 1, patch: 3)
-        let c = SemanticVersion(major: 0, minor: 1, patch: 2)
+        let a = Version(major: 0, minor: 1, patch: 2)
+        let b = Version(major: 0, minor: 1, patch: 3)
+        let c = Version(major: 0, minor: 1, patch: 2)
         
         XCTAssert(a == c, "a must equal c")
         XCTAssertFalse(a < c, "a must not be smaller than c")
@@ -160,10 +159,10 @@ class SemanticVersioningTests: XCTestCase
     
     func testEqualityOfPrereleaseVersion()
     {
-        let a = SemanticVersion(major: 1, preReleaseIdentifier: ["alpha", "1"])
-        let b = SemanticVersion(major: 1, preReleaseIdentifier: ["beta"])
-        let c = SemanticVersion(major: 1, preReleaseIdentifier: ["alpha", "1"])
-        let d = SemanticVersion(major: 1, preReleaseIdentifier: ["alpha", "1", "nightly"])
+        let a = Version(major: 1, preReleaseIdentifier: ["alpha", "1"])
+        let b = Version(major: 1, preReleaseIdentifier: ["beta"])
+        let c = Version(major: 1, preReleaseIdentifier: ["alpha", "1"])
+        let d = Version(major: 1, preReleaseIdentifier: ["alpha", "1", "nightly"])
         
         XCTAssert(a == c, "a must equal c")
         XCTAssertFalse(a < c, "a must not be smaller than c")
@@ -172,6 +171,20 @@ class SemanticVersioningTests: XCTestCase
         XCTAssert(c == c, "c must equal c")
         XCTAssert(a < d, "a must be less than d")
         XCTAssert(a != d, "a must not equal d")
+    }
+    
+    func testEqualityOfPrereleaseVersionStrings()
+    {
+        let a = Version(major: 1, preReleaseIdentifier: ["alpha", "1"])
+        let c = Version(major: 1, preReleaseIdentifier: ["alpha", "1"])
+        
+        XCTAssert(a == c, "a must equal c")
+        XCTAssertFalse(a < c, "a must not be smaller than c")
+        XCTAssert(a < "1.0.0-beta", "a must be less than b")
+        XCTAssertFalse(a != "1.0.0-alpha.1", "a must equal 1.0.0-alpha.1")
+        XCTAssert(c == c, "c must equal c")
+        XCTAssert(a < "1.0.0-alpha.1.nightly", "a must be less than d")
+        XCTAssert(a != "1.0.0-alpha.1.nightly", "a must not equal d")
     }
     
 }

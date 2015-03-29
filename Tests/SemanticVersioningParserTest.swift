@@ -1,5 +1,5 @@
 //
-//  SemanticVersioningParserTest.swift
+//  VersioningParserTest.swift
 //
 //  Copyright (c) 2015 Alexander Ney. All rights reserved.
 //
@@ -26,12 +26,12 @@ import XCTest
 import SemanticVersioning
 
 
-class SemanticVersioningParserTests: XCTestCase
+class VersioningParserTests: XCTestCase
 {
     
     func testParserWithBasicVersion()
     {
-        let parser = SemanticVersionParser(versionString: "1.2.3")
+        let parser = SemanticVersionParser("1.2.3")
         let result = parser.parse()
         
         switch result {
@@ -59,7 +59,7 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testParserWithBasicPrereleaseVersion()
     {
-        let parser = SemanticVersionParser(versionString: "0.12.75-alpha1")
+        let parser = SemanticVersionParser("0.12.75-alpha1")
         let result = parser.parse()
         
         switch result {
@@ -89,7 +89,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserWithBasicPrereleaseVersionMultipleIdentifier()
     {
-        let parser = SemanticVersionParser(versionString: "0.0.1234-alpha.log-fix")
+        let parser = SemanticVersionParser("0.0.1234-alpha.log-fix")
         let result = parser.parse()
         
         switch result {
@@ -120,7 +120,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserWithBasicVersionAndBuildMetadata()
     {
-        let parser = SemanticVersionParser(versionString: "1.0.6+staging")
+        let parser = SemanticVersionParser("1.0.6+staging")
         let result = parser.parse()
         
         switch result {
@@ -150,7 +150,7 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testParserWithBasicVersionAndMultipleBuildMetadata()
     {
-        let parser = SemanticVersionParser(versionString: "1.1234.6678+timestamp.1168336800")
+        let parser = SemanticVersionParser("1.1234.6678+timestamp.1168336800")
         let result = parser.parse()
         
         switch result {
@@ -181,7 +181,7 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testParserWithBasicPrereleaseVersionAndMetadata()
     {
-        let parser = SemanticVersionParser(versionString: "0.12.75-alpha1+staging")
+        let parser = SemanticVersionParser("0.12.75-alpha1+staging")
         let result = parser.parse()
         
         switch result {
@@ -215,7 +215,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserWithBasicPrereleaseVersionMultipleIdentifierAndMultipleMetadataIndentifier()
     {
-        let parser = SemanticVersionParser(versionString: "0.0.7-alpha2.hotfix+staging.api7")
+        let parser = SemanticVersionParser("0.0.7-alpha2.hotfix+staging.api7")
         let result = parser.parse()
         
         switch result {
@@ -254,7 +254,7 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testParserFailWithOnlyMajorVersion()
     {
-        let parser = SemanticVersionParser(versionString: "4")
+        let parser = SemanticVersionParser("4")
         let result = parser.parse()
         
         switch result {
@@ -269,7 +269,7 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testParserFailWithOnlyMajorDelimeterVersion()
     {
-        let parser = SemanticVersionParser(versionString: "10.")
+        let parser = SemanticVersionParser("10.")
         let result = parser.parse()
         
         switch result {
@@ -284,7 +284,7 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testParserFailWithOnlyMajorDelimeterMinor()
     {
-        let parser = SemanticVersionParser(versionString: "8.2")
+        let parser = SemanticVersionParser("8.2")
         let result = parser.parse()
         
         switch result {
@@ -310,7 +310,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserFailWithOnlyMajorDelimeterMinorDelimeter()
     {
-        let parser = SemanticVersionParser(versionString: "999.60.")
+        let parser = SemanticVersionParser("999.60.")
         let result = parser.parse()
         
         switch result {
@@ -336,7 +336,7 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testParserFailWithOnlyMajorDelimeterMinorDelimeterPatchWrongDelimeter()
     {
-        let parser = SemanticVersionParser(versionString: "0.6.12.100")
+        let parser = SemanticVersionParser("0.6.12.100")
         let result = parser.parse()
         
         switch result {
@@ -364,7 +364,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserFailWithOnlyMajorDelimeterMinorDelimeterPatchPrereleaseDelimeter()
     {
-        let parser = SemanticVersionParser(versionString: "1.4.3-")
+        let parser = SemanticVersionParser("1.4.3-")
         let result = parser.parse()
         
         switch result {
@@ -392,7 +392,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserFailWithEmptyPrereleaseIdentifier()
     {
-        let parser = SemanticVersionParser(versionString: "1.4.3-beta..")
+        let parser = SemanticVersionParser("1.4.3-beta..")
         let result = parser.parse()
         
         switch result {
@@ -424,7 +424,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserFailWithPrereleaseVersionMalformedBuildMetadata()
     {
-        let parser = SemanticVersionParser(versionString: "1.4.3-beta+")
+        let parser = SemanticVersionParser("1.4.3-beta+")
         let result = parser.parse()
         
         switch result {
@@ -456,7 +456,7 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testParserFailWithPrereleaseVersionEmptyBuildMetadataIdentifier()
     {
-        let parser = SemanticVersionParser(versionString: "1.4.3-beta+test1..test2")
+        let parser = SemanticVersionParser("1.4.3-beta+test1..test2")
         let result = parser.parse()
         
         switch result {
@@ -492,7 +492,7 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testParserFailWithPrereleaseVersionEndsWithDelimeter()
     {
-        let parser = SemanticVersionParser(versionString: "1.4.3-beta.")
+        let parser = SemanticVersionParser("1.4.3-beta.")
         let result = parser.parse()
         
         switch result {
@@ -529,7 +529,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserFailWithBuildMetadataEndsWithDelimeter()
     {
-        let parser = SemanticVersionParser(versionString: "1.4.3+meta.")
+        let parser = SemanticVersionParser("1.4.3+meta.")
         let result = parser.parse()
         
         switch result {
@@ -563,7 +563,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserWithMalformedMajorVersionA()
     {
-        let parser = SemanticVersionParser(versionString: "+1.2.3")
+        let parser = SemanticVersionParser("+1.2.3")
         let result = parser.parse()
         
         switch result {
@@ -585,7 +585,7 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testParserWithMalformedMajorVersionB()
     {
-        let parser = SemanticVersionParser(versionString: "1b.2.3")
+        let parser = SemanticVersionParser("1b.2.3")
         let result = parser.parse()
         
         switch result {
@@ -609,7 +609,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserWithMalformedMinorVersionA()
     {
-        let parser = SemanticVersionParser(versionString: "1.-2.3")
+        let parser = SemanticVersionParser("1.-2.3")
         let result = parser.parse()
         
         switch result {
@@ -633,7 +633,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserWithMalformedMinorVersionB()
     {
-        let parser = SemanticVersionParser(versionString: "1.2b.3")
+        let parser = SemanticVersionParser("1.2b.3")
         let result = parser.parse()
         
         switch result {
@@ -659,7 +659,7 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testParserWithMalformedPatchVersionA()
     {
-        let parser = SemanticVersionParser(versionString: "1.2.patch3")
+        let parser = SemanticVersionParser("1.2.patch3")
         let result = parser.parse()
         
         switch result {
@@ -685,7 +685,7 @@ class SemanticVersioningParserTests: XCTestCase
 
     func testParserWithMalformedPatchVersionB()
     {
-        let parser = SemanticVersionParser(versionString: "1.2.3alpha")
+        let parser = SemanticVersionParser("1.2.3alpha")
         let result = parser.parse()
         
         switch result {
@@ -715,9 +715,9 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testComparsionOfVersionFromStrings()
     {
-        let versions: [SemanticVersion] = ["1.0.0", "2.0.0", "2.1.0", "2.1.1"]
+        let versions: [Version] = ["1.0.0", "2.0.0", "2.1.0", "2.1.1"]
         
-        var previousVersion: SemanticVersion?
+        var previousVersion: Version?
         for version in versions
         {
             if let previousVersion = previousVersion
@@ -731,9 +731,9 @@ class SemanticVersioningParserTests: XCTestCase
     
     func testComparsionOfPrereleaseVersionFromStrings()
     {
-        let versions: [SemanticVersion] = ["1.0.0-alpha", "1.0.0-alpha.1", "1.0.0-alpha.beta", "1.0.0-beta", "1.0.0-beta.2", "1.0.0-beta.11", "1.0.0-rc.1", "1.0.0"]
+        let versions: [Version] = ["1.0.0-alpha", "1.0.0-alpha.1", "1.0.0-alpha.beta", "1.0.0-beta", "1.0.0-beta.2", "1.0.0-beta.11", "1.0.0-rc.1", "1.0.0"]
         
-        var previousVersion: SemanticVersion?
+        var previousVersion: Version?
         for version in versions
         {
             if let previousVersion = previousVersion
@@ -743,7 +743,7 @@ class SemanticVersioningParserTests: XCTestCase
             previousVersion = version
         }
     }
-    
+
     // MARK: Performance
     
     func testPerformance()
@@ -754,7 +754,7 @@ class SemanticVersioningParserTests: XCTestCase
             {
                 for versionString in parseVersions
                 {
-                    let version: SemanticVersion = SemanticVersion(stringLiteral: versionString)
+                    let version: Version = Version(stringLiteral: versionString)
                 }
             }
         }
