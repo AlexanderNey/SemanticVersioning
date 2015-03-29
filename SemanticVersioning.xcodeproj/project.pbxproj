@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AC02F6841AC82AB9005EA738 /* NSOperatingSystemVersion+SemanticVersioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02F6831AC82AB9005EA738 /* NSOperatingSystemVersion+SemanticVersioning.swift */; };
+		AC02F6861AC88289005EA738 /* UIDevice+SemanticVersioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02F6851AC88289005EA738 /* UIDevice+SemanticVersioning.swift */; };
+		AC02F68B1AC8872E005EA738 /* NSOperatingSystemVersionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02F6871AC88714005EA738 /* NSOperatingSystemVersionTests.swift */; };
 		AC108A4C1A866DE800BAC3CD /* SemanticVersioningParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC108A4B1A866DE800BAC3CD /* SemanticVersioningParser.swift */; };
 		AC108A4E1A86840A00BAC3CD /* SemanticVersioningParserTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC108A4D1A86840A00BAC3CD /* SemanticVersioningParserTest.swift */; };
 		AC1B79C01A842D80002DD206 /* SemanticVersioning.h in Headers */ = {isa = PBXBuildFile; fileRef = AC1B79BF1A842D80002DD206 /* SemanticVersioning.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -26,6 +29,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AC02F6831AC82AB9005EA738 /* NSOperatingSystemVersion+SemanticVersioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperatingSystemVersion+SemanticVersioning.swift"; sourceTree = "<group>"; };
+		AC02F6851AC88289005EA738 /* UIDevice+SemanticVersioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+SemanticVersioning.swift"; sourceTree = "<group>"; };
+		AC02F6871AC88714005EA738 /* NSOperatingSystemVersionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSOperatingSystemVersionTests.swift; sourceTree = "<group>"; };
 		AC108A4B1A866DE800BAC3CD /* SemanticVersioningParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SemanticVersioningParser.swift; sourceTree = "<group>"; };
 		AC108A4D1A86840A00BAC3CD /* SemanticVersioningParserTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SemanticVersioningParserTest.swift; sourceTree = "<group>"; };
 		AC1B79BA1A842D80002DD206 /* SemanticVersioning.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SemanticVersioning.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +86,8 @@
 				AC1B79BF1A842D80002DD206 /* SemanticVersioning.h */,
 				AC1B79D61A842DB5002DD206 /* SemanticVersioning.swift */,
 				AC108A4B1A866DE800BAC3CD /* SemanticVersioningParser.swift */,
+				AC02F6831AC82AB9005EA738 /* NSOperatingSystemVersion+SemanticVersioning.swift */,
+				AC02F6851AC88289005EA738 /* UIDevice+SemanticVersioning.swift */,
 				AC1B79BD1A842D80002DD206 /* Supporting Files */,
 			);
 			path = Source;
@@ -98,6 +106,7 @@
 			children = (
 				AC1B79CC1A842D80002DD206 /* SemanticVersioningTests.swift */,
 				AC108A4D1A86840A00BAC3CD /* SemanticVersioningParserTest.swift */,
+				AC02F6871AC88714005EA738 /* NSOperatingSystemVersionTests.swift */,
 				AC1B79CA1A842D80002DD206 /* Supporting Files */,
 			);
 			path = Tests;
@@ -219,7 +228,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC108A4C1A866DE800BAC3CD /* SemanticVersioningParser.swift in Sources */,
+				AC02F6841AC82AB9005EA738 /* NSOperatingSystemVersion+SemanticVersioning.swift in Sources */,
 				AC1B79D71A842DB5002DD206 /* SemanticVersioning.swift in Sources */,
+				AC02F6861AC88289005EA738 /* UIDevice+SemanticVersioning.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +240,7 @@
 			files = (
 				AC108A4E1A86840A00BAC3CD /* SemanticVersioningParserTest.swift in Sources */,
 				AC1B79CD1A842D80002DD206 /* SemanticVersioningTests.swift in Sources */,
+				AC02F68B1AC8872E005EA738 /* NSOperatingSystemVersionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
