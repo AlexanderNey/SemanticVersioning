@@ -1,5 +1,5 @@
 //
-//  NSOperatingSystemVersionTests.swift
+//  FoundationExtensionTests.swift
 //
 //  Copyright (c) 2015 Alexander Ney. All rights reserved.
 //
@@ -22,10 +22,11 @@
 //  THE SOFTWARE.
 
 import Foundation
+import UIKit
 import XCTest
 import SemanticVersioning
 
-class NSOperatingSystemVersionTests: XCTestCase
+class FoundationExtensionTests: XCTestCase
 {
     
     func testNSOperatingSystemVersion()
@@ -38,5 +39,18 @@ class NSOperatingSystemVersionTests: XCTestCase
         XCTAssert(version.isPrerelease == false, "must be no prerelease")
         XCTAssert(version.preReleaseIdentifier.isEmpty, "must have no prerelease identifier")
         XCTAssert(version.buildMetadataIdentifier.isEmpty, "must have no metadata identifier")
+    }
+    
+    func testNSBundleVersion()
+    {
+        let bundle = NSBundle(forClass: self.dynamicType)
+        let version = bundle.version!
+        
+        XCTAssertEqual(version.major, 1, "major must be 1")
+        XCTAssertEqual(version.minor, 0, "major must be 0")
+        XCTAssertEqual(version.patch, 0, "major must be 0")
+        XCTAssert(version.isPrerelease == false, "must be no prerelease")
+        XCTAssert(version.preReleaseIdentifier.isEmpty, "must have no prerelease identifier")
+        XCTAssert(contains(version.buildMetadataIdentifier, "unittests"), "must contain 'unittests' identifier as build metadata")
     }
 }
