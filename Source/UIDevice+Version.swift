@@ -1,5 +1,5 @@
 //
-//  UIDevice+SemanticVersioning.swift
+//  UIDevice+Version.swift
 //  SemanticVersioning
 //
 //  Created by Alexander Ney on 29/03/2015.

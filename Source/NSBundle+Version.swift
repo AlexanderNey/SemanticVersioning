@@ -1,5 +1,5 @@
 //
-//  NSBundle+SemanticVersioning.swift
+//  NSBundle+Version.swift
 //  SemanticVersioning
 //
 //  Created by Alexander Ney on 29/03/2015.
