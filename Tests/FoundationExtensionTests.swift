@@ -53,4 +53,15 @@ class FoundationExtensionTests: XCTestCase
         XCTAssert(version.preReleaseIdentifier.isEmpty, "must have no prerelease identifier")
         XCTAssert(contains(version.buildMetadataIdentifier, "unittests"), "must contain 'unittests' identifier as build metadata")
     }
+    
+    func testUIDeviceSystemVersion()
+    {
+        let version = UIDevice.currentDevice().operatingSystemVersion
+        
+        // really depends on the test environment - limited test here
+        XCTAssert(version.major > 0, "major must be something bigger then 0")
+        XCTAssert(version.isPrerelease == false, "must be no prerelease")
+        XCTAssert(version.preReleaseIdentifier.isEmpty, "must have no prerelease identifier")
+        XCTAssert(version.buildMetadataIdentifier.isEmpty, "must have no prerelease identifier")
+    }
 }
