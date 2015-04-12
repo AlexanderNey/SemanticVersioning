@@ -14,7 +14,7 @@ import UIKit
     
 public extension UIDevice
 {
-    public var systemSemanticVersion: Version { return Version(self.systemVersion) }
+    public var operatingSystemVersion: Version { return Version(self.systemVersion) }
 }
 
 #endif
