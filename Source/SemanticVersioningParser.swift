@@ -143,7 +143,7 @@ public class SemanticVersionParser
     
     :returns: valid SemanticVersionParser
     */
-    public init(versionString: String)
+    public init(_ versionString: String)
     {
         self.scanner = NSScanner(string: versionString)
     }
@@ -300,18 +300,18 @@ public class SemanticVersionParser
 *  so Versions can be initalized by assigning a String like:
 *  `let version : SemanticVersion = "1.2.0"`
 */
-extension SemanticVersion: StringLiteralConvertible
+extension Version: StringLiteralConvertible
 {
-    public init(versionString: String)
+    public init(_ versionString: String)
     {
-        let version = SemanticVersion(versionString: versionString, strict: false)
+        let version = Version(versionString, strict: false)
         if let version = version
         {
             self = version
         }
         else
         {
-            self = SemanticVersion(major: 0)
+            self = Version(major: 0)
         }
     }
     
@@ -326,9 +326,9 @@ extension SemanticVersion: StringLiteralConvertible
     
     :returns: initialized SemanticVersion or nil if version string could not be parsed
     */
-    public init?(versionString: String, strict: Bool)
+    public init?(_ versionString: String, strict: Bool)
     {
-        let parser = SemanticVersionParser(versionString: versionString)
+        let parser = SemanticVersionParser(versionString)
         let result = parser.parse()
         
         switch result {
@@ -377,16 +377,16 @@ extension SemanticVersion: StringLiteralConvertible
     
     public init(stringLiteral value: String)
     {
-        self = SemanticVersion(versionString: value)
+        self = Version(value)
     }
     
     public init(extendedGraphemeClusterLiteral value: String)
     {
-        self = SemanticVersion(versionString: value)
+        self = Version(value)
     }
     
     public init(unicodeScalarLiteral value: String)
     {
-        self = SemanticVersion(versionString: value)
+        self = Version(value)
     }
 }

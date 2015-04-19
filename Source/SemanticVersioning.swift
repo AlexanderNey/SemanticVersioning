@@ -24,24 +24,33 @@
 
 import Foundation
 
+public protocol SemanticVersion: Comparable
+{
+    var major: Int { get }
+    var minor: Int { get }
+    var patch: Int { get }
+    var preReleaseIdentifier: [String] { get }
+    var buildMetadataIdentifier: [String] { get }
+    var isPrerelease: Bool { get }
+}
+
 /**
 *  Implements Sematic Version specification 2.0.0
 */
-public struct SemanticVersion: Comparable, Printable
+public struct Version: SemanticVersion, Printable
 {
     public var major: Int
     public var minor: Int
     public var patch: Int
     public var preReleaseIdentifier: [String]
     public var buildMetadataIdentifier: [String]
-    
     public var isPrerelease: Bool { return !self.preReleaseIdentifier.isEmpty }
     
     /**
     :returns: returns a SemanticVersion defining the specification that is implemented (http://semver.org/spec/v2.0.0.html)
     */
-    public static var specification: SemanticVersion {
-        return SemanticVersion(major: 2, minor: 0, patch: 0)
+    public static var specification: Version {
+        return Version(major: 2, minor: 0, patch: 0)
     }
     
     public var description: String {
@@ -70,16 +79,26 @@ public struct SemanticVersion: Comparable, Printable
         self.buildMetadataIdentifier = buildMetadataIdentifier
     }
     
+    public init<T: SemanticVersion>(version: T)
+    {
+        self.major = version.major
+        self.minor = version.minor
+        self.patch = version.patch
+        
+        self.preReleaseIdentifier = version.preReleaseIdentifier
+        self.buildMetadataIdentifier = version.buildMetadataIdentifier
+    }
+    
     private init()
     {
-        self = SemanticVersion(major: 0)
+        self = Version(major: 0)
     }
 }
 
 // MARK: comparison
 
 infix operator ≈ { associativity left precedence 140 }
-func ≈ (left: SemanticVersion, right: SemanticVersion) -> Bool
+func ≈ <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
 {
     return  (left.major == right.major) &&
             (left.minor == right.minor) &&
@@ -87,19 +106,19 @@ func ≈ (left: SemanticVersion, right: SemanticVersion) -> Bool
 }
 
 infix operator !≈ { associativity left precedence 140 }
-func !≈ (left: SemanticVersion, right: SemanticVersion) -> Bool
+func !≈ <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
 {
     return  !(left ≈ right)
 }
 
-public func == (left: SemanticVersion, right: SemanticVersion) -> Bool
+public func == <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
 {
     return  left ≈ right &&
             (left.preReleaseIdentifier == right.preReleaseIdentifier)
 }
 
 
-public func < (left: SemanticVersion, right: SemanticVersion) -> Bool
+public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
 {
     if left.major < right.major
     {
@@ -163,4 +182,5 @@ public func < (left: SemanticVersion, right: SemanticVersion) -> Bool
     
     return false
 }
+
 
