@@ -79,6 +79,16 @@ public struct Version: SemanticVersion, Printable
         self.buildMetadataIdentifier = buildMetadataIdentifier
     }
     
+    public init<T: SemanticVersion>(version: T)
+    {
+        self.major = version.major
+        self.minor = version.minor
+        self.patch = version.patch
+        
+        self.preReleaseIdentifier = version.preReleaseIdentifier
+        self.buildMetadataIdentifier = version.buildMetadataIdentifier
+    }
+    
     private init()
     {
         self = Version(major: 0)
@@ -88,7 +98,7 @@ public struct Version: SemanticVersion, Printable
 // MARK: comparison
 
 infix operator ≈ { associativity left precedence 140 }
-func ≈ <T: SemanticVersion>(left: T, right: T) -> Bool
+func ≈ <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
 {
     return  (left.major == right.major) &&
             (left.minor == right.minor) &&
@@ -96,19 +106,19 @@ func ≈ <T: SemanticVersion>(left: T, right: T) -> Bool
 }
 
 infix operator !≈ { associativity left precedence 140 }
-func !≈ <T: SemanticVersion>(left: T, right: T) -> Bool
+func !≈ <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
 {
     return  !(left ≈ right)
 }
 
-public func == <T: SemanticVersion>(left: T, right: T) -> Bool
+public func == <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
 {
     return  left ≈ right &&
             (left.preReleaseIdentifier == right.preReleaseIdentifier)
 }
 
 
-public func < <T: SemanticVersion>(left: T, right: T) -> Bool
+public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
 {
     if left.major < right.major
     {
