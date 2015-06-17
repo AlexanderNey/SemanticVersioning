@@ -1,5 +1,4 @@
 osx_image: beta-xcode6.3
 language: objective-c
 script: 
-  - xctool test -project SemanticVersioning.xcodeproj -scheme SemanticVersioning -sdk iphonesimulator8.1
-  - xctool test -project SemanticVersioning.xcodeproj -scheme SemanticVersioning -sdk iphonesimulator7.0
+  - xctool test -project SemanticVersioning.xcodeproj -scheme SemanticVersioning -sdk iphonesimulator
