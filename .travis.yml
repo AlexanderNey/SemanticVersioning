@@ -1,3 +1,5 @@
 osx_image: beta-xcode6.3
 language: objective-c
-script: xctool -project SemanticVersioning.xcodeproj -scheme SemanticVersioning build  CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+script: 
+xctool test -project SemanticVersioning.xcodeproj -scheme SemanticVersioning -sdk iphonesimulator8.1
+xctool test -project SemanticVersioning.xcodeproj -scheme SemanticVersioning -sdk iphonesimulator7.0
