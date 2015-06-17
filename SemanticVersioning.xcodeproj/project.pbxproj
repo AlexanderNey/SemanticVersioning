@@ -17,6 +17,7 @@
 		AC1B79C61A842D80002DD206 /* SemanticVersioning.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC1B79BA1A842D80002DD206 /* SemanticVersioning.framework */; };
 		AC1B79CD1A842D80002DD206 /* SemanticVersioningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1B79CC1A842D80002DD206 /* SemanticVersioningTests.swift */; };
 		AC1B79D71A842DB5002DD206 /* SemanticVersioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1B79D61A842DB5002DD206 /* SemanticVersioning.swift */; };
+		AC1DBF161B31EDD700ACF199 /* SemanticVersioning.framework in Copy Framework */ = {isa = PBXBuildFile; fileRef = AC1B79BA1A842D80002DD206 /* SemanticVersioning.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AC711DD61ADAAEC3000D854A /* Version+IntegerLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC711DD51ADAAEC3000D854A /* Version+IntegerLiteralConvertible.swift */; };
 		AC711DD91ADAB34D000D854A /* VersionIntegerLiteralConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC711DD71ADAB318000D854A /* VersionIntegerLiteralConvertible.swift */; };
 /* End PBXBuildFile section */
@@ -30,6 +31,20 @@
 			remoteInfo = SemanticVersioning;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AC1DBF151B31EDC500ACF199 /* Copy Framework */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AC1DBF161B31EDD700ACF199 /* SemanticVersioning.framework in Copy Framework */,
+			);
+			name = "Copy Framework";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		AC02F6831AC82AB9005EA738 /* NSOperatingSystemVersion+SemanticVersioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperatingSystemVersion+SemanticVersioning.swift"; sourceTree = "<group>"; };
@@ -168,6 +183,7 @@
 				AC1B79C11A842D80002DD206 /* Sources */,
 				AC1B79C21A842D80002DD206 /* Frameworks */,
 				AC1B79C31A842D80002DD206 /* Resources */,
+				AC1DBF151B31EDC500ACF199 /* Copy Framework */,
 			);
 			buildRules = (
 			);
