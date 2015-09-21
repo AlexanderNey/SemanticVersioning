@@ -24,6 +24,7 @@ extension Version : IntegerLiteralConvertible
 {
     public init(integerLiteral value: IntegerLiteralType)
     {
-        value < 0 ? self.init(major: 0) : self.init(major: value)
+        self.init(major: max(0, value))
     }
+    
 }

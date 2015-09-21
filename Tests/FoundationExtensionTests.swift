@@ -51,7 +51,7 @@ class FoundationExtensionTests: XCTestCase
         XCTAssertEqual(version.patch, 0, "major must be 0")
         XCTAssert(version.isPrerelease == false, "must be no prerelease")
         XCTAssert(version.preReleaseIdentifier.isEmpty, "must have no prerelease identifier")
-        XCTAssert(contains(version.buildMetadataIdentifier, "unittests"), "must contain 'unittests' identifier as build metadata")
+        XCTAssert(version.buildMetadataIdentifier.contains("unittests"), "must contain 'unittests' identifier as build metadata")
     }
     
     func testUIDeviceSystemVersion()

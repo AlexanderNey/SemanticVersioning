@@ -37,7 +37,7 @@ public protocol SemanticVersion: Comparable
 /**
 *  Implements Sematic Version specification 2.0.0
 */
-public struct Version: SemanticVersion, Printable
+public struct Version: SemanticVersion, CustomStringConvertible
 {
     public var major: Int
     public var minor: Int
@@ -47,7 +47,7 @@ public struct Version: SemanticVersion, Printable
     public var isPrerelease: Bool { return !self.preReleaseIdentifier.isEmpty }
     
     /**
-    :returns: returns a SemanticVersion defining the specification that is implemented (http://semver.org/spec/v2.0.0.html)
+    - returns: returns a SemanticVersion defining the specification that is implemented (http://semver.org/spec/v2.0.0.html)
     */
     public static var specification: Version {
         return Version(major: 2, minor: 0, patch: 0)
@@ -58,12 +58,12 @@ public struct Version: SemanticVersion, Printable
         
         if !self.preReleaseIdentifier.isEmpty
         {
-            versionString += "-" + ".".join(self.preReleaseIdentifier)
+            versionString += "-" + self.preReleaseIdentifier.joinWithSeparator(".")
         }
         
         if !self.buildMetadataIdentifier.isEmpty
         {
-            versionString += "+" + ".".join(self.buildMetadataIdentifier)
+            versionString += "+" + self.buildMetadataIdentifier.joinWithSeparator(".")
         }
         
         return versionString
@@ -145,11 +145,11 @@ public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Boo
                 else if left.isPrerelease && right.isPrerelease
                 {
                     // Compare prerelease identifier
-                    let identifiers = Zip2(left.preReleaseIdentifier, right.preReleaseIdentifier)
+                    let identifiers = Zip2Sequence(left.preReleaseIdentifier, right.preReleaseIdentifier)
                     for pair in identifiers
                     {
-                        let numericLeft = pair.0.toInt()
-                        let numericRight = pair.1.toInt()
+                        let numericLeft = Int(pair.0)
+                        let numericRight = Int(pair.1)
                         
                         if let numericLeft = numericLeft, numericRight = numericRight where numericLeft != numericRight
                         {
@@ -172,7 +172,7 @@ public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Boo
                     }
                     
                     // A larger set of pre-release fields has a higher precedence than a smaller set, if all of the preceding identifiers are equal
-                    return count(left.preReleaseIdentifier) < count(right.preReleaseIdentifier)
+                    return left.preReleaseIdentifier.count < right.preReleaseIdentifier.count
                 }
             }
             else { return false }
