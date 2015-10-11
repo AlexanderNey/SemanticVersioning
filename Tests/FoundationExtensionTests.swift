@@ -47,7 +47,7 @@ class FoundationExtensionTests: XCTestCase
         let version = bundle.version!
         
         XCTAssertEqual(version.major, 1, "major must be 1")
-        XCTAssertEqual(version.minor, 0, "major must be 0")
+        XCTAssertEqual(version.minor, 1, "major must be 1")
         XCTAssertEqual(version.patch, 0, "major must be 0")
         XCTAssert(version.isPrerelease == false, "must be no prerelease")
         XCTAssert(version.preReleaseIdentifier.isEmpty, "must have no prerelease identifier")
