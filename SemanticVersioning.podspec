@@ -1,8 +1,8 @@
 Pod::Spec.new do |s|
   s.name = 'SemanticVersioning'
-  s.version = '1.0.0-beta'
+  s.version = '1.1.0'
   s.license = { :type => "MIT" }
-  s.summary = 'Elegant Semantic Versioning in Swift'
+  s.summary = 'Elegant Semantic Versioning in Swift 2.0'
   s.homepage = 'https://github.com/AlexanderNey/SemanticVersioning'
   s.social_media_url = 'http://twitter.com/Ajax64'
   s.authors = { 'Alexander Ney' => 'alexander.ney@me.com' }

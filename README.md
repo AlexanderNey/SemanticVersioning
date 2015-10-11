@@ -1,11 +1,12 @@
 #Semantic Versioning
 [![Twitter: @ajax64](https://img.shields.io/badge/Author-Alexander%20Ney-00B893.svg)](https://twitter.com/ajax64)
-![platform](https://img.shields.io/cocoapods/v/SemanticVersioning.svg)
-![platform](https://img.shields.io/cocoapods/p/SemanticVersioning.svg)
-![license](https://img.shields.io/cocoapods/l/SemanticVersioning.svg)
+![Platform](https://img.shields.io/cocoapods/v/SemanticVersioning.svg)
+![Platform](https://img.shields.io/cocoapods/p/SemanticVersioning.svg)
+![License](https://img.shields.io/cocoapods/l/SemanticVersioning.svg)
+![Travis](https://img.shields.io/travis/AlexanderNey/SemanticVersioning.svg)
 
 Semantic Versioning implementation in Swift!
-Use the struct `Version` to represents a version according to the [Semantic Versioning Specification 2.0.0](http://semver.org/spec/v2.0.0.html). 
+Use the struct `Version` to represent a version according to the [Semantic Versioning Specification 2.0.0](http://semver.org/spec/v2.0.0.html). 
 
 
 ✔️ Fully Unit tested
@@ -17,9 +18,9 @@ Use the struct `Version` to represents a version according to the [Semantic Vers
 
 ### Requirements
 
-- iOS 7.0+ / Mac OS X 10.9+
-- Xcode 6.3+
-- Swift 1.2
+- iOS 8.0+ / Mac OS X 10.9+
+- Xcode 7.0+
+- Swift 2.0
 
 ###Installation
 The easiest way to use SemanticVersion in your project is using the CocaPods package manager.
@@ -28,16 +29,11 @@ The easiest way to use SemanticVersion in your project is using the CocaPods pac
 ###CocoaPods
 See installation instructions for [CocoaPods](http://cocoapods.org) if not already installed
 
-CocoaPods 0.36 beta adds supports for Swift and embedded frameworks. You can install it with the following command:
-
-```bash
-$ gem install cocoapods --pre
-```
-
 To integrate the library into your Xcode project specify the pod dependency to your `Podfile`:
 
 ```ruby
 platform :ios, '8.0'
+use_frameworks!
 
 pod 'SemanticVersioning'
 ```
@@ -47,12 +43,6 @@ run pod install
 ```bash
 pod install
 ```
-
-### Source File
-
-For application targets that do not support embedded frameworks, such as iOS 7, You can add all *.swift source files directly into your project. 
-
-You can add a git submodule and drag and drop the sources into the project navigator.
 
 ##Usage
 

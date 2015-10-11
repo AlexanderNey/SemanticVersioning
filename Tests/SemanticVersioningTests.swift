@@ -78,7 +78,7 @@ class VersioningTests: XCTestCase
         XCTAssertEqual(ver.patch, 0, "patch should be 0")
         
         XCTAssertEqual(ver.isPrerelease, true, "sould be a prerelase version")
-        let hasAllPreRelease = contains(ver.preReleaseIdentifier, "alpha") && contains(ver.preReleaseIdentifier, "2")
+        let hasAllPreRelease = ver.preReleaseIdentifier.contains("alpha") && ver.preReleaseIdentifier.contains("2")
         XCTAssert(hasAllPreRelease, "prerelease identifiers should contain 'alpha' and '2'")
         
         XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
@@ -95,7 +95,7 @@ class VersioningTests: XCTestCase
         XCTAssertEqual(ver.isPrerelease, false, "sould not be a prerelase version")
         XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
         
-        let hasAllMetadata = contains(ver.buildMetadataIdentifier, "build12") && contains(ver.buildMetadataIdentifier, "meta")
+        let hasAllMetadata = ver.buildMetadataIdentifier.contains("build12") && ver.buildMetadataIdentifier.contains("meta")
         XCTAssert(hasAllMetadata, "build meta data should contain 'build12' and 'meta'")
         XCTAssertEqual(ver.description, "1.0.3+build12.meta", "printable version should match")
     }
@@ -108,10 +108,10 @@ class VersioningTests: XCTestCase
         XCTAssertEqual(ver.patch, 0, "patch should be 0")
         
         XCTAssertEqual(ver.isPrerelease, true, "sould be a prerelase version")
-        let hasAllPreRelease = contains(ver.preReleaseIdentifier, "prerelease")
+        let hasAllPreRelease = ver.preReleaseIdentifier.contains("prerelease")
         XCTAssert(hasAllPreRelease, "prerelease identifiers should contain 'prerelease'")
         
-        let hasAllMetadata = contains(ver.buildMetadataIdentifier, "meta")
+        let hasAllMetadata = ver.buildMetadataIdentifier.contains("meta")
         XCTAssert(hasAllMetadata, "build meta data should contain 'meta'")
         XCTAssertEqual(ver.description, "0.0.0-prerelease+meta", "printable version should match")
     }

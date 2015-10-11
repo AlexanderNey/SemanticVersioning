@@ -52,7 +52,7 @@ class VersioningParserTests: XCTestCase
                     XCTFail("unexpected component parsed")
                 }
             }
-        case .Failure(let location, let failedComponent, let parsedComponents):
+        case .Failure(let location, let failedComponent, _):
             XCTFail("failed to scan at \(location) failed component \(failedComponent)")
         }
     }
@@ -64,7 +64,7 @@ class VersioningParserTests: XCTestCase
         
         switch result {
         case .Success(let parsedComponents):
-            XCTAssert(count(parsedComponents) == 4, "should have parsed 4 components")
+            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
             for component in parsedComponents
             {
                 switch component {
@@ -76,13 +76,13 @@ class VersioningParserTests: XCTestCase
                     XCTAssertEqual(patch ?? -1, 75, "wrong patch version \(patch)")
                 case .PrereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 1, "wrong number of prerelease identifier")
-                    XCTAssert(contains(identifier!,"alpha1"), "prerelase ifentifier should contain 'alpha1'")
+                    XCTAssertEqual((identifier!).count, 1, "wrong number of prerelease identifier")
+                    XCTAssert((identifier!).contains("alpha1"), "prerelase ifentifier should contain 'alpha1'")
                 default:
                     XCTFail("unexpected component parsed")
                 }
             }
-        case .Failure(let location, let failedComponent, let parsedComponents):
+        case .Failure(_, _, _):
             XCTFail("parsing should succeed")
         }
     }
@@ -94,7 +94,7 @@ class VersioningParserTests: XCTestCase
         
         switch result {
         case .Success(let parsedComponents):
-            XCTAssert(count(parsedComponents) == 4, "should have parsed 4 components")
+            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
             for component in parsedComponents
             {
                 switch component {
@@ -106,14 +106,14 @@ class VersioningParserTests: XCTestCase
                     XCTAssertEqual(patch ?? -1, 1234, "wrong patch version \(patch)")
                 case .PrereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 2, "wrong number of prerelease identifier")
-                    XCTAssert(contains(identifier!,"alpha"), "prerelase ifentifier should contain 'alpha'")
-                    XCTAssert(contains(identifier!,"log-fix"), "prerelase ifentifier should contain 'log-fix'")
+                    XCTAssertEqual((identifier!).count, 2, "wrong number of prerelease identifier")
+                    XCTAssert((identifier!).contains("alpha"), "prerelase ifentifier should contain 'alpha'")
+                    XCTAssert((identifier!).contains("log-fix"), "prerelase ifentifier should contain 'log-fix'")
                 default:
                     XCTFail("unexpected component parsed")
                 }
             }
-        case .Failure(let location, let failedComponent, let parsedComponents):
+        case .Failure(_, _, _):
             XCTFail("parsing should succeed")
         }
     }
@@ -125,7 +125,7 @@ class VersioningParserTests: XCTestCase
         
         switch result {
         case .Success(let parsedComponents):
-            XCTAssert(count(parsedComponents) == 4, "should have parsed 4 components")
+            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
             for component in parsedComponents
             {
                 switch component {
@@ -137,13 +137,13 @@ class VersioningParserTests: XCTestCase
                     XCTAssertEqual(patch ?? -1, 6, "wrong patch version \(patch)")
                 case .BuildMetadataIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 1, "wrong number of build metadata identifier")
-                    XCTAssert(contains(identifier!,"staging"), "prerelase ifentifier should contain 'staging'")
+                    XCTAssertEqual((identifier!).count, 1, "wrong number of build metadata identifier")
+                    XCTAssert((identifier!).contains("staging"), "prerelase ifentifier should contain 'staging'")
                 default:
                     XCTFail("unexpected component parsed")
                 }
             }
-        case .Failure(let location, let failedComponent, let parsedComponents):
+        case .Failure(_, _, _):
             XCTFail("parsing should succeed")
         }
     }
@@ -155,7 +155,7 @@ class VersioningParserTests: XCTestCase
         
         switch result {
         case .Success(let parsedComponents):
-            XCTAssert(count(parsedComponents) == 4, "should have parsed 4 components")
+            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
             for component in parsedComponents
             {
                 switch component {
@@ -167,14 +167,14 @@ class VersioningParserTests: XCTestCase
                     XCTAssertEqual(patch ?? -1, 6678, "wrong patch version \(patch)")
                 case .BuildMetadataIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 2, "wrong number of build metadata identifier")
-                    XCTAssert(contains(identifier!,"timestamp"), "prerelase ifentifier should contain 'timestamp'")
-                    XCTAssert(contains(identifier!,"1168336800"), "prerelase ifentifier should contain '1168336800'")
+                    XCTAssertEqual((identifier!).count, 2, "wrong number of build metadata identifier")
+                    XCTAssert((identifier!).contains("timestamp"), "prerelase ifentifier should contain 'timestamp'")
+                    XCTAssert((identifier!).contains("1168336800"), "prerelase ifentifier should contain '1168336800'")
                 default:
                     XCTFail("unexpected component parsed")
                 }
             }
-        case .Failure(let location, let failedComponent, let parsedComponents):
+        case .Failure(_, _, _):
             XCTFail("parsing should succeed")
         }
     }
@@ -186,7 +186,7 @@ class VersioningParserTests: XCTestCase
         
         switch result {
         case .Success(let parsedComponents):
-            XCTAssert(count(parsedComponents) == 5, "should have parsed 5 components")
+            XCTAssert(parsedComponents.count == 5, "should have parsed 5 components")
             for component in parsedComponents
             {
                 switch component {
@@ -198,17 +198,15 @@ class VersioningParserTests: XCTestCase
                     XCTAssertEqual(patch ?? -1, 75, "wrong patch version \(patch)")
                 case .PrereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 1, "wrong number of prerelease identifier")
-                    XCTAssert(contains(identifier!,"alpha1"), "prerelase ifentifier should contain 'alpha1'")
+                    XCTAssertEqual((identifier!).count, 1, "wrong number of prerelease identifier")
+                    XCTAssert((identifier!).contains("alpha1"), "prerelase ifentifier should contain 'alpha1'")
                 case .BuildMetadataIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 1, "wrong number of build metadata identifier")
-                    XCTAssert(contains(identifier!,"staging"), "metadata ifentifier should contain 'staging'")
-                default:
-                    XCTFail("unexpected component parsed")
+                    XCTAssertEqual((identifier!).count, 1, "wrong number of build metadata identifier")
+                    XCTAssert((identifier!).contains("staging"), "metadata ifentifier should contain 'staging'")
                 }
             }
-        case .Failure(let location, let failedComponent, let parsedComponents):
+        case .Failure(_, _, _):
             XCTFail("parsing should succeed")
         }
     }
@@ -220,7 +218,7 @@ class VersioningParserTests: XCTestCase
         
         switch result {
         case .Success(let parsedComponents):
-            XCTAssert(count(parsedComponents) == 5, "should have parsed 5 components")
+            XCTAssert(parsedComponents.count == 5, "should have parsed 5 components")
             for component in parsedComponents
             {
                 switch component {
@@ -232,19 +230,17 @@ class VersioningParserTests: XCTestCase
                     XCTAssertEqual(patch ?? -1, 7, "wrong patch version \(patch)")
                 case .PrereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 2, "wrong number of prerelease identifier")
-                    XCTAssert(contains(identifier!,"alpha2"), "prerelase ifentifier should contain 'alpha2'")
-                    XCTAssert(contains(identifier!,"hotfix"), "prerelase ifentifier should contain 'hotfix'")
+                    XCTAssertEqual((identifier!).count, 2, "wrong number of prerelease identifier")
+                    XCTAssert((identifier!).contains("alpha2"), "prerelase ifentifier should contain 'alpha2'")
+                    XCTAssert((identifier!).contains("hotfix"), "prerelase ifentifier should contain 'hotfix'")
                 case .BuildMetadataIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 2, "wrong number of build metadata identifier")
-                    XCTAssert(contains(identifier!,"staging"), "metadata ifentifier should contain 'staging'")
-                    XCTAssert(contains(identifier!,"api7"), "metadata ifentifier should contain 'api7'")
-                default:
-                    XCTFail("unexpected component parsed")
+                    XCTAssertEqual((identifier!).count, 2, "wrong number of build metadata identifier")
+                    XCTAssert((identifier!).contains("staging"), "metadata ifentifier should contain 'staging'")
+                    XCTAssert((identifier!).contains("api7"), "metadata ifentifier should contain 'api7'")
                 }
             }
-        case .Failure(let location, let failedComponent, let parsedComponents):
+        case .Failure(_, _, _):
             XCTFail("parsing should succeed")
         }
     }
@@ -293,7 +289,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 3, "failure loaction should be 3")
             XCTAssert(failedComponent == SemanticVersionParser.Component.Minor(nil), "should have failed on parsing Minor")
-            XCTAssert(count(parsedComponents) == 2, "should have parsed 2 components")
+            XCTAssert(parsedComponents.count == 2, "should have parsed 2 components")
             for component in parsedComponents
             {
                 switch component {
@@ -319,7 +315,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 7, "failure loaction should be 7")
             XCTAssert(failedComponent == SemanticVersionParser.Component.Patch(nil), "should have failed on parsing Patch")
-            XCTAssert(count(parsedComponents) == 2, "should have parsed 2 components")
+            XCTAssert(parsedComponents.count == 2, "should have parsed 2 components")
             for component in parsedComponents
             {
                 switch component {
@@ -345,7 +341,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 6, "failure loaction should be 6")
             XCTAssert(failedComponent == SemanticVersionParser.Component.Patch(nil), "should have failed on parsing Patch")
-            XCTAssert(count(parsedComponents) == 3, "should have parsed 2 components")
+            XCTAssert(parsedComponents.count == 3, "should have parsed 2 components")
             for component in parsedComponents
             {
                 switch component {
@@ -373,7 +369,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 6, "failure loaction should be 6")
             XCTAssert(failedComponent == SemanticVersionParser.Component.PrereleaseIdentifier(nil), "should have failed on parsing PrereleaseIdentifier")
-            XCTAssert(count(parsedComponents) == 3, "should have parsed 2 components")
+            XCTAssert(parsedComponents.count == 3, "should have parsed 2 components")
             for component in parsedComponents
             {
                 switch component {
@@ -401,7 +397,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 11, "failure loaction should be 11")
             XCTAssert(failedComponent == SemanticVersionParser.Component.PrereleaseIdentifier(nil), "should have failed on parsing PrereleaseIdentifier")
-            XCTAssert(count(parsedComponents) == 4, "should have parsed 4 components")
+            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
             for component in parsedComponents
             {
                 switch component {
@@ -413,8 +409,8 @@ class VersioningParserTests: XCTestCase
                     XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
                 case .PrereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 1, "wrong count of prerelease identifier")
-                    XCTAssert(contains(identifier!,"beta"), "metadata ifentifier should contain 'beta'")
+                    XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
+                    XCTAssert((identifier!).contains("beta"), "metadata ifentifier should contain 'beta'")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -433,7 +429,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 11, "failure loaction should be 11")
             XCTAssert(failedComponent == SemanticVersionParser.Component.BuildMetadataIdentifier(nil), "should have failed on parsing BuildMetadataIdentifier")
-            XCTAssert(count(parsedComponents) == 4, "should have parsed 4 components")
+            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
             for component in parsedComponents
             {
                 switch component {
@@ -445,8 +441,8 @@ class VersioningParserTests: XCTestCase
                     XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
                 case .PrereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 1, "wrong count of prerelease identifier")
-                    XCTAssert(contains(identifier!,"beta"), "metadata ifentifier should contain 'beta'")
+                    XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
+                    XCTAssert((identifier!).contains("beta"), "metadata ifentifier should contain 'beta'")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -465,7 +461,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 17, "failure loaction should be 11")
             XCTAssert(failedComponent == SemanticVersionParser.Component.BuildMetadataIdentifier(nil), "should have failed on parsing BuildMetadataIdentifier")
-            XCTAssert(count(parsedComponents) == 5, "should have parsed 4 components")
+            XCTAssert(parsedComponents.count == 5, "should have parsed 4 components")
             for component in parsedComponents
             {
                 switch component {
@@ -477,14 +473,12 @@ class VersioningParserTests: XCTestCase
                     XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
                 case .PrereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 1, "wrong count of prerelease identifier")
-                    XCTAssert(contains(identifier!,"beta"), "prerelease ifentifier should contain 'beta'")
+                    XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
+                    XCTAssert((identifier!).contains("beta"), "prerelease ifentifier should contain 'beta'")
                 case .BuildMetadataIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 1, "wrong count of buildmetadata identifier")
-                    XCTAssert(contains(identifier!,"test1"), "metadata ifentifier should contain 'test1'")
-                default:
-                    XCTFail("unexpected component parsed")
+                    XCTAssertEqual((identifier!).count, 1, "wrong count of buildmetadata identifier")
+                    XCTAssert((identifier!).contains("test1"), "metadata ifentifier should contain 'test1'")
                 }
             }
         }
@@ -501,7 +495,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 11, "failure loaction should be 11")
             XCTAssert(failedComponent == SemanticVersionParser.Component.PrereleaseIdentifier(nil), "should have failed on parsing PrereleaseIdentifier")
-            XCTAssert(count(parsedComponents) == 4, "should have parsed 4 components")
+            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
             for component in parsedComponents
             {
                 switch component {
@@ -513,14 +507,12 @@ class VersioningParserTests: XCTestCase
                     XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
                 case .PrereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 1, "wrong count of prerelease identifier")
-                    XCTAssert(contains(identifier!,"beta"), "prerelease ifentifier should contain 'beta'")
+                    XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
+                    XCTAssert((identifier!).contains("beta"), "prerelease ifentifier should contain 'beta'")
                 case .BuildMetadataIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 1, "wrong count of buildmetadata identifier")
-                    XCTAssert(contains(identifier!,"test1"), "metadata ifentifier should contain 'test1'")
-                default:
-                    XCTFail("unexpected component parsed")
+                    XCTAssertEqual((identifier!).count, 1, "wrong count of buildmetadata identifier")
+                    XCTAssert((identifier!).contains("test1"), "metadata ifentifier should contain 'test1'")
                 }
             }
         }
@@ -538,7 +530,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 11, "failure loaction should be 11")
             XCTAssert(failedComponent == SemanticVersionParser.Component.BuildMetadataIdentifier(nil), "should have failed on parsing BuildMetadataIdentifier")
-            XCTAssert(count(parsedComponents) == 4, "should have parsed 4 components")
+            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
             for component in parsedComponents
             {
                 switch component {
@@ -550,8 +542,8 @@ class VersioningParserTests: XCTestCase
                     XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
                 case .BuildMetadataIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual(count(identifier!), 1, "wrong count of buildmetadata identifier")
-                    XCTAssert(contains(identifier!,"meta"), "metadata ifentifier should contain 'meta'")
+                    XCTAssertEqual((identifier!).count, 1, "wrong count of buildmetadata identifier")
+                    XCTAssert((identifier!).contains("meta"), "metadata ifentifier should contain 'meta'")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -572,7 +564,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 0, "failure loaction should be 0")
             XCTAssert(failedComponent == SemanticVersionParser.Component.Major(nil), "should have failed on parsing Major")
-            XCTAssert(count(parsedComponents) == 0, "should have parsed 0 components")
+            XCTAssert(parsedComponents.count == 0, "should have parsed 0 components")
             for component in parsedComponents
             {
                 switch component {
@@ -594,7 +586,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 1, "failure loaction should be 1")
             XCTAssert(failedComponent == SemanticVersionParser.Component.Major(nil), "should have failed on parsing Major")
-            XCTAssert(count(parsedComponents) == 1, "should have parsed 1 components")
+            XCTAssert(parsedComponents.count == 1, "should have parsed 1 components")
             for component in parsedComponents
             {
                 switch component {
@@ -618,7 +610,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 2, "failure loaction should be 2")
             XCTAssert(failedComponent == SemanticVersionParser.Component.Minor(nil), "should have failed on parsing Minor")
-            XCTAssert(count(parsedComponents) == 1, "should have parsed 1 components")
+            XCTAssert(parsedComponents.count == 1, "should have parsed 1 components")
             for component in parsedComponents
             {
                 switch component {
@@ -642,7 +634,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 3, "failure loaction should be 3")
             XCTAssert(failedComponent == SemanticVersionParser.Component.Minor(nil), "should have failed on parsing Minor")
-            XCTAssert(count(parsedComponents) == 2, "should have parsed 1 components")
+            XCTAssert(parsedComponents.count == 2, "should have parsed 1 components")
             for component in parsedComponents
             {
                 switch component {
@@ -668,7 +660,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 4, "failure loaction should be 4")
             XCTAssert(failedComponent == SemanticVersionParser.Component.Patch(nil), "should have failed on parsing Minor")
-            XCTAssert(count(parsedComponents) == 2, "should have parsed 1 components")
+            XCTAssert(parsedComponents.count == 2, "should have parsed 1 components")
             for component in parsedComponents
             {
                 switch component {
@@ -694,7 +686,7 @@ class VersioningParserTests: XCTestCase
         case .Failure(let location, let failedComponent, let parsedComponents):
             XCTAssertEqual(location, 5, "failure loaction should be 5")
             XCTAssert(failedComponent == SemanticVersionParser.Component.Patch(nil), "should have failed on parsing Patch")
-            XCTAssert(count(parsedComponents) == 3, "should have parsed 1 components")
+            XCTAssert(parsedComponents.count == 3, "should have parsed 1 components")
             for component in parsedComponents
             {
                 switch component {
@@ -750,11 +742,11 @@ class VersioningParserTests: XCTestCase
     {
         let parseVersions = ["1.2.3", "2312.2123.455676", "0.4.5-alpha.stage+release.nightly.test", "12.2.malformed test", "12.100203.222233322"]
         self.measureBlock() {
-            for i in 0...1000
+            for _ in 0...1000
             {
                 for versionString in parseVersions
                 {
-                    let version: Version = Version(stringLiteral: versionString)
+                    let _: Version = Version(stringLiteral: versionString)
                 }
             }
         }
