@@ -13,7 +13,7 @@ extension NSBundle
 {
     public var version : Version? {
         
-        if let bundleVersion = self.infoDictionary?[kCFBundleVersionKey] as? String
+        if let bundleVersion = self.infoDictionary?[kCFBundleVersionKey as String] as? String
         {
             return Version(bundleVersion)
         }

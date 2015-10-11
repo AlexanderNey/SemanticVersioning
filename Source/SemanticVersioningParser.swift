@@ -64,9 +64,9 @@ public func == (left: SemanticVersionParser.Component, right: SemanticVersionPar
     case (.Patch(let patchLeft), .Patch(let patchRight)) where patchLeft == patchRight:
         return true
     case (.PrereleaseIdentifier(let identiferLeft), .PrereleaseIdentifier(let identiferRight)):
-        return compareIdentifier(identiferLeft, identiferRight)
+        return compareIdentifier(identiferLeft, b: identiferRight)
     case (.BuildMetadataIdentifier(let identiferLeft), .BuildMetadataIdentifier(let identiferRight)):
-        return compareIdentifier(identiferLeft, identiferRight)
+        return compareIdentifier(identiferLeft, b: identiferRight)
     default:
         return false
     }
@@ -123,7 +123,7 @@ public class SemanticVersionParser
     - PrereleaseIdentifier:    Array of prerelease identifier
     - BuildMetadataIdentifier: Array of build meta data identifer
     */
-    public enum Component: Printable {
+    public enum Component: CustomStringConvertible {
         case Major(Int?), Minor(Int?), Patch(Int?), PrereleaseIdentifier([String]?), BuildMetadataIdentifier([String]?)
          public var description : String {
             switch self {
@@ -139,9 +139,9 @@ public class SemanticVersionParser
     /**
     Default initializer
     
-    :param: versionString String representing the version
+    - parameter :versionString String representing the version
     
-    :returns: valid SemanticVersionParser
+    - returns: valid SemanticVersionParser
     */
     public init(_ versionString: String)
     {
@@ -151,16 +151,20 @@ public class SemanticVersionParser
     /**
     starts parsing the version string
     
-    :returns: Result object represeting the success of the parsing operation
+    - returns: Result object represeting the success of the parsing operation
     */
     public func parse() -> Result
     {
         self.scanner.scanLocation = 0
         var parsedComponents = [Component]()
        
-        var majorString = scanNumeric()
-        var majorValue = majorString?.toInt()
-        var majorDelimeterScanned = scanDelimeter(DefaultDelimeter)
+        let majorString = scanNumeric()
+        var majorValue: Int?
+        let majorDelimeterScanned = scanDelimeter(DefaultDelimeter)
+        
+        if let unwrapedMajorString = majorString {
+            majorValue = Int(unwrapedMajorString)
+        }
         
         if majorValue != nil
         {
@@ -172,9 +176,13 @@ public class SemanticVersionParser
             return Result.Failure(location: scanner.scanLocation, failedComponent: .Major(nil), parsedComponents: parsedComponents)
         }
         
-        var minorString = scanNumeric()
-        var minorValue = minorString?.toInt()
-        var minorDelimeterScanned = scanDelimeter(DefaultDelimeter)
+        let minorString = scanNumeric()
+        var minorValue: Int?
+        let minorDelimeterScanned = scanDelimeter(DefaultDelimeter)
+        
+        if let unwrapedMinorString = minorString {
+            minorValue = Int(unwrapedMinorString)
+        }
         
         if minorValue != nil
         {
@@ -186,8 +194,13 @@ public class SemanticVersionParser
             return Result.Failure(location: scanner.scanLocation, failedComponent: .Minor(nil), parsedComponents: parsedComponents)
         }
         
-        var patchString = scanNumeric()
-        var patchValue = patchString?.toInt()
+        let patchString = scanNumeric()
+        var patchValue:Int?
+        
+        if let unwrapedPatchString = patchString {
+            patchValue = Int(unwrapedPatchString)
+        }
+        
         if patchValue != nil
         {
             parsedComponents.append(.Patch(patchValue))
@@ -199,14 +212,14 @@ public class SemanticVersionParser
 
         if scanDelimeter(PrereleaseDelimeter)
         {
-            var prereleaseIdentifier = scanIdentifiers()
-            var clearedPrereleaseIdentifier = prereleaseIdentifier.filter {count($0) > 0}
-            if count(clearedPrereleaseIdentifier) > 0
+            let prereleaseIdentifier = scanIdentifiers()
+            let clearedPrereleaseIdentifier = prereleaseIdentifier.filter {$0.characters.count > 0}
+            if clearedPrereleaseIdentifier.count > 0
             {
                 parsedComponents.append(.PrereleaseIdentifier(clearedPrereleaseIdentifier))
             }
                 
-            if count(clearedPrereleaseIdentifier) == 0 || count(clearedPrereleaseIdentifier) != count(prereleaseIdentifier)
+            if clearedPrereleaseIdentifier.count == 0 || clearedPrereleaseIdentifier.count != prereleaseIdentifier.count
             {
                 return Result.Failure(location: scanner.scanLocation, failedComponent: .PrereleaseIdentifier(nil), parsedComponents: parsedComponents)
             }
@@ -214,14 +227,14 @@ public class SemanticVersionParser
         
         if scanDelimeter(BuildMetaDataDelimeter)
         {
-            var BuildMetadataIdentifier = scanIdentifiers()
-            var clearedBuildMetadataIdentifier = BuildMetadataIdentifier.filter {count($0) > 0}
-            if count(clearedBuildMetadataIdentifier) > 0
+            let BuildMetadataIdentifier = scanIdentifiers()
+            let clearedBuildMetadataIdentifier = BuildMetadataIdentifier.filter {$0.characters.count > 0}
+            if clearedBuildMetadataIdentifier.count > 0
             {
                 parsedComponents.append(.BuildMetadataIdentifier(clearedBuildMetadataIdentifier))
             }
             
-            if count(clearedBuildMetadataIdentifier) == 0 || count(clearedBuildMetadataIdentifier) != count(BuildMetadataIdentifier)
+            if clearedBuildMetadataIdentifier.count == 0 || clearedBuildMetadataIdentifier.count != BuildMetadataIdentifier.count
             {
                 return Result.Failure(location: scanner.scanLocation, failedComponent: .BuildMetadataIdentifier(nil), parsedComponents: parsedComponents)
             }
@@ -250,7 +263,7 @@ public class SemanticVersionParser
             default:
                 next = .Major(nil)
             }
-            println(next)
+            print(next)
             return Result.Failure(location: scanner.scanLocation, failedComponent: next, parsedComponents: parsedComponents)
         }
     }
@@ -265,7 +278,7 @@ public class SemanticVersionParser
     private func scanIdentifiers() -> [String]
     {
         var identifiers = [String]()
-        do
+        repeat
         {
             var string:  NSString?
             self.scanner.scanCharactersFromSet(IndentifierCharacterSet, intoString:&string)
@@ -318,13 +331,13 @@ extension Version: StringLiteralConvertible
     /**
     Will try to initialize a SemanticVersion from a specified String
     
-    :param: versionString String representing a version
-    :param: strict        if true the initializer will fail if the version string is malformed / incomplete
+    - parameter versionString: String representing a version
+    - parameter strict:        if true the initializer will fail if the version string is malformed / incomplete
                           if false a SemanticVersion will be returned even if the string was malformed / incompleted this will contain the
                           components that could be parsed and set the default for all others (e.g. 0 for version numbers and nil for identifiers)
                           this is useful if you want to init with string like "1.1" which lacks the patch number or even "2" wich lacks minor and patch numbers - in both cases you'll get a valid SemanticVersion 1.1.0 / 2.0.0
     
-    :returns: initialized SemanticVersion or nil if version string could not be parsed
+    - returns: initialized SemanticVersion or nil if version string could not be parsed
     */
     public init?(_ versionString: String, strict: Bool)
     {
@@ -334,7 +347,7 @@ extension Version: StringLiteralConvertible
         switch result {
         case .Success(let components):
             self.init(parsedComponents: components)
-        case .Failure(let location, let failedComponent, let parsedComponents):
+        case .Failure(_, _, let parsedComponents):
             if strict
             {
                 return nil
