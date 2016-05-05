@@ -4,6 +4,7 @@
 ![Platform](https://img.shields.io/cocoapods/p/SemanticVersioning.svg)
 ![License](https://img.shields.io/cocoapods/l/SemanticVersioning.svg)
 ![Travis](https://img.shields.io/travis/AlexanderNey/SemanticVersioning.svg)
+[![codebeat badge](https://codebeat.co/badges/92f28c9d-042b-46fa-bc31-f0aa3c0751d9)](https://codebeat.co/projects/github-com-alexanderney-semanticversioning)
 
 Semantic Versioning implementation in Swift!
 Use the struct `Version` to represent a version according to the [Semantic Versioning Specification 2.0.0](http://semver.org/spec/v2.0.0.html). 
