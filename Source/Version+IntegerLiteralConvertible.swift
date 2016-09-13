@@ -20,7 +20,7 @@ extension Version
     }
 }
 
-extension Version : IntegerLiteralConvertible
+extension Version : ExpressibleByIntegerLiteral
 {
     public init(integerLiteral value: IntegerLiteralType)
     {
