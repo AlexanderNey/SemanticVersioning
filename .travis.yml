@@ -1,5 +1,11 @@
-osx_image: xcode7
+osx_image: xcode8.3
 language: objective-c
-xcode_project: SemanticVersioning.xcodeproj
-xcode_scheme: SemanticVersioning
-xcode_sdk: iphonesimulator9.0
+
+env:
+  - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=8.1"
+  - DESTINATION="platform=iOS Simulator,name=iPhone 6S,OS=9.0"
+  - DESTINATION="platform=iOS Simulator,name=iPhone 6S,OS=10.0"
+script:
+  - xcodebuild clean build -project SemanticVersioning.xcodeproj -scheme "SemanticVersioning" -destination "$DESTINATION" -enableCodeCoverage YES test
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -cF "$DESTINATION" -t cee9d255-69c0-455d-83d4-eb28f696a299
