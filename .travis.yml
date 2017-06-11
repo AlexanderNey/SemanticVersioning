@@ -8,4 +8,4 @@ env:
 script:
   - xcodebuild clean build -project SemanticVersioning.xcodeproj -scheme "SemanticVersioning" -destination "$DESTINATION" -enableCodeCoverage YES test
 after_success:
-  - bash <(curl -s https://codecov.io/bash) -cF "$DESTINATION" -t 5a482304-d924-4a83-9e07-bc8db90df465
+  - bash <(curl -s https://codecov.io/bash) -cF "$DESTINATION" -t cee9d255-69c0-455d-83d4-eb28f696a299
