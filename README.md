@@ -1,4 +1,4 @@
-#Semantic Versioning
+# Semantic Versioning
 [![Twitter: @ajax64](https://img.shields.io/badge/Author-Alexander%20Ney-00B893.svg)](https://twitter.com/ajax64)
 ![Platform](https://img.shields.io/cocoapods/v/SemanticVersioning.svg)
 ![Platform](https://img.shields.io/cocoapods/p/SemanticVersioning.svg)
@@ -9,24 +9,24 @@ Semantic Versioning implementation in Swift!
 Use the struct `Version` to represent a version according to the [Semantic Versioning Specification 2.0.0](http://semver.org/spec/v2.0.0.html).
 
 
-✔️ Fully Unit tested
+✅ Fully Unit tested
 
-✔️ 100% Swift
+✅ 100% Swift
 
 
-##Getting Started
+## Getting Started
 
 ### Requirements
 
 - iOS 8.0+ / Mac OS X 10.9+
 - Xcode 8.0+
-- Swift 3.1
+- Swift 3
 
-###Installation
+### Installation
 The easiest way to use SemanticVersion in your project is using the CocaPods package manager.
 
 
-###CocoaPods
+### CocoaPods
 See installation instructions for [CocoaPods](http://cocoapods.org) if not already installed
 
 To integrate the library into your Xcode project specify the pod dependency to your `Podfile`:
@@ -44,7 +44,7 @@ run pod install
 pod install
 ```
 
-##Usage
+## Usage
 
 Create version 2.0.0
 
@@ -118,11 +118,11 @@ The default operators for comparsion are implemented
 This will comapre major, minor, patch and the prerelease identifiers according to the [Semantic Versioning Sepcification 2.0.0](http://semver.org/spec/v2.0.0.html)
 
 
-##Parser
+## Parser
 
 The implementation includes a full-fledged component ot parse String representation of a version. Please have a look at the tests and the soruce of `SemanticVersioningParser` for now 😉
 
-##Tests
+## Tests
 
 The libary includes a suite of tests showing how to use the different initialiser and the Parser
 
