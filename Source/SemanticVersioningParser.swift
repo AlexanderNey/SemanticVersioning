@@ -132,12 +132,22 @@ open class SemanticVersionParser
     public enum Component: CustomStringConvertible {
         case major(Int?), minor(Int?), patch(Int?), prereleaseIdentifier([String]?), buildMetadataIdentifier([String]?)
          public var description : String {
+
+            func componentDecription<T: CustomStringConvertible>(_ component: T?) -> String {
+                return (component != nil) ? component!.description : "?"
+            }
+
             switch self {
-            case .major(let major): return "Major(\(major))"
-            case .minor(let minor): return "Minor(\(minor))"
-            case .patch(let patch): return "Patch(\(patch))"
-            case .prereleaseIdentifier(let identifer):  return "PrereleaseIdentifier(\(identifer))"
-            case .buildMetadataIdentifier(let identifer):  return "BuildMetadataIdentifier(\(identifer))"
+            case .major(let major):
+                return "Major(\(componentDecription(major)))"
+            case .minor(let minor):
+                return "Minor(\(componentDecription(minor)))"
+            case .patch(let patch):
+                return "Patch(\(componentDecription(patch)))"
+            case .prereleaseIdentifier(let identifer):
+                return "PrereleaseIdentifier(\(componentDecription(identifer)))"
+            case .buildMetadataIdentifier(let identifer):
+                return "BuildMetadataIdentifier(\(componentDecription(identifer)))"
             }
         }
     }
