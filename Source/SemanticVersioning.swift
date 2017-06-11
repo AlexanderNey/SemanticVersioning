@@ -123,10 +123,8 @@ public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Boo
 
     // Compare numerical digits
     for (l, r) in zip([left.major, left.minor, left.patch], [right.major, right.minor, right.patch]) {
-        if l < r {
-            return true
-        } else if l > r {
-            return false
+        if l != r {
+            return l < r
         }
     }
 
