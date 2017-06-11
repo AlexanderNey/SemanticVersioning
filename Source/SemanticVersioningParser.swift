@@ -288,7 +288,7 @@ open class SemanticVersionParser
     {
         var string:  NSString?
         self.scanner.scanCharacters(from: NumericCharacterSet, into:&string)
-        return string as? String
+        return string as String?
     }
     
     fileprivate func scanIdentifiers() -> [String]
@@ -298,7 +298,7 @@ open class SemanticVersionParser
         {
             var string:  NSString?
             self.scanner.scanCharacters(from: IndentifierCharacterSet, into:&string)
-            if let identifier = string as? String
+            if let identifier = string as String?
             {
                 identifiers.append(identifier)
                 if self.scanner.scanString(DefaultDelimeter, into: nil)
