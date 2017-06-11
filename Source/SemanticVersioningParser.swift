@@ -309,7 +309,7 @@ open class SemanticVersionParser
     {
         var string:  NSString?
         self.scanner.scanString(delimeter, into: &string)
-        return string as! String == delimeter
+        return (string as String?) == delimeter
     }
 
 }
