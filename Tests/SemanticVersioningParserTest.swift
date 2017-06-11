@@ -41,13 +41,13 @@ class VersioningParserTests: XCTestCase
                 switch component {
                 case .major(let major):
                     XCTAssertNotNil(major)
-                    XCTAssertEqual(major ?? -1, 1, "wrong major version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong major version \(major.debugDescription)")
                 case .minor(let minor):
                     XCTAssertNotNil(minor)
-                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
                     XCTAssertNotNil(patch)
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -69,11 +69,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 12, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 12, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 75, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 75, "wrong patch version \(patch.debugDescription)")
                 case .prereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
                     XCTAssertEqual((identifier!).count, 1, "wrong number of prerelease identifier")
@@ -99,11 +99,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 0, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 0, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 1234, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 1234, "wrong patch version \(patch.debugDescription)")
                 case .prereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
                     XCTAssertEqual((identifier!).count, 2, "wrong number of prerelease identifier")
@@ -130,11 +130,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 0, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 0, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 6, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 6, "wrong patch version \(patch.debugDescription)")
                 case .buildMetadataIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
                     XCTAssertEqual((identifier!).count, 1, "wrong number of build metadata identifier")
@@ -160,11 +160,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 1234, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 1234, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 6678, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 6678, "wrong patch version \(patch.debugDescription)")
                 case .buildMetadataIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
                     XCTAssertEqual((identifier!).count, 2, "wrong number of build metadata identifier")
@@ -191,11 +191,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 12, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 12, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 75, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 75, "wrong patch version \(patch.debugDescription)")
                 case .prereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
                     XCTAssertEqual((identifier!).count, 1, "wrong number of prerelease identifier")
@@ -223,11 +223,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 0, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 0, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 7, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 7, "wrong patch version \(patch.debugDescription)")
                 case .prereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
                     XCTAssertEqual((identifier!).count, 2, "wrong number of prerelease identifier")
@@ -294,9 +294,9 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 8, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 8, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor.debugDescription)")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -320,9 +320,9 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 999, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 999, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 60, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 60, "wrong minor version \(minor.debugDescription)")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -346,11 +346,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 6, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 6, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 12, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 12, "wrong patch version \(patch.debugDescription)")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -374,11 +374,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -402,11 +402,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
                 case .prereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
                     XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
@@ -434,11 +434,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
                 case .prereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
                     XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
@@ -466,11 +466,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
                 case .prereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
                     XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
@@ -500,11 +500,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
                 case .prereleaseIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
                     XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
@@ -535,11 +535,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
                 case .buildMetadataIdentifier(let identifier):
                     XCTAssertNotNil(identifier, "identifier must not be nil")
                     XCTAssertEqual((identifier!).count, 1, "wrong count of buildmetadata identifier")
@@ -591,7 +591,7 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -615,7 +615,7 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -639,9 +639,9 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor.debugDescription)")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -665,9 +665,9 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor.debugDescription)")
                 default:
                     XCTFail("unexpected component parsed")
                 }
@@ -691,11 +691,11 @@ class VersioningParserTests: XCTestCase
             {
                 switch component {
                 case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong major version \(major)")
+                    XCTAssertEqual(major ?? -1, 1, "wrong major version \(major.debugDescription)")
                 case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor)")
+                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor.debugDescription)")
                 case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch)")
+                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
                 default:
                     XCTFail("unexpected component parsed")
                 }
