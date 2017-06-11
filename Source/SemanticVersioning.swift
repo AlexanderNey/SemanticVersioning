@@ -58,12 +58,12 @@ public struct Version: SemanticVersion, CustomStringConvertible
         
         if !self.preReleaseIdentifier.isEmpty
         {
-            versionString += "-" + self.preReleaseIdentifier.joinWithSeparator(".")
+            versionString += "-" + self.preReleaseIdentifier.joined(separator: ".")
         }
         
         if !self.buildMetadataIdentifier.isEmpty
         {
-            versionString += "+" + self.buildMetadataIdentifier.joinWithSeparator(".")
+            versionString += "+" + self.buildMetadataIdentifier.joined(separator: ".")
         }
         
         return versionString
@@ -89,7 +89,7 @@ public struct Version: SemanticVersion, CustomStringConvertible
         self.buildMetadataIdentifier = version.buildMetadataIdentifier
     }
     
-    private init()
+    fileprivate init()
     {
         self = Version(major: 0)
     }
@@ -97,7 +97,7 @@ public struct Version: SemanticVersion, CustomStringConvertible
 
 // MARK: comparison
 
-infix operator ≈ { associativity left precedence 140 }
+infix operator ≈ : ComparisonPrecedence // { associativity left precedence 140 }
 func ≈ <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
 {
     return  (left.major == right.major) &&
@@ -105,7 +105,7 @@ func ≈ <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
             (left.patch == right.patch)
 }
 
-infix operator !≈ { associativity left precedence 140 }
+infix operator !≈ : ComparisonPrecedence//{ associativity left precedence 140 }
 func !≈ <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
 {
     return  !(left ≈ right)
@@ -145,13 +145,13 @@ public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Boo
                 else if left.isPrerelease && right.isPrerelease
                 {
                     // Compare prerelease identifier
-                    let identifiers = Zip2Sequence(left.preReleaseIdentifier, right.preReleaseIdentifier)
+                    let identifiers = zip(left.preReleaseIdentifier, right.preReleaseIdentifier)
                     for pair in identifiers
                     {
                         let numericLeft = Int(pair.0)
                         let numericRight = Int(pair.1)
                         
-                        if let numericLeft = numericLeft, numericRight = numericRight where numericLeft != numericRight
+                        if let numericLeft = numericLeft, let numericRight = numericRight , numericLeft != numericRight
                         {
                             // identifiers consisting of only digits are compared numerically
                             return numericLeft < numericRight

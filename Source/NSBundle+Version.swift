@@ -9,7 +9,7 @@
 import Foundation
 
 
-extension NSBundle
+extension Bundle
 {
     public var version : Version? {
         

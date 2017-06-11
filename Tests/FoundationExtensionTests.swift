@@ -31,7 +31,7 @@ class FoundationExtensionTests: XCTestCase
     
     func testNSOperatingSystemVersion()
     {
-        let version = NSOperatingSystemVersion(majorVersion: 8, minorVersion: 2, patchVersion: 1)
+        let version = OperatingSystemVersion(majorVersion: 8, minorVersion: 2, patchVersion: 1)
         
         XCTAssertEqual(version.major, 8, "major must be 8")
         XCTAssertEqual(version.minor, 2, "major must be 2")
@@ -43,7 +43,7 @@ class FoundationExtensionTests: XCTestCase
     
     func testNSBundleVersion()
     {
-        let bundle = NSBundle(forClass: self.dynamicType)
+        let bundle = Bundle(for: type(of: self))
         let version = bundle.version!
         
         XCTAssertEqual(version.major, 1, "major must be 1")
@@ -56,7 +56,7 @@ class FoundationExtensionTests: XCTestCase
     
     func testUIDeviceSystemVersion()
     {
-        let version = UIDevice.currentDevice().operatingSystemVersion
+        let version = UIDevice.current.operatingSystemVersion
         
         // really depends on the test environment - limited test here
         XCTAssert(version.major > 0, "major must be something bigger then 0")
