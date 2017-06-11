@@ -120,66 +120,40 @@ public func == <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bo
 
 public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
 {
-    if left.major < right.major
-    {
-        return true
-    }
-    else if left.major == right.major
-    {
-        if left.minor < right.minor
-        {
+
+    // Compare numerical digits
+    for (l, r) in zip([left.major, left.minor, left.patch], [right.major, right.minor, right.patch]) {
+        if l < r {
             return true
+        } else if l > r {
+            return false
         }
-        else if left.minor == right.minor
-        {
-            if left.patch < right.patch
-            {
-                return true
-            }
-            else if left.patch == right.patch
-            {
-                if left.isPrerelease && !right.isPrerelease
-                {
-                    return true
-                }
-                else if left.isPrerelease && right.isPrerelease
-                {
-                    // Compare prerelease identifier
-                    let identifiers = zip(left.preReleaseIdentifier, right.preReleaseIdentifier)
-                    for pair in identifiers
-                    {
-                        let numericLeft = Int(pair.0)
-                        let numericRight = Int(pair.1)
-                        
-                        if let numericLeft = numericLeft, let numericRight = numericRight , numericLeft != numericRight
-                        {
-                            // identifiers consisting of only digits are compared numerically
-                            return numericLeft < numericRight
-                        }
-                        else if numericLeft != nil && numericRight == nil
-                        {
-                            return true // Numeric identifiers always have lower precedence than non-numeric identifiers
-                        }
-                        else if numericLeft == nil && numericRight != nil
-                        {
-                            return false
-                        }
-                        else if pair.0 != pair.1
-                        {
-                            // identifiers with letters or hyphens are compared lexically in ASCII sort order
-                            return pair.0 < pair.1
-                        }
-                    }
-                    
-                    // A larger set of pre-release fields has a higher precedence than a smaller set, if all of the preceding identifiers are equal
-                    return left.preReleaseIdentifier.count < right.preReleaseIdentifier.count
-                }
-            }
-            else { return false }
-        }
-        else { return false }
     }
-    
+
+    if left.isPrerelease && !right.isPrerelease {
+        return true // pre release versions are considered as smaller
+    } else if left.isPrerelease && right.isPrerelease {
+        // Compare prerelease identifier
+        let identifiers = zip(left.preReleaseIdentifier, right.preReleaseIdentifier)
+        for pair in identifiers
+        {
+            // Numeric identifiers always have lower precedence than non-numeric identifiers
+            let numericLeft = Int(pair.0) ?? Int.max
+            let numericRight = Int(pair.1) ?? Int.max
+
+            if numericLeft !=  numericRight {
+                // identifiers consisting of only digits are compared numerically
+                return numericLeft < numericRight
+            } else if pair.0 != pair.1 {
+                // identifiers with letters or hyphens are compared lexically in ASCII sort order
+                return pair.0 < pair.1
+            }
+        }
+        
+        // A larger set of pre-release fields has a higher precedence than a smaller set, if all of the preceding identifiers are equal
+        return left.preReleaseIdentifier.count < right.preReleaseIdentifier.count
+    }
+
     return false
 }
 
