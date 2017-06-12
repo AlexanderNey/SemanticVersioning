@@ -28,11 +28,11 @@ private let DefaultDelimeter = "."
 private let PrereleaseDelimeter = "-"
 private let BuildMetaDataDelimeter = "+"
 
-private let NumericCharacterSet = NSCharacterSet.decimalDigitCharacterSet()
-private let IndentifierCharacterSet: NSCharacterSet = {
-    var characterSet = NSMutableCharacterSet.alphanumericCharacterSet()
-    characterSet.addCharactersInString("-")
-    return characterSet
+private let NumericCharacterSet = CharacterSet.decimalDigits
+private let IndentifierCharacterSet: CharacterSet = {
+    var characterSet = NSMutableCharacterSet.alphanumeric()
+    characterSet.addCharacters(in: "-")
+    return characterSet as CharacterSet
 }()
 
 
@@ -42,7 +42,7 @@ private let IndentifierCharacterSet: NSCharacterSet = {
 */
 public func == (left: SemanticVersionParser.Component, right: SemanticVersionParser.Component) -> Bool
 {
-    func compareIdentifier(a: [String]?, b: [String]?) -> Bool
+    func compareIdentifier(_ a: [String]?, b: [String]?) -> Bool
     {
         switch (a, b)
         {
@@ -57,15 +57,15 @@ public func == (left: SemanticVersionParser.Component, right: SemanticVersionPar
         
     switch(left, right)
     {
-    case (.Major(let majorLeft), .Major(let majorRight)) where majorLeft == majorRight:
+    case (.major(let majorLeft), .major(let majorRight)) where majorLeft == majorRight:
         return true
-    case (.Minor(let minorLeft), .Minor(let minorRight)) where minorLeft == minorRight:
+    case (.minor(let minorLeft), .minor(let minorRight)) where minorLeft == minorRight:
         return true
-    case (.Patch(let patchLeft), .Patch(let patchRight)) where patchLeft == patchRight:
+    case (.patch(let patchLeft), .patch(let patchRight)) where patchLeft == patchRight:
         return true
-    case (.PrereleaseIdentifier(let identiferLeft), .PrereleaseIdentifier(let identiferRight)):
+    case (.prereleaseIdentifier(let identiferLeft), .prereleaseIdentifier(let identiferRight)):
         return compareIdentifier(identiferLeft, b: identiferRight)
-    case (.BuildMetadataIdentifier(let identiferLeft), .BuildMetadataIdentifier(let identiferRight)):
+    case (.buildMetadataIdentifier(let identiferLeft), .buildMetadataIdentifier(let identiferRight)):
         return compareIdentifier(identiferLeft, b: identiferRight)
     default:
         return false
@@ -76,20 +76,26 @@ public func == (left: SemanticVersionParser.Component, right: SemanticVersionPar
 compares two ParseComponent
 returns true if only the enumeration value equals on both sides - ignores the associated value
 */
-infix operator ≈ { associativity left precedence 140 }
+
+precedencegroup ComparisonPrecedence {
+  associativity: left
+  higherThan: LogicalConjunctionPrecedence
+}
+infix operator ≈ : ComparisonPrecedence
+//infix operator ≈ { associativity left precedence 140 }
 public func ≈ (left: SemanticVersionParser.Component, right: SemanticVersionParser.Component) -> Bool
 {
     switch(left, right)
     {
-    case (.Major(_), .Major(_)):
+    case (.major(_), .major(_)):
         return true
-    case (.Minor(_), .Minor(_)):
+    case (.minor(_), .minor(_)):
         return true
-    case (.Patch(_), .Patch(_)):
+    case (.patch(_), .patch(_)):
         return true
-    case (.PrereleaseIdentifier(_), .PrereleaseIdentifier(_)):
+    case (.prereleaseIdentifier(_), .prereleaseIdentifier(_)):
         return true
-    case (.BuildMetadataIdentifier(_), .BuildMetadataIdentifier(_)):
+    case (.buildMetadataIdentifier(_), .buildMetadataIdentifier(_)):
         return true
     default:
         return false
@@ -99,9 +105,9 @@ public func ≈ (left: SemanticVersionParser.Component, right: SemanticVersionPa
 /**
 * SemanticVersionParser parses a semantic version string and returns the parsed compoentns
 */
-public class SemanticVersionParser
+open class SemanticVersionParser
 {
-    private let scanner: NSScanner
+    fileprivate let scanner: Scanner
     
     /**
     Represents the result of the string parsing
@@ -110,8 +116,8 @@ public class SemanticVersionParser
     - Failure: Failure case with the location in the original string, the failed component and the already successful parsed components
     */
     public enum Result {
-        case Success([Component])
-        case Failure(location: Int, failedComponent: Component, parsedComponents: [Component])
+        case success([Component])
+        case failure(location: Int, failedComponent: Component, parsedComponents: [Component])
     }
     
     /**
@@ -124,14 +130,24 @@ public class SemanticVersionParser
     - BuildMetadataIdentifier: Array of build meta data identifer
     */
     public enum Component: CustomStringConvertible {
-        case Major(Int?), Minor(Int?), Patch(Int?), PrereleaseIdentifier([String]?), BuildMetadataIdentifier([String]?)
+        case major(Int?), minor(Int?), patch(Int?), prereleaseIdentifier([String]?), buildMetadataIdentifier([String]?)
          public var description : String {
+
+            func componentDecription<T: CustomStringConvertible>(_ component: T?) -> String {
+                return (component != nil) ? component!.description : "?"
+            }
+
             switch self {
-            case .Major(let major): return "Major(\(major))"
-            case .Minor(let minor): return "Minor(\(minor))"
-            case .Patch(let patch): return "Patch(\(patch))"
-            case .PrereleaseIdentifier(let identifer):  return "PrereleaseIdentifier(\(identifer))"
-            case .BuildMetadataIdentifier(let identifer):  return "BuildMetadataIdentifier(\(identifer))"
+            case .major(let major):
+                return "Major(\(componentDecription(major)))"
+            case .minor(let minor):
+                return "Minor(\(componentDecription(minor)))"
+            case .patch(let patch):
+                return "Patch(\(componentDecription(patch)))"
+            case .prereleaseIdentifier(let identifer):
+                return "PrereleaseIdentifier(\(componentDecription(identifer)))"
+            case .buildMetadataIdentifier(let identifer):
+                return "BuildMetadataIdentifier(\(componentDecription(identifer)))"
             }
         }
     }
@@ -145,7 +161,7 @@ public class SemanticVersionParser
     */
     public init(_ versionString: String)
     {
-        self.scanner = NSScanner(string: versionString)
+        self.scanner = Scanner(string: versionString)
     }
     
     /**
@@ -153,7 +169,7 @@ public class SemanticVersionParser
     
     - returns: Result object represeting the success of the parsing operation
     */
-    public func parse() -> Result
+    open func parse() -> Result
     {
         self.scanner.scanLocation = 0
         var parsedComponents = [Component]()
@@ -168,12 +184,12 @@ public class SemanticVersionParser
         
         if majorValue != nil
         {
-            parsedComponents.append(.Major(majorValue))
+            parsedComponents.append(.major(majorValue))
         }
             
         if !majorDelimeterScanned
         {
-            return Result.Failure(location: scanner.scanLocation, failedComponent: .Major(nil), parsedComponents: parsedComponents)
+            return Result.failure(location: scanner.scanLocation, failedComponent: .major(nil), parsedComponents: parsedComponents)
         }
         
         let minorString = scanNumeric()
@@ -186,12 +202,12 @@ public class SemanticVersionParser
         
         if minorValue != nil
         {
-            parsedComponents.append(.Minor(minorValue))
+            parsedComponents.append(.minor(minorValue))
         }
         
         if !minorDelimeterScanned
         {
-            return Result.Failure(location: scanner.scanLocation, failedComponent: .Minor(nil), parsedComponents: parsedComponents)
+            return Result.failure(location: scanner.scanLocation, failedComponent: .minor(nil), parsedComponents: parsedComponents)
         }
         
         let patchString = scanNumeric()
@@ -203,11 +219,11 @@ public class SemanticVersionParser
         
         if patchValue != nil
         {
-            parsedComponents.append(.Patch(patchValue))
+            parsedComponents.append(.patch(patchValue))
         }
         else
         {
-            return Result.Failure(location: scanner.scanLocation, failedComponent: .Patch(nil), parsedComponents: parsedComponents)
+            return Result.failure(location: scanner.scanLocation, failedComponent: .patch(nil), parsedComponents: parsedComponents)
         }
 
         if scanDelimeter(PrereleaseDelimeter)
@@ -216,12 +232,12 @@ public class SemanticVersionParser
             let clearedPrereleaseIdentifier = prereleaseIdentifier.filter {$0.characters.count > 0}
             if clearedPrereleaseIdentifier.count > 0
             {
-                parsedComponents.append(.PrereleaseIdentifier(clearedPrereleaseIdentifier))
+                parsedComponents.append(.prereleaseIdentifier(clearedPrereleaseIdentifier))
             }
                 
             if clearedPrereleaseIdentifier.count == 0 || clearedPrereleaseIdentifier.count != prereleaseIdentifier.count
             {
-                return Result.Failure(location: scanner.scanLocation, failedComponent: .PrereleaseIdentifier(nil), parsedComponents: parsedComponents)
+                return Result.failure(location: scanner.scanLocation, failedComponent: .prereleaseIdentifier(nil), parsedComponents: parsedComponents)
             }
         }
         
@@ -231,79 +247,79 @@ public class SemanticVersionParser
             let clearedBuildMetadataIdentifier = BuildMetadataIdentifier.filter {$0.characters.count > 0}
             if clearedBuildMetadataIdentifier.count > 0
             {
-                parsedComponents.append(.BuildMetadataIdentifier(clearedBuildMetadataIdentifier))
+                parsedComponents.append(.buildMetadataIdentifier(clearedBuildMetadataIdentifier))
             }
             
             if clearedBuildMetadataIdentifier.count == 0 || clearedBuildMetadataIdentifier.count != BuildMetadataIdentifier.count
             {
-                return Result.Failure(location: scanner.scanLocation, failedComponent: .BuildMetadataIdentifier(nil), parsedComponents: parsedComponents)
+                return Result.failure(location: scanner.scanLocation, failedComponent: .buildMetadataIdentifier(nil), parsedComponents: parsedComponents)
             }
 
         }
         
-        if scanner.atEnd
+        if scanner.isAtEnd
         {
-            return Result.Success(parsedComponents)
+            return Result.success(parsedComponents)
         }
         else
         {
-            var next = Component.Major(nil)
+            var next = Component.major(nil)
             switch parsedComponents.last
             {
-            case .Some(let component) where component ≈ .Major(nil):
-                next = .Minor(nil)
-            case .Some(let component) where component ≈ .Minor(nil):
-                next = .Patch(nil)
-            case .Some(let component) where component ≈ .Patch(nil):
-                next = .Patch(nil) //.PrereleaseIdentifier(nil)
-            case .Some(let component) where component ≈ .PrereleaseIdentifier(nil):
-                next = .BuildMetadataIdentifier(nil)
-            case .Some(let component) where component ≈ .BuildMetadataIdentifier(nil):
-                next = .BuildMetadataIdentifier(nil)
+            case .some(let component) where component ≈ .major(nil):
+                next = .minor(nil)
+            case .some(let component) where component ≈ .minor(nil):
+                next = .patch(nil)
+            case .some(let component) where component ≈ .patch(nil):
+                next = .patch(nil) //.PrereleaseIdentifier(nil)
+            case .some(let component) where component ≈ .prereleaseIdentifier(nil):
+                next = .buildMetadataIdentifier(nil)
+            case .some(let component) where component ≈ .buildMetadataIdentifier(nil):
+                next = .buildMetadataIdentifier(nil)
             default:
-                next = .Major(nil)
+                next = .major(nil)
             }
             print(next)
-            return Result.Failure(location: scanner.scanLocation, failedComponent: next, parsedComponents: parsedComponents)
+            return Result.failure(location: scanner.scanLocation, failedComponent: next, parsedComponents: parsedComponents)
         }
     }
 
-    private func scanNumeric() -> String?
+    fileprivate func scanNumeric() -> String?
     {
         var string:  NSString?
-        self.scanner.scanCharactersFromSet(NumericCharacterSet, intoString:&string)
-        return string as? String
+        self.scanner.scanCharacters(from: NumericCharacterSet, into:&string)
+        return string as String?
     }
     
-    private func scanIdentifiers() -> [String]
+    fileprivate func scanIdentifiers() -> [String]
     {
         var identifiers = [String]()
         repeat
         {
             var string:  NSString?
-            self.scanner.scanCharactersFromSet(IndentifierCharacterSet, intoString:&string)
-            if let identifier = string as? String
+            self.scanner.scanCharacters(from: IndentifierCharacterSet, into:&string)
+            if let identifier = string as String?
             {
                 identifiers.append(identifier)
-                if self.scanner.scanString(DefaultDelimeter, intoString: nil)
+                if self.scanner.scanString(DefaultDelimeter, into: nil)
                 {
-                    if self.scanner.atEnd { identifiers.append("") }
+                    if self.scanner.isAtEnd { identifiers.append("") }
                     continue
                 }
                 else { break }
             }
             else { identifiers.append(""); break }
-        } while (!self.scanner.atEnd)
+        } while (!self.scanner.isAtEnd)
         
 
         return identifiers
     }
     
-    private func scanDelimeter(delimeter: String) -> Bool
+    fileprivate func scanDelimeter(_ delimeter: String) -> Bool
     {
         var string:  NSString?
-        self.scanner.scanString(delimeter, intoString: &string)
-        return string == delimeter
+        self.scanner.scanString(delimeter, into: &string)
+        return (string as String?) == delimeter
     }
 
 }
@@ -313,7 +329,7 @@ public class SemanticVersionParser
 *  so Versions can be initalized by assigning a String like:
 *  `let version : SemanticVersion = "1.2.0"`
 */
-extension Version: StringLiteralConvertible
+extension Version: ExpressibleByStringLiteral
 {
     public init(_ versionString: String)
     {
@@ -345,9 +361,9 @@ extension Version: StringLiteralConvertible
         let result = parser.parse()
         
         switch result {
-        case .Success(let components):
+        case .success(let components):
             self.init(parsedComponents: components)
-        case .Failure(_, _, let parsedComponents):
+        case .failure(_, _, let parsedComponents):
             if strict
             {
                 return nil
@@ -366,18 +382,18 @@ extension Version: StringLiteralConvertible
         for component in parsedComponents
         {
             switch component {
-            case .Major(let major):
+            case .major(let major):
                 self.major = major ?? 0
-            case .Minor(let minor):
+            case .minor(let minor):
                 self.minor = minor ?? 0
-            case .Patch(let patch):
+            case .patch(let patch):
                 self.patch = patch ?? 0
-            case .PrereleaseIdentifier(let identifer):
+            case .prereleaseIdentifier(let identifer):
                 if let prereleaseIdentifier = identifer
                 {
                     self.preReleaseIdentifier = prereleaseIdentifier
                 }
-            case .BuildMetadataIdentifier(let identifer):
+            case .buildMetadataIdentifier(let identifer):
                 if let buildMetadataIdentifier = identifer
                 {
                     self.buildMetadataIdentifier = buildMetadataIdentifier

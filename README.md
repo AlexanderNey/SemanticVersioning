@@ -1,32 +1,34 @@
-#Semantic Versioning
+# Semantic Versioning
 [![Twitter: @ajax64](https://img.shields.io/badge/Author-Alexander%20Ney-00B893.svg)](https://twitter.com/ajax64)
 ![Platform](https://img.shields.io/cocoapods/v/SemanticVersioning.svg)
 ![Platform](https://img.shields.io/cocoapods/p/SemanticVersioning.svg)
 ![License](https://img.shields.io/cocoapods/l/SemanticVersioning.svg)
 ![Travis](https://img.shields.io/travis/AlexanderNey/SemanticVersioning.svg)
+[![Swift Version](https://img.shields.io/badge/Swift-3.0-F16D39.svg?style=flat)](https://developer.apple.com/swift)
+[![codecov](https://codecov.io/gh/AlexanderNey/Futuristics/branch/alpha/graph/badge.svg)](https://codecov.io/gh/AlexanderNey/Futuristics)
 
 Semantic Versioning implementation in Swift!
-Use the struct `Version` to represent a version according to the [Semantic Versioning Specification 2.0.0](http://semver.org/spec/v2.0.0.html). 
+Use the struct `Version` to represent a version according to the [Semantic Versioning Specification 2.0.0](http://semver.org/spec/v2.0.0.html).
 
 
-✔️ Fully Unit tested
+✅ Fully Unit tested
 
-✔️ 100% Swift
- 
+✅ 100% Swift
 
-##Getting Started
+
+## Getting Started
 
 ### Requirements
 
 - iOS 8.0+ / Mac OS X 10.9+
-- Xcode 7.0+
-- Swift 2.0
+- Xcode 8.0+
+- Swift 3
 
-###Installation
+### Installation
 The easiest way to use SemanticVersion in your project is using the CocaPods package manager.
 
 
-###CocoaPods
+### CocoaPods
 See installation instructions for [CocoaPods](http://cocoapods.org) if not already installed
 
 To integrate the library into your Xcode project specify the pod dependency to your `Podfile`:
@@ -44,18 +46,18 @@ run pod install
 pod install
 ```
 
-##Usage
+## Usage
 
 Create version 2.0.0
 
-```Swift 
+```Swift
 let version = Version(major: 2)
 ```
 
 Create version 1.2.3
 
-```Swift 
-let version = Version(major: 1, minor: 2, patch: 3) 
+```Swift
+let version = Version(major: 1, minor: 2, patch: 3)
 ```
 
 Create version 1.0.0-alpha.2
@@ -73,13 +75,13 @@ let version: Version = "1.3.10-rc"
 Create a list of versions from a Array of Strings
 
 ```Swift
-let versions: [Version] = ["1.0.0-alpha", "1.0.0-alpha.1"] 
+let versions: [Version] = ["1.0.0-alpha", "1.0.0-alpha.1"]
 ```
 
 Check if is prerelease version or not
 
 ```Swift
-if version.isPrerelease { ... } 
+if version.isPrerelease { ... }
 ```
 
 Access the prerelease identifier via the preReleaseIdentifier Array
@@ -97,7 +99,7 @@ Access the build metadata identifier via the buildMetadataIdentifier Array
 for identifier in version.buildMetadataIdentifier
 {
     // ...
-} 
+}
 ```
 
 Conforms to Printable so you can simply get a String representation by accessing the description property
@@ -118,15 +120,13 @@ The default operators for comparsion are implemented
 This will comapre major, minor, patch and the prerelease identifiers according to the [Semantic Versioning Sepcification 2.0.0](http://semver.org/spec/v2.0.0.html)
 
 
-##Parser
+## Parser
 
 The implementation includes a full-fledged component ot parse String representation of a version. Please have a look at the tests and the soruce of `SemanticVersioningParser` for now 😉
 
-##Tests
+## Tests
 
 The libary includes a suite of tests showing how to use the different initialiser and the Parser
-
-Travis CI is currently not running as Xcode 6.3 is still in beta. 😕
 
 ## Extensions
 
@@ -195,4 +195,4 @@ if systemVersion.floatValue() < 8.1
 
 ## Custom extensions
 
-Create your own extensions or Version representations by creating struct / object that conforms to `SemanticVersioning`. Have a look at the extensions or the `Version` implementation for mor information.
+Create your own extensions or Version representations by creating struct / object that conforms to `SemanticVersioning`. Have a look at the extensions or the `Version` implementation for more information.
