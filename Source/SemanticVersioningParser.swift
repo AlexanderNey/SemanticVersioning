@@ -23,12 +23,12 @@
 
 import Foundation
 
-private let DefaultDelimeter = "."
-private let PrereleaseDelimeter = "-"
-private let BuildMetaDataDelimeter = "+"
+private let defaultDelimeter = "."
+private let prereleaseDelimeter = "-"
+private let buildMetaDataDelimeter = "+"
 
-private let NumericCharacterSet = CharacterSet.decimalDigits
-private let IndentifierCharacterSet: CharacterSet = {
+private let numericCharacterSet = CharacterSet.decimalDigits
+private let indentifierCharacterSet: CharacterSet = {
     var characterSet = NSMutableCharacterSet.alphanumeric()
     characterSet.addCharacters(in: "-")
     return characterSet as CharacterSet
@@ -39,11 +39,11 @@ private let IndentifierCharacterSet: CharacterSet = {
  returns true if the enumeration value incl. the associated value equals on both sides
 */
 public func == (left: SemanticVersionParser.Component, right: SemanticVersionParser.Component) -> Bool {
-    func compareIdentifier(_ a: [String]?, b: [String]?) -> Bool {
-        switch (a, b) {
-        case (let a, let b) where a != nil && b != nil:
-            return a! == b!
-        case (let a, let b) where a == nil && b == nil:
+    func compareIdentifier(_ lhs: [String]?, _ rhs: [String]?) -> Bool {
+        switch (lhs, rhs) {
+        case (let lhs, let rhs) where lhs != nil && rhs != nil:
+            return lhs! == rhs!
+        case (let lhs, let rhs) where lhs == nil && rhs == nil:
             return true
         default:
             return false
@@ -58,9 +58,9 @@ public func == (left: SemanticVersionParser.Component, right: SemanticVersionPar
     case (.patch(let patchLeft), .patch(let patchRight)) where patchLeft == patchRight:
         return true
     case (.prereleaseIdentifier(let identiferLeft), .prereleaseIdentifier(let identiferRight)):
-        return compareIdentifier(identiferLeft, b: identiferRight)
+        return compareIdentifier(identiferLeft, identiferRight)
     case (.buildMetadataIdentifier(let identiferLeft), .buildMetadataIdentifier(let identiferRight)):
-        return compareIdentifier(identiferLeft, b: identiferRight)
+        return compareIdentifier(identiferLeft, identiferRight)
     default:
         return false
     }
@@ -76,7 +76,7 @@ precedencegroup ComparisonPrecedence {
   higherThan: LogicalConjunctionPrecedence
 }
 infix operator ≈ : ComparisonPrecedence
-//infix operator ≈ { associativity left precedence 140 }
+// swiftlint:disable:next identifier_name
 public func ≈ (left: SemanticVersionParser.Component, right: SemanticVersionParser.Component) -> Bool {
     switch(left, right) {
     case (.major(_), .major(_)):
@@ -165,7 +165,7 @@ open class SemanticVersionParser {
 
         let majorString = scanNumeric()
         var majorValue: Int?
-        let majorDelimeterScanned = scanDelimeter(DefaultDelimeter)
+        let majorDelimeterScanned = scanDelimeter(defaultDelimeter)
 
         if let unwrapedMajorString = majorString {
             majorValue = Int(unwrapedMajorString)
@@ -181,7 +181,7 @@ open class SemanticVersionParser {
 
         let minorString = scanNumeric()
         var minorValue: Int?
-        let minorDelimeterScanned = scanDelimeter(DefaultDelimeter)
+        let minorDelimeterScanned = scanDelimeter(defaultDelimeter)
 
         if let unwrapedMinorString = minorString {
             minorValue = Int(unwrapedMinorString)
@@ -208,7 +208,7 @@ open class SemanticVersionParser {
             return Result.failure(location: scanner.scanLocation, failedComponent: .patch(nil), parsedComponents: parsedComponents)
         }
 
-        if scanDelimeter(PrereleaseDelimeter) {
+        if scanDelimeter(prereleaseDelimeter) {
             let prereleaseIdentifier = scanIdentifiers()
             let clearedPrereleaseIdentifier = prereleaseIdentifier.filter {$0.characters.count > 0}
             if clearedPrereleaseIdentifier.count > 0 {
@@ -220,7 +220,7 @@ open class SemanticVersionParser {
             }
         }
 
-        if scanDelimeter(BuildMetaDataDelimeter) {
+        if scanDelimeter(buildMetaDataDelimeter) {
             let BuildMetadataIdentifier = scanIdentifiers()
             let clearedBuildMetadataIdentifier = BuildMetadataIdentifier.filter {$0.characters.count > 0}
             if clearedBuildMetadataIdentifier.count > 0 {
@@ -258,7 +258,7 @@ open class SemanticVersionParser {
 
     fileprivate func scanNumeric() -> String? {
         var string: NSString?
-        self.scanner.scanCharacters(from: NumericCharacterSet, into:&string)
+        self.scanner.scanCharacters(from: numericCharacterSet, into:&string)
         return string as String?
     }
 
@@ -266,10 +266,10 @@ open class SemanticVersionParser {
         var identifiers = [String]()
         repeat {
             var string: NSString?
-            self.scanner.scanCharacters(from: IndentifierCharacterSet, into:&string)
+            self.scanner.scanCharacters(from: indentifierCharacterSet, into:&string)
             if let identifier = string as String? {
                 identifiers.append(identifier)
-                if self.scanner.scanString(DefaultDelimeter, into: nil) {
+                if self.scanner.scanString(defaultDelimeter, into: nil) {
                     if self.scanner.isAtEnd { identifiers.append("") }
                     continue
                 } else { break }
@@ -306,10 +306,13 @@ extension Version: ExpressibleByStringLiteral {
     Will try to initialize a SemanticVersion from a specified String
     
     - parameter versionString: String representing a version
-    - parameter strict:        if true the initializer will fail if the version string is malformed / incomplete
-                          if false a SemanticVersion will be returned even if the string was malformed / incompleted this will contain the
-                          components that could be parsed and set the default for all others (e.g. 0 for version numbers and nil for identifiers)
-                          this is useful if you want to init with string like "1.1" which lacks the patch number or even "2" wich lacks minor and patch numbers - in both cases you'll get a valid SemanticVersion 1.1.0 / 2.0.0
+    - parameter strict:   if true the initializer will fail if the version string is malformed / incomplete
+                          if false a SemanticVersion will be returned even if the string was malformed / incompleted
+                          this will contain the components that could be parsed and set the default for all others
+                          (e.g. 0 for version numbers and nil for identifiers)
+                          this is useful if you want to init with string like "1.1" which lacks the patch number or
+                          even "2" wich lacks minor and patch numbers -
+                          in both cases you'll get a valid SemanticVersion 1.1.0 / 2.0.0
     
     - returns: initialized SemanticVersion or nil if version string could not be parsed
     */

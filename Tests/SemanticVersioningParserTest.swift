@@ -25,6 +25,7 @@ import Foundation
 import XCTest
 import SemanticVersioning
 
+// swiftlint:disable:next type_body_length
 class VersioningParserTests: XCTestCase {
 
     func testParserWithBasicVersion() {
@@ -691,5 +692,4 @@ class VersioningParserTests: XCTestCase {
             }
         }
     }
-
 }

@@ -62,7 +62,7 @@ public struct Version: SemanticVersion, CustomStringConvertible {
                 patch: Int = 0,
                 preReleaseIdentifier: [String] = [],
                 buildMetadataIdentifier: [String] = []) {
-        
+
         self.major = major
         self.minor = minor
         self.patch = patch
@@ -75,6 +75,7 @@ public struct Version: SemanticVersion, CustomStringConvertible {
 // MARK: comparison
 
 infix operator ≈ : ComparisonPrecedence // { associativity left precedence 140 }
+// swiftlint:disable:next identifier_name
 func ≈ <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool {
     return  (left.major == right.major) &&
             (left.minor == right.minor) &&
