@@ -23,7 +23,6 @@
 
 import Foundation
 
-
 private let DefaultDelimeter = "."
 private let PrereleaseDelimeter = "-"
 private let BuildMetaDataDelimeter = "+"
@@ -35,17 +34,13 @@ private let IndentifierCharacterSet: CharacterSet = {
     return characterSet as CharacterSet
 }()
 
-
 /**
  compares two ParseComponent
  returns true if the enumeration value incl. the associated value equals on both sides
 */
-public func == (left: SemanticVersionParser.Component, right: SemanticVersionParser.Component) -> Bool
-{
-    func compareIdentifier(_ a: [String]?, b: [String]?) -> Bool
-    {
-        switch (a, b)
-        {
+public func == (left: SemanticVersionParser.Component, right: SemanticVersionParser.Component) -> Bool {
+    func compareIdentifier(_ a: [String]?, b: [String]?) -> Bool {
+        switch (a, b) {
         case (let a, let b) where a != nil && b != nil:
             return a! == b!
         case (let a, let b) where a == nil && b == nil:
@@ -54,9 +49,8 @@ public func == (left: SemanticVersionParser.Component, right: SemanticVersionPar
             return false
         }
     }
-        
-    switch(left, right)
-    {
+
+    switch(left, right) {
     case (.major(let majorLeft), .major(let majorRight)) where majorLeft == majorRight:
         return true
     case (.minor(let minorLeft), .minor(let minorRight)) where minorLeft == minorRight:
@@ -83,10 +77,8 @@ precedencegroup ComparisonPrecedence {
 }
 infix operator ≈ : ComparisonPrecedence
 //infix operator ≈ { associativity left precedence 140 }
-public func ≈ (left: SemanticVersionParser.Component, right: SemanticVersionParser.Component) -> Bool
-{
-    switch(left, right)
-    {
+public func ≈ (left: SemanticVersionParser.Component, right: SemanticVersionParser.Component) -> Bool {
+    switch(left, right) {
     case (.major(_), .major(_)):
         return true
     case (.minor(_), .minor(_)):
@@ -105,10 +97,9 @@ public func ≈ (left: SemanticVersionParser.Component, right: SemanticVersionPa
 /**
 * SemanticVersionParser parses a semantic version string and returns the parsed compoentns
 */
-open class SemanticVersionParser
-{
+open class SemanticVersionParser {
     fileprivate let scanner: Scanner
-    
+
     /**
     Represents the result of the string parsing
     
@@ -119,7 +110,7 @@ open class SemanticVersionParser
         case success([Component])
         case failure(location: Int, failedComponent: Component, parsedComponents: [Component])
     }
-    
+
     /**
     Represents the components of a Semantic Version
     
@@ -131,7 +122,7 @@ open class SemanticVersionParser
     */
     public enum Component: CustomStringConvertible {
         case major(Int?), minor(Int?), patch(Int?), prereleaseIdentifier([String]?), buildMetadataIdentifier([String]?)
-         public var description : String {
+         public var description: String {
 
             func componentDecription<T: CustomStringConvertible>(_ component: T?) -> String {
                 return (component != nil) ? component!.description : "?"
@@ -151,7 +142,7 @@ open class SemanticVersionParser
             }
         }
     }
-    
+
     /**
     Default initializer
     
@@ -159,113 +150,94 @@ open class SemanticVersionParser
     
     - returns: valid SemanticVersionParser
     */
-    public init(_ versionString: String)
-    {
+    public init(_ versionString: String) {
         self.scanner = Scanner(string: versionString)
     }
-    
+
     /**
     starts parsing the version string
     
     - returns: Result object represeting the success of the parsing operation
     */
-    open func parse() -> Result
-    {
+    open func parse() -> Result {
         self.scanner.scanLocation = 0
         var parsedComponents = [Component]()
-       
+
         let majorString = scanNumeric()
         var majorValue: Int?
         let majorDelimeterScanned = scanDelimeter(DefaultDelimeter)
-        
+
         if let unwrapedMajorString = majorString {
             majorValue = Int(unwrapedMajorString)
         }
-        
-        if majorValue != nil
-        {
+
+        if majorValue != nil {
             parsedComponents.append(.major(majorValue))
         }
-            
-        if !majorDelimeterScanned
-        {
+
+        if !majorDelimeterScanned {
             return Result.failure(location: scanner.scanLocation, failedComponent: .major(nil), parsedComponents: parsedComponents)
         }
-        
+
         let minorString = scanNumeric()
         var minorValue: Int?
         let minorDelimeterScanned = scanDelimeter(DefaultDelimeter)
-        
+
         if let unwrapedMinorString = minorString {
             minorValue = Int(unwrapedMinorString)
         }
-        
-        if minorValue != nil
-        {
+
+        if minorValue != nil {
             parsedComponents.append(.minor(minorValue))
         }
-        
-        if !minorDelimeterScanned
-        {
+
+        if !minorDelimeterScanned {
             return Result.failure(location: scanner.scanLocation, failedComponent: .minor(nil), parsedComponents: parsedComponents)
         }
-        
+
         let patchString = scanNumeric()
-        var patchValue:Int?
-        
+        var patchValue: Int?
+
         if let unwrapedPatchString = patchString {
             patchValue = Int(unwrapedPatchString)
         }
-        
-        if patchValue != nil
-        {
+
+        if patchValue != nil {
             parsedComponents.append(.patch(patchValue))
-        }
-        else
-        {
+        } else {
             return Result.failure(location: scanner.scanLocation, failedComponent: .patch(nil), parsedComponents: parsedComponents)
         }
 
-        if scanDelimeter(PrereleaseDelimeter)
-        {
+        if scanDelimeter(PrereleaseDelimeter) {
             let prereleaseIdentifier = scanIdentifiers()
             let clearedPrereleaseIdentifier = prereleaseIdentifier.filter {$0.characters.count > 0}
-            if clearedPrereleaseIdentifier.count > 0
-            {
+            if clearedPrereleaseIdentifier.count > 0 {
                 parsedComponents.append(.prereleaseIdentifier(clearedPrereleaseIdentifier))
             }
-                
-            if clearedPrereleaseIdentifier.count == 0 || clearedPrereleaseIdentifier.count != prereleaseIdentifier.count
-            {
+
+            if clearedPrereleaseIdentifier.count == 0 || clearedPrereleaseIdentifier.count != prereleaseIdentifier.count {
                 return Result.failure(location: scanner.scanLocation, failedComponent: .prereleaseIdentifier(nil), parsedComponents: parsedComponents)
             }
         }
-        
-        if scanDelimeter(BuildMetaDataDelimeter)
-        {
+
+        if scanDelimeter(BuildMetaDataDelimeter) {
             let BuildMetadataIdentifier = scanIdentifiers()
             let clearedBuildMetadataIdentifier = BuildMetadataIdentifier.filter {$0.characters.count > 0}
-            if clearedBuildMetadataIdentifier.count > 0
-            {
+            if clearedBuildMetadataIdentifier.count > 0 {
                 parsedComponents.append(.buildMetadataIdentifier(clearedBuildMetadataIdentifier))
             }
-            
-            if clearedBuildMetadataIdentifier.count == 0 || clearedBuildMetadataIdentifier.count != BuildMetadataIdentifier.count
-            {
+
+            if clearedBuildMetadataIdentifier.count == 0 || clearedBuildMetadataIdentifier.count != BuildMetadataIdentifier.count {
                 return Result.failure(location: scanner.scanLocation, failedComponent: .buildMetadataIdentifier(nil), parsedComponents: parsedComponents)
             }
 
         }
-        
-        if scanner.isAtEnd
-        {
+
+        if scanner.isAtEnd {
             return Result.success(parsedComponents)
-        }
-        else
-        {
+        } else {
             var next = Component.major(nil)
-            switch parsedComponents.last
-            {
+            switch parsedComponents.last {
             case .some(let component) where component ≈ .major(nil):
                 next = .minor(nil)
             case .some(let component) where component ≈ .minor(nil):
@@ -284,40 +256,31 @@ open class SemanticVersionParser
         }
     }
 
-    fileprivate func scanNumeric() -> String?
-    {
-        var string:  NSString?
+    fileprivate func scanNumeric() -> String? {
+        var string: NSString?
         self.scanner.scanCharacters(from: NumericCharacterSet, into:&string)
         return string as String?
     }
-    
-    fileprivate func scanIdentifiers() -> [String]
-    {
+
+    fileprivate func scanIdentifiers() -> [String] {
         var identifiers = [String]()
-        repeat
-        {
-            var string:  NSString?
+        repeat {
+            var string: NSString?
             self.scanner.scanCharacters(from: IndentifierCharacterSet, into:&string)
-            if let identifier = string as String?
-            {
+            if let identifier = string as String? {
                 identifiers.append(identifier)
-                if self.scanner.scanString(DefaultDelimeter, into: nil)
-                {
+                if self.scanner.scanString(DefaultDelimeter, into: nil) {
                     if self.scanner.isAtEnd { identifiers.append("") }
                     continue
-                }
-                else { break }
-            }
-            else { identifiers.append(""); break }
+                } else { break }
+            } else { identifiers.append(""); break }
         } while (!self.scanner.isAtEnd)
-        
 
         return identifiers
     }
-    
-    fileprivate func scanDelimeter(_ delimeter: String) -> Bool
-    {
-        var string:  NSString?
+
+    fileprivate func scanDelimeter(_ delimeter: String) -> Bool {
+        var string: NSString?
         self.scanner.scanString(delimeter, into: &string)
         return (string as String?) == delimeter
     }
@@ -329,21 +292,16 @@ open class SemanticVersionParser
 *  so Versions can be initalized by assigning a String like:
 *  `let version : SemanticVersion = "1.2.0"`
 */
-extension Version: ExpressibleByStringLiteral
-{
-    public init(_ versionString: String)
-    {
+extension Version: ExpressibleByStringLiteral {
+    public init(_ versionString: String) {
         let version = Version(versionString, strict: false)
-        if let version = version
-        {
+        if let version = version {
             self = version
-        }
-        else
-        {
+        } else {
             self = Version(major: 0)
         }
     }
-    
+
     /**
     Will try to initialize a SemanticVersion from a specified String
     
@@ -355,32 +313,26 @@ extension Version: ExpressibleByStringLiteral
     
     - returns: initialized SemanticVersion or nil if version string could not be parsed
     */
-    public init?(_ versionString: String, strict: Bool)
-    {
+    public init?(_ versionString: String, strict: Bool) {
         let parser = SemanticVersionParser(versionString)
         let result = parser.parse()
-        
+
         switch result {
         case .success(let components):
             self.init(parsedComponents: components)
         case .failure(_, _, let parsedComponents):
-            if strict
-            {
+            if strict {
                 return nil
-            }
-            else
-            {
+            } else {
                 self.init(parsedComponents: parsedComponents)
             }
         }
     }
-    
-    init(parsedComponents: [SemanticVersionParser.Component])
-    {
+
+    init(parsedComponents: [SemanticVersionParser.Component]) {
         self.init(major: 0)
-        
-        for component in parsedComponents
-        {
+
+        for component in parsedComponents {
             switch component {
             case .major(let major):
                 self.major = major ?? 0
@@ -389,33 +341,28 @@ extension Version: ExpressibleByStringLiteral
             case .patch(let patch):
                 self.patch = patch ?? 0
             case .prereleaseIdentifier(let identifer):
-                if let prereleaseIdentifier = identifer
-                {
+                if let prereleaseIdentifier = identifer {
                     self.preReleaseIdentifier = prereleaseIdentifier
                 }
             case .buildMetadataIdentifier(let identifer):
-                if let buildMetadataIdentifier = identifer
-                {
+                if let buildMetadataIdentifier = identifer {
                     self.buildMetadataIdentifier = buildMetadataIdentifier
                 }
             }
         }
     }
-    
+
     // MARK: StringLiteralConvertible
-    
-    public init(stringLiteral value: String)
-    {
+
+    public init(stringLiteral value: String) {
         self = Version(value)
     }
-    
-    public init(extendedGraphemeClusterLiteral value: String)
-    {
+
+    public init(extendedGraphemeClusterLiteral value: String) {
         self = Version(value)
     }
-    
-    public init(unicodeScalarLiteral value: String)
-    {
+
+    public init(unicodeScalarLiteral value: String) {
         self = Version(value)
     }
 }

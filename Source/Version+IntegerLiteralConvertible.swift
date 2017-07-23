@@ -9,22 +9,18 @@
 import Foundation
 import Darwin
 
-extension Version
-{
-    public func floatValue() -> Float
-    {
+extension Version {
+    public func floatValue() -> Float {
         let minorLenght = self.minor > 0 ? floor(log10(Float(self.minor)) + 1.0) : 0
         let minorSummand = Float(self.minor) / 10.0 * minorLenght
-        
+
         return Float(self.major) + minorSummand
     }
 }
 
-extension Version : ExpressibleByIntegerLiteral
-{
-    public init(integerLiteral value: IntegerLiteralType)
-    {
+extension Version : ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: IntegerLiteralType) {
         self.init(major: max(0, value))
     }
-    
+
 }

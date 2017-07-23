@@ -26,13 +26,11 @@ import UIKit
 import XCTest
 import SemanticVersioning
 
-class FoundationExtensionTests: XCTestCase
-{
-    
-    func testNSOperatingSystemVersion()
-    {
+class FoundationExtensionTests: XCTestCase {
+
+    func testNSOperatingSystemVersion() {
         let version = OperatingSystemVersion(majorVersion: 8, minorVersion: 2, patchVersion: 1)
-        
+
         XCTAssertEqual(version.major, 8, "major must be 8")
         XCTAssertEqual(version.minor, 2, "major must be 2")
         XCTAssertEqual(version.patch, 1, "major must be 1")
@@ -40,12 +38,11 @@ class FoundationExtensionTests: XCTestCase
         XCTAssert(version.preReleaseIdentifier.isEmpty, "must have no prerelease identifier")
         XCTAssert(version.buildMetadataIdentifier.isEmpty, "must have no metadata identifier")
     }
-    
-    func testNSBundleVersion()
-    {
+
+    func testNSBundleVersion() {
         let bundle = Bundle(for: type(of: self))
         let version = bundle.version!
-        
+
         XCTAssertEqual(version.major, 1, "major must be 1")
         XCTAssertEqual(version.minor, 1, "major must be 1")
         XCTAssertEqual(version.patch, 0, "major must be 0")
@@ -53,11 +50,10 @@ class FoundationExtensionTests: XCTestCase
         XCTAssert(version.preReleaseIdentifier.isEmpty, "must have no prerelease identifier")
         XCTAssert(version.buildMetadataIdentifier.contains("unittests"), "must contain 'unittests' identifier as build metadata")
     }
-    
-    func testUIDeviceSystemVersion()
-    {
+
+    func testUIDeviceSystemVersion() {
         let version = UIDevice.current.operatingSystemVersion
-        
+
         // really depends on the test environment - limited test here
         XCTAssert(version.major > 0, "major must be something bigger then 0")
         XCTAssert(version.isPrerelease == false, "must be no prerelease")

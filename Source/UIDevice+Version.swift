@@ -7,13 +7,11 @@
 //
 
 #if os(iOS)
-    
+
 import Foundation
 import UIKit
 
-    
-public extension UIDevice
-{
+public extension UIDevice {
     public var operatingSystemVersion: Version { return Version(self.systemVersion) }
 }
 

@@ -8,17 +8,12 @@
 
 import Foundation
 
+extension Bundle {
+    public var version: Version? {
 
-extension Bundle
-{
-    public var version : Version? {
-        
-        if let bundleVersion = self.infoDictionary?[kCFBundleVersionKey as String] as? String
-        {
+        if let bundleVersion = self.infoDictionary?[kCFBundleVersionKey as String] as? String {
             return Version(bundleVersion)
-        }
-        else
-        {
+        } else {
             return nil
         }
     }
