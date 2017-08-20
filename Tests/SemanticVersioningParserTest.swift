@@ -28,489 +28,221 @@ import SemanticVersioning
 // swiftlint:disable:next type_body_length
 class VersioningParserTests: XCTestCase {
 
-    func testParserWithBasicVersion() {
+    override func setUp() {
+        continueAfterFailure = false
+    }
+
+    func testParserWithBasicVersion() throws {
         let parser = SemanticVersionParser("1.2.3")
-        let result = parser.parse()
+        let result = assertNoThrow(try parser.parse())
 
-        switch result {
-        case .success(let components):
-            for component in components {
-                switch component {
-                case .major(let major):
-                    XCTAssertNotNil(major)
-                    XCTAssertEqual(major ?? -1, 1, "wrong major version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertNotNil(minor)
-                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertNotNil(patch)
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
-        case .failure(let location, let failedComponent, _):
-            XCTFail("failed to scan at \(location) failed component \(failedComponent)")
-        }
+        XCTAssertEqual(result.major, 1)
+        XCTAssertEqual(result.minor, 2)
+        XCTAssertEqual(result.patch, 3)
+        XCTAssertNil(result.prereleaseIdentifiers)
+        XCTAssertNil(result.buildMetadataIdentifiers)
     }
 
-    func testParserWithBasicPrereleaseVersion() {
+    func testParserWithBasicPrereleaseVersion() throws {
         let parser = SemanticVersionParser("0.12.75-alpha1")
-        let result = parser.parse()
+        let result = assertNoThrow(try parser.parse())
 
-        switch result {
-        case .success(let parsedComponents):
-            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 12, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 75, "wrong patch version \(patch.debugDescription)")
-                case .prereleaseIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 1, "wrong number of prerelease identifier")
-                    XCTAssert((identifier!).contains("alpha1"), "prerelase ifentifier should contain 'alpha1'")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
-        case .failure(_, _, _):
-            XCTFail("parsing should succeed")
-        }
+        XCTAssertEqual(result.major, 0)
+        XCTAssertEqual(result.minor, 12)
+        XCTAssertEqual(result.patch, 75)
+        XCTAssertNotNil(result.prereleaseIdentifiers)
+        XCTAssertEqual(result.prereleaseIdentifiers!, ["alpha1"])
+        XCTAssertNil(result.buildMetadataIdentifiers)
     }
 
-    func testParserWithBasicPrereleaseVersionMultipleIdentifier() {
+    func testParserWithBasicPrereleaseVersionMultipleIdentifier() throws {
         let parser = SemanticVersionParser("0.0.1234-alpha.log-fix")
-        let result = parser.parse()
+        let result = assertNoThrow(try parser.parse())
 
-        switch result {
-        case .success(let parsedComponents):
-            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 0, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 1234, "wrong patch version \(patch.debugDescription)")
-                case .prereleaseIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 2, "wrong number of prerelease identifier")
-                    XCTAssert((identifier!).contains("alpha"), "prerelase ifentifier should contain 'alpha'")
-                    XCTAssert((identifier!).contains("log-fix"), "prerelase ifentifier should contain 'log-fix'")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
-        case .failure(_, _, _):
-            XCTFail("parsing should succeed")
-        }
+        XCTAssertEqual(result.major, 0)
+        XCTAssertEqual(result.minor, 0)
+        XCTAssertEqual(result.patch, 1234)
+        XCTAssertNotNil(result.prereleaseIdentifiers)
+        XCTAssertEqual(result.prereleaseIdentifiers!, ["alpha", "log-fix"])
+        XCTAssertNil(result.buildMetadataIdentifiers)
     }
 
-    func testParserWithBasicVersionAndBuildMetadata() {
+    func testParserWithBasicVersionAndBuildMetadata() throws {
         let parser = SemanticVersionParser("1.0.6+staging")
-        let result = parser.parse()
+        let result = assertNoThrow(try parser.parse())
 
-        switch result {
-        case .success(let parsedComponents):
-            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 0, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 6, "wrong patch version \(patch.debugDescription)")
-                case .buildMetadataIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 1, "wrong number of build metadata identifier")
-                    XCTAssert((identifier!).contains("staging"), "prerelase ifentifier should contain 'staging'")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
-        case .failure(_, _, _):
-            XCTFail("parsing should succeed")
-        }
+        XCTAssertEqual(result.major, 1)
+        XCTAssertEqual(result.minor, 0)
+        XCTAssertEqual(result.patch, 6)
+        XCTAssertNil(result.prereleaseIdentifiers)
+        XCTAssertNotNil(result.buildMetadataIdentifiers)
+        XCTAssertEqual(result.buildMetadataIdentifiers!, ["staging"])
     }
 
-    func testParserWithBasicVersionAndMultipleBuildMetadata() {
+    func testParserWithBasicVersionAndMultipleBuildMetadata() throws {
         let parser = SemanticVersionParser("1.1234.6678+timestamp.1168336800")
-        let result = parser.parse()
+        let result = assertNoThrow(try parser.parse())
 
-        switch result {
-        case .success(let parsedComponents):
-            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 1234, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 6678, "wrong patch version \(patch.debugDescription)")
-                case .buildMetadataIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 2, "wrong number of build metadata identifier")
-                    XCTAssert((identifier!).contains("timestamp"), "prerelase ifentifier should contain 'timestamp'")
-                    XCTAssert((identifier!).contains("1168336800"), "prerelase ifentifier should contain '1168336800'")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
-        case .failure(_, _, _):
-            XCTFail("parsing should succeed")
-        }
+        XCTAssertEqual(result.major, 1)
+        XCTAssertEqual(result.minor, 1234)
+        XCTAssertEqual(result.patch, 6678)
+        XCTAssertNil(result.prereleaseIdentifiers)
+        XCTAssertNotNil(result.buildMetadataIdentifiers)
+        XCTAssertEqual(result.buildMetadataIdentifiers!, ["timestamp", "1168336800"])
     }
 
-    func testParserWithBasicPrereleaseVersionAndMetadata() {
+    func testParserWithBasicPrereleaseVersionAndMetadata() throws {
         let parser = SemanticVersionParser("0.12.75-alpha1+staging")
-        let result = parser.parse()
+        let result = assertNoThrow(try parser.parse())
 
-        switch result {
-        case .success(let parsedComponents):
-            XCTAssert(parsedComponents.count == 5, "should have parsed 5 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 12, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 75, "wrong patch version \(patch.debugDescription)")
-                case .prereleaseIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 1, "wrong number of prerelease identifier")
-                    XCTAssert((identifier!).contains("alpha1"), "prerelase ifentifier should contain 'alpha1'")
-                case .buildMetadataIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 1, "wrong number of build metadata identifier")
-                    XCTAssert((identifier!).contains("staging"), "metadata ifentifier should contain 'staging'")
-                }
-            }
-        case .failure(_, _, _):
-            XCTFail("parsing should succeed")
-        }
+        XCTAssertEqual(result.major, 0)
+        XCTAssertEqual(result.minor, 12)
+        XCTAssertEqual(result.patch, 75)
+        XCTAssertNotNil(result.prereleaseIdentifiers)
+        XCTAssertEqual(result.prereleaseIdentifiers!, ["alpha1"])
+        XCTAssertNotNil(result.buildMetadataIdentifiers)
+        XCTAssertEqual(result.buildMetadataIdentifiers!, ["staging"])
     }
 
-    func testParserWithBasicPrereleaseVersionMultipleIdentifierAndMultipleMetadataIndentifier() {
+    func testParserWithBasicPrereleaseVersionMultipleIdentifierAndMultipleMetadataIndentifier() throws {
         let parser = SemanticVersionParser("0.0.7-alpha2.hotfix+staging.api7")
-        let result = parser.parse()
+        let result = assertNoThrow(try parser.parse())
 
-        switch result {
-        case .success(let parsedComponents):
-            XCTAssert(parsedComponents.count == 5, "should have parsed 5 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 0, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 7, "wrong patch version \(patch.debugDescription)")
-                case .prereleaseIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 2, "wrong number of prerelease identifier")
-                    XCTAssert((identifier!).contains("alpha2"), "prerelase ifentifier should contain 'alpha2'")
-                    XCTAssert((identifier!).contains("hotfix"), "prerelase ifentifier should contain 'hotfix'")
-                case .buildMetadataIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 2, "wrong number of build metadata identifier")
-                    XCTAssert((identifier!).contains("staging"), "metadata ifentifier should contain 'staging'")
-                    XCTAssert((identifier!).contains("api7"), "metadata ifentifier should contain 'api7'")
-                }
-            }
-        case .failure(_, _, _):
-            XCTFail("parsing should succeed")
-        }
+        XCTAssertEqual(result.major, 0)
+        XCTAssertEqual(result.minor, 0)
+        XCTAssertEqual(result.patch, 7)
+        XCTAssertNotNil(result.prereleaseIdentifiers)
+        XCTAssertEqual(result.prereleaseIdentifiers!, ["alpha2", "hotfix"])
+        XCTAssertNotNil(result.buildMetadataIdentifiers)
+        XCTAssertEqual(result.buildMetadataIdentifiers!, ["staging", "api7"])
     }
 
     // MARK: Negatives
 
-    func testParserFailWithOnlyMajorVersion() {
+    func testParserFailWithOnlyMajorVersion() throws {
         let parser = SemanticVersionParser("4")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 1, "failure loaction should be 1")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.major(nil), "should have failed on parsing Major")
-            XCTAssert(parsedComponents.first! == SemanticVersionParser.Component.major(4), "should have parsed Major version 4")
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 1)
+            XCTAssertEqual(error.failedComponent, .major)
         }
     }
 
     func testParserFailWithOnlyMajorDelimeterVersion() {
         let parser = SemanticVersionParser("10.")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 3, "failure loaction should be 3")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.minor(nil), "should have failed on parsing Minor")
-            XCTAssert(parsedComponents.first! == SemanticVersionParser.Component.major(10), "should have parsed Major version 10")
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 3)
+            XCTAssertEqual(error.failedComponent, .minor)
         }
     }
 
-    func testParserFailWithOnlyMajorDelimeterMinor() {
+    func testParserPartialWithOnlyMajorDelimeterMinor() throws {
         let parser = SemanticVersionParser("8.2")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 3, "failure loaction should be 3")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.minor(nil), "should have failed on parsing Minor")
-            XCTAssert(parsedComponents.count == 2, "should have parsed 2 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 8, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor.debugDescription)")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 3)
+            XCTAssertEqual(error.failedComponent, .minor)
+
+            // TODO: expect partial result in error
         }
     }
 
     func testParserFailWithOnlyMajorDelimeterMinorDelimeter() {
         let parser = SemanticVersionParser("999.60.")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 7, "failure loaction should be 7")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.patch(nil), "should have failed on parsing Patch")
-            XCTAssert(parsedComponents.count == 2, "should have parsed 2 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 999, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 60, "wrong minor version \(minor.debugDescription)")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 7)
+            XCTAssertEqual(error.failedComponent, .patch)
+            // TODO: expect partial result in error
         }
     }
 
     func testParserFailWithOnlyMajorDelimeterMinorDelimeterPatchWrongDelimeter() {
         let parser = SemanticVersionParser("0.6.12.100")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 6, "failure loaction should be 6")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.patch(nil), "should have failed on parsing Patch")
-            XCTAssert(parsedComponents.count == 3, "should have parsed 2 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 0, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 6, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 12, "wrong patch version \(patch.debugDescription)")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 6)
+            XCTAssertEqual(error.failedComponent, .patch)
+
+            // TODO: expect partial result in error
         }
     }
 
     func testParserFailWithOnlyMajorDelimeterMinorDelimeterPatchPrereleaseDelimeter() {
         let parser = SemanticVersionParser("1.4.3-")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 6, "failure loaction should be 6")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.prereleaseIdentifier(nil), "should have failed on parsing PrereleaseIdentifier")
-            XCTAssert(parsedComponents.count == 3, "should have parsed 2 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 6)
+            XCTAssertEqual(error.failedComponent, .prereleaseIdentifiers)
+
+            // TODO: expect partial result in error
         }
     }
 
     func testParserFailWithEmptyPrereleaseIdentifier() {
         let parser = SemanticVersionParser("1.4.3-beta..")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 11, "failure loaction should be 11")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.prereleaseIdentifier(nil), "should have failed on parsing PrereleaseIdentifier")
-            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
-                case .prereleaseIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
-                    XCTAssert((identifier!).contains("beta"), "metadata ifentifier should contain 'beta'")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 11)
+            XCTAssertEqual(error.failedComponent, .prereleaseIdentifiers)
+
+            // TODO: expect partial result in error
         }
     }
 
     func testParserFailWithPrereleaseVersionMalformedBuildMetadata() {
         let parser = SemanticVersionParser("1.4.3-beta+")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 11, "failure loaction should be 11")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.buildMetadataIdentifier(nil), "should have failed on parsing BuildMetadataIdentifier")
-            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
-                case .prereleaseIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
-                    XCTAssert((identifier!).contains("beta"), "metadata ifentifier should contain 'beta'")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 11)
+            XCTAssertEqual(error.failedComponent, .buildMetadataIdentifiers)
+
+            // TODO: expect partial result in error
         }
     }
 
     func testParserFailWithPrereleaseVersionEmptyBuildMetadataIdentifier() {
         let parser = SemanticVersionParser("1.4.3-beta+test1..test2")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 17, "failure loaction should be 11")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.buildMetadataIdentifier(nil), "should have failed on parsing BuildMetadataIdentifier")
-            XCTAssert(parsedComponents.count == 5, "should have parsed 4 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
-                case .prereleaseIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
-                    XCTAssert((identifier!).contains("beta"), "prerelease ifentifier should contain 'beta'")
-                case .buildMetadataIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 1, "wrong count of buildmetadata identifier")
-                    XCTAssert((identifier!).contains("test1"), "metadata ifentifier should contain 'test1'")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 17)
+            XCTAssertEqual(error.failedComponent, .buildMetadataIdentifiers)
+
+            // TODO: expect partial result in error
         }
     }
 
     func testParserFailWithPrereleaseVersionEndsWithDelimeter() {
         let parser = SemanticVersionParser("1.4.3-beta.")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 11, "failure loaction should be 11")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.prereleaseIdentifier(nil), "should have failed on parsing PrereleaseIdentifier")
-            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
-                case .prereleaseIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 1, "wrong count of prerelease identifier")
-                    XCTAssert((identifier!).contains("beta"), "prerelease ifentifier should contain 'beta'")
-                case .buildMetadataIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 1, "wrong count of buildmetadata identifier")
-                    XCTAssert((identifier!).contains("test1"), "metadata ifentifier should contain 'test1'")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 11)
+            XCTAssertEqual(error.failedComponent, .prereleaseIdentifiers)
+
+            // TODO: expect partial result in error
         }
     }
 
     func testParserFailWithBuildMetadataEndsWithDelimeter() {
         let parser = SemanticVersionParser("1.4.3+meta.")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 11, "failure loaction should be 11")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.buildMetadataIdentifier(nil), "should have failed on parsing BuildMetadataIdentifier")
-            XCTAssert(parsedComponents.count == 4, "should have parsed 4 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 4, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
-                case .buildMetadataIdentifier(let identifier):
-                    XCTAssertNotNil(identifier, "identifier must not be nil")
-                    XCTAssertEqual((identifier!).count, 1, "wrong count of buildmetadata identifier")
-                    XCTAssert((identifier!).contains("meta"), "metadata ifentifier should contain 'meta'")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 11)
+            XCTAssertEqual(error.failedComponent, .buildMetadataIdentifiers)
+
+            // TODO: expect partial result in error
         }
     }
 
@@ -518,158 +250,102 @@ class VersioningParserTests: XCTestCase {
 
     func testParserWithMalformedMajorVersionA() {
         let parser = SemanticVersionParser("+1.2.3")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 0, "failure loaction should be 0")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.major(nil), "should have failed on parsing Major")
-            XCTAssert(parsedComponents.count == 0, "should have parsed 0 components")
-            for component in parsedComponents {
-                switch component {
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 0)
+            XCTAssertEqual(error.failedComponent, .major)
+
+            // TODO: expect partial result in error
         }
     }
 
     func testParserWithMalformedMajorVersionB() {
         let parser = SemanticVersionParser("1b.2.3")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 1, "failure loaction should be 1")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.major(nil), "should have failed on parsing Major")
-            XCTAssert(parsedComponents.count == 1, "should have parsed 1 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 1)
+            XCTAssertEqual(error.failedComponent, .major)
+
+            // TODO: expect partial result in error
         }
     }
 
+
     func testParserWithMalformedMinorVersionA() {
         let parser = SemanticVersionParser("1.-2.3")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 2, "failure loaction should be 2")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.minor(nil), "should have failed on parsing Minor")
-            XCTAssert(parsedComponents.count == 1, "should have parsed 1 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 2)
+            XCTAssertEqual(error.failedComponent, .minor)
+
+            // TODO: expect partial result in error
         }
     }
 
     func testParserWithMalformedMinorVersionB() {
         let parser = SemanticVersionParser("1.2b.3")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 3, "failure loaction should be 3")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.minor(nil), "should have failed on parsing Minor")
-            XCTAssert(parsedComponents.count == 2, "should have parsed 1 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor.debugDescription)")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 3)
+            XCTAssertEqual(error.failedComponent, .minor)
+
+            // TODO: expect partial result in error
         }
     }
 
     func testParserWithMalformedPatchVersionA() {
         let parser = SemanticVersionParser("1.2.patch3")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 4, "failure loaction should be 4")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.patch(nil), "should have failed on parsing Minor")
-            XCTAssert(parsedComponents.count == 2, "should have parsed 1 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong minor version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor.debugDescription)")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 4)
+            XCTAssertEqual(error.failedComponent, .patch)
+
+            // TODO: expect partial result in error
         }
     }
 
     func testParserWithMalformedPatchVersionB() {
         let parser = SemanticVersionParser("1.2.3alpha")
-        let result = parser.parse()
 
-        switch result {
-        case .success(_):
-            XCTFail("parser should fail")
-        case .failure(let location, let failedComponent, let parsedComponents):
-            XCTAssertEqual(location, 5, "failure loaction should be 5")
-            XCTAssert(failedComponent == SemanticVersionParser.Component.patch(nil), "should have failed on parsing Patch")
-            XCTAssert(parsedComponents.count == 3, "should have parsed 1 components")
-            for component in parsedComponents {
-                switch component {
-                case .major(let major):
-                    XCTAssertEqual(major ?? -1, 1, "wrong major version \(major.debugDescription)")
-                case .minor(let minor):
-                    XCTAssertEqual(minor ?? -1, 2, "wrong minor version \(minor.debugDescription)")
-                case .patch(let patch):
-                    XCTAssertEqual(patch ?? -1, 3, "wrong patch version \(patch.debugDescription)")
-                default:
-                    XCTFail("unexpected component parsed")
-                }
-            }
+        XCTAssertThrowsError(try parser.parse()) { error in
+            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
+            XCTAssertEqual(error.location, 5)
+            XCTAssertEqual(error.failedComponent, .patch)
+
+            // TODO: expect partial result in error
         }
     }
 
     // MARK: Comparsion
 
     func testComparsionOfVersionFromStrings() {
-        let versions: [Version] = ["1.0.0", "2.0.0", "2.1.0", "2.1.1"]
+        let versions: [Version] = ["1.0.0",
+                                   "2.0.0",
+                                   "2.1.0",
+                                   "2.1.1"]
 
-        var previousVersion: Version?
+        var previousVersionState: Version?
         for version in versions {
-            if let previousVersion = previousVersion {
-                XCTAssert(previousVersion < version, "\(previousVersion) musst be less then \(version)")
-            }
-            previousVersion = version
+            guard let previousVersion = previousVersionState else { continue }
+            XCTAssertLessThan(previousVersion, version, "\(previousVersion) musst be less then \(version)")
+            previousVersionState = version
         }
     }
 
     func testComparsionOfPrereleaseVersionFromStrings() {
-        let versions: [Version] = ["1.0.0-alpha", "1.0.0-alpha.1", "1.0.0-alpha.beta", "1.0.0-beta", "1.0.0-beta.2", "1.0.0-beta.11", "1.0.0-rc.1", "1.0.0"]
+        let versions: [Version] = ["1.0.0-alpha",
+                                   "1.0.0-alpha.1",
+                                   "1.0.0-alpha.beta",
+                                   "1.0.0-beta",
+                                   "1.0.0-beta.2",
+                                   "1.0.0-beta.11",
+                                   "1.0.0-rc.1",
+                                   "1.0.0"]
 
         var previousVersion: Version?
         for version in versions {
@@ -683,13 +359,30 @@ class VersioningParserTests: XCTestCase {
     // MARK: Performance
 
     func testPerformance() {
-        let parseVersions = ["1.2.3", "2312.2123.455676", "0.4.5-alpha.stage+release.nightly.test", "12.2.malformed test", "12.100203.222233322"]
+        let parseVersions = ["1.2.3", "2312.2123.455676",
+                             "0.4.5-alpha.stage+release.nightly.test",
+                             "12.2.malformed test",
+                             "12.100203.222233322"]
         self.measure {
             for _ in 0...1000 {
                 for versionString in parseVersions {
                     let _: Version = Version(stringLiteral: versionString)
                 }
             }
+        }
+    }
+
+    // MARK: Helpers
+
+    public func assertNoThrow<T>(_ expression: @autoclosure () throws -> T,
+                                 file: StaticString = #file,
+                                 line: UInt = #line) -> T {
+
+        do {
+            return try expression()
+        } catch let error {
+            XCTFail("expression expected not to throw but threw `\(error)`", file: file, line: line)
+            fatalError()
         }
     }
 }
