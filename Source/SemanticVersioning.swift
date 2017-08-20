@@ -44,14 +44,16 @@ public struct Version: SemanticVersion, CustomStringConvertible {
     public var isPrerelease: Bool { return !self.preReleaseIdentifier.isEmpty }
 
     public var description: String {
-        var versionString = "\(self.major).\(self.minor).\(self.patch)"
+        var versionString = "\(major).\(minor).\(patch)"
 
         if !self.preReleaseIdentifier.isEmpty {
-            versionString += "-" + self.preReleaseIdentifier.joined(separator: ".")
+            versionString += "-"
+            versionString += preReleaseIdentifier.joined(separator: ".")
         }
 
         if !self.buildMetadataIdentifier.isEmpty {
-            versionString += "+" + self.buildMetadataIdentifier.joined(separator: ".")
+            versionString += "+"
+            versionString += buildMetadataIdentifier.joined(separator: ".")
         }
 
         return versionString
@@ -115,7 +117,9 @@ public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Boo
             }
         }
 
-        // A larger set of pre-release fields has a higher precedence than a smaller set, if all of the preceding identifiers are equal
+        /* A larger set of pre-release fields has a higher precedence than a smaller set,
+           if all of the preceding identifiers are equal
+         */
         return left.preReleaseIdentifier.count < right.preReleaseIdentifier.count
     }
 
