@@ -64,7 +64,10 @@ open class SemanticVersionParser {
     }
 
     public enum ConsistencyError: Error {
-        case nonNumericValue, delimeterExpected, malformedValue, endOfStringExpected
+        case nonNumericValue
+        case delimeterExpected
+        case malformedIdentifiers([String])
+        case endOfStringExpected
     }
 
     public enum ParserComponent: String {
@@ -104,12 +107,22 @@ open class SemanticVersionParser {
 
             if scanOptionalDelimeter(prereleaseDelimeter, scanner) {
                 component = .prereleaseIdentifiers
-                result.prereleaseIdentifiers = try scanIdentifiersComponent(scanner)
+                do {
+                    result.prereleaseIdentifiers = try scanIdentifiersComponent(scanner)
+                } catch ConsistencyError.malformedIdentifiers(let identifiers) {
+                    result.prereleaseIdentifiers = identifiers
+                    throw ConsistencyError.malformedIdentifiers(identifiers)
+                }
             }
 
             if scanOptionalDelimeter(buildMetaDataDelimeter, scanner) {
                 component = .buildMetadataIdentifiers
-                result.buildMetadataIdentifiers = try scanIdentifiersComponent(scanner)
+                do {
+                    result.buildMetadataIdentifiers = try scanIdentifiersComponent(scanner)
+                } catch ConsistencyError.malformedIdentifiers(let identifiers) {
+                    result.buildMetadataIdentifiers = identifiers
+                    throw ConsistencyError.malformedIdentifiers(identifiers)
+                }
             }
 
             guard scanner.isAtEnd else { throw ConsistencyError.endOfStringExpected }
@@ -141,7 +154,7 @@ open class SemanticVersionParser {
             var string: NSString?
             scanner.scanCharacters(from: indentifierCharacterSet, into:&string)
             guard let identifier = string as String?, !identifier.isEmpty else {
-                throw ConsistencyError.malformedValue
+                throw ConsistencyError.malformedIdentifiers(identifiers)
 
             }
             identifiers.append(identifier)
