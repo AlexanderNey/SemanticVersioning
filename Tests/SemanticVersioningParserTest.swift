@@ -147,7 +147,12 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 3)
             XCTAssertEqual(error.failedComponent, .minor)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 8)
+            XCTAssertEqual(result.minor, 2)
+            XCTAssertNil(result.patch)
+            XCTAssertNil(result.prereleaseIdentifiers)
+            XCTAssertNil(result.buildMetadataIdentifiers)
         }
     }
 
@@ -158,7 +163,13 @@ class VersioningParserTests: XCTestCase {
             guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
             XCTAssertEqual(error.location, 7)
             XCTAssertEqual(error.failedComponent, .patch)
-            // TODO: expect partial result in error
+
+            let result = error.result
+            XCTAssertEqual(result.major, 999)
+            XCTAssertEqual(result.minor, 60)
+            XCTAssertNil(result.patch)
+            XCTAssertNil(result.prereleaseIdentifiers)
+            XCTAssertNil(result.buildMetadataIdentifiers)
         }
     }
 
@@ -170,7 +181,12 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 6)
             XCTAssertEqual(error.failedComponent, .patch)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 0)
+            XCTAssertEqual(result.minor, 6)
+            XCTAssertEqual(result.patch, 12)
+            XCTAssertNil(result.prereleaseIdentifiers)
+            XCTAssertNil(result.buildMetadataIdentifiers)
         }
     }
 
@@ -182,7 +198,13 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 6)
             XCTAssertEqual(error.failedComponent, .prereleaseIdentifiers)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 1)
+            XCTAssertEqual(result.minor, 4)
+            XCTAssertEqual(result.patch, 3)
+            XCTAssertNotNil(result.prereleaseIdentifiers)
+            XCTAssertEqual(result.prereleaseIdentifiers!, [])
+            XCTAssertNil(result.buildMetadataIdentifiers)
         }
     }
 
@@ -194,7 +216,13 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 11)
             XCTAssertEqual(error.failedComponent, .prereleaseIdentifiers)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 1)
+            XCTAssertEqual(result.minor, 4)
+            XCTAssertEqual(result.patch, 3)
+            XCTAssertNotNil(result.prereleaseIdentifiers)
+            XCTAssertEqual(result.prereleaseIdentifiers!, ["beta"])
+            XCTAssertNil(result.buildMetadataIdentifiers)
         }
     }
 
@@ -206,7 +234,14 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 11)
             XCTAssertEqual(error.failedComponent, .buildMetadataIdentifiers)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 1)
+            XCTAssertEqual(result.minor, 4)
+            XCTAssertEqual(result.patch, 3)
+            XCTAssertNotNil(result.prereleaseIdentifiers)
+            XCTAssertEqual(result.prereleaseIdentifiers!, ["beta"])
+            XCTAssertNotNil(result.buildMetadataIdentifiers)
+            XCTAssertEqual(result.buildMetadataIdentifiers!, [])
         }
     }
 
@@ -218,19 +253,14 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 17)
             XCTAssertEqual(error.failedComponent, .buildMetadataIdentifiers)
 
-            // TODO: expect partial result in error
-        }
-    }
-
-    func testParserFailWithPrereleaseVersionEndsWithDelimeter() {
-        let parser = SemanticVersionParser("1.4.3-beta.")
-
-        XCTAssertThrowsError(try parser.parse()) { error in
-            guard let error = error as? SemanticVersionParser.ParsingError else { XCTFail(); return }
-            XCTAssertEqual(error.location, 11)
-            XCTAssertEqual(error.failedComponent, .prereleaseIdentifiers)
-
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 1)
+            XCTAssertEqual(result.minor, 4)
+            XCTAssertEqual(result.patch, 3)
+            XCTAssertNotNil(result.prereleaseIdentifiers)
+            XCTAssertEqual(result.prereleaseIdentifiers!, ["beta"])
+            XCTAssertNotNil(result.buildMetadataIdentifiers)
+            XCTAssertEqual(result.buildMetadataIdentifiers!, ["test1"])
         }
     }
 
@@ -242,7 +272,13 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 11)
             XCTAssertEqual(error.failedComponent, .buildMetadataIdentifiers)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 1)
+            XCTAssertEqual(result.minor, 4)
+            XCTAssertEqual(result.patch, 3)
+            XCTAssertNil(result.prereleaseIdentifiers)
+            XCTAssertNotNil(result.buildMetadataIdentifiers)
+            XCTAssertEqual(result.buildMetadataIdentifiers!, ["meta"])
         }
     }
 
@@ -256,7 +292,12 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 0)
             XCTAssertEqual(error.failedComponent, .major)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertNil(result.major)
+            XCTAssertNil(result.minor)
+            XCTAssertNil(result.patch)
+            XCTAssertNil(result.prereleaseIdentifiers)
+            XCTAssertNil(result.buildMetadataIdentifiers)
         }
     }
 
@@ -268,10 +309,14 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 1)
             XCTAssertEqual(error.failedComponent, .major)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 1)
+            XCTAssertNil(result.minor)
+            XCTAssertNil(result.patch)
+            XCTAssertNil(result.prereleaseIdentifiers)
+            XCTAssertNil(result.buildMetadataIdentifiers)
         }
     }
-
 
     func testParserWithMalformedMinorVersionA() {
         let parser = SemanticVersionParser("1.-2.3")
@@ -281,7 +326,12 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 2)
             XCTAssertEqual(error.failedComponent, .minor)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 1)
+            XCTAssertNil(result.minor)
+            XCTAssertNil(result.patch)
+            XCTAssertNil(result.prereleaseIdentifiers)
+            XCTAssertNil(result.buildMetadataIdentifiers)
         }
     }
 
@@ -293,7 +343,12 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 3)
             XCTAssertEqual(error.failedComponent, .minor)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 1)
+            XCTAssertEqual(result.minor, 2)
+            XCTAssertNil(result.patch)
+            XCTAssertNil(result.prereleaseIdentifiers)
+            XCTAssertNil(result.buildMetadataIdentifiers)
         }
     }
 
@@ -305,7 +360,12 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 4)
             XCTAssertEqual(error.failedComponent, .patch)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 1)
+            XCTAssertEqual(result.minor, 2)
+            XCTAssertNil(result.patch)
+            XCTAssertNil(result.prereleaseIdentifiers)
+            XCTAssertNil(result.buildMetadataIdentifiers)
         }
     }
 
@@ -317,7 +377,12 @@ class VersioningParserTests: XCTestCase {
             XCTAssertEqual(error.location, 5)
             XCTAssertEqual(error.failedComponent, .patch)
 
-            // TODO: expect partial result in error
+            let result = error.result
+            XCTAssertEqual(result.major, 1)
+            XCTAssertEqual(result.minor, 2)
+            XCTAssertEqual(result.patch, 3)
+            XCTAssertNil(result.prereleaseIdentifiers)
+            XCTAssertNil(result.buildMetadataIdentifiers)
         }
     }
 
@@ -385,4 +450,5 @@ class VersioningParserTests: XCTestCase {
             fatalError()
         }
     }
+    // swiftlint:disable:next file_length
 }
