@@ -12,7 +12,7 @@ import Foundation
 import UIKit
 
 public extension UIDevice {
-    public var operatingSystemVersion: Version { return Version(self.systemVersion) }
+    public var operatingSystemVersion: Version? { return try? Version(systemVersion, strict: false) }
 }
 
 #endif

@@ -12,7 +12,7 @@ extension Bundle {
     public var version: Version? {
 
         if let bundleVersion = self.infoDictionary?[kCFBundleVersionKey as String] as? String {
-            return Version(bundleVersion)
+            return try? Version(bundleVersion)
         } else {
             return nil
         }
