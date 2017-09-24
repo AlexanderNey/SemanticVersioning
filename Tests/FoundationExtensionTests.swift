@@ -32,17 +32,6 @@ class FoundationExtensionTests: XCTestCase {
         continueAfterFailure = false
     }
 
-    func testNSOperatingSystemVersion() {
-        let version = OperatingSystemVersion(majorVersion: 8, minorVersion: 2, patchVersion: 1)
-
-        XCTAssertEqual(version.major, 8)
-        XCTAssertEqual(version.minor, 2)
-        XCTAssertEqual(version.patch, 1)
-        XCTAssertFalse(version.isPrerelease)
-        XCTAssertTrue(version.preReleaseIdentifier.isEmpty)
-        XCTAssertTrue(version.buildMetadataIdentifier.isEmpty)
-    }
-
     func testNSBundleVersion() {
         let selfType = type(of: self)
         let bundle = Bundle(for: selfType)
@@ -54,16 +43,5 @@ class FoundationExtensionTests: XCTestCase {
         XCTAssertFalse(version.isPrerelease)
         XCTAssertTrue(version.preReleaseIdentifier.isEmpty)
         XCTAssertEqual(version.buildMetadataIdentifier, ["unittests"])
-    }
-
-    func testUIDeviceSystemVersion() {
-        let version = UIDevice.current.operatingSystemVersion
-
-        // really depends on the test environment - limited test here
-        XCTAssertNotNil(version)
-        XCTAssertGreaterThan(version!.major, 0)
-        XCTAssertFalse(version!.isPrerelease)
-        XCTAssertTrue(version!.preReleaseIdentifier.isEmpty)
-        XCTAssertTrue(version!.buildMetadataIdentifier.isEmpty)
     }
 }
