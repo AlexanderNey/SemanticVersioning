@@ -229,7 +229,7 @@ open class SemanticVersionParser
         if scanDelimeter(PrereleaseDelimeter)
         {
             let prereleaseIdentifier = scanIdentifiers()
-            let clearedPrereleaseIdentifier = prereleaseIdentifier.filter {$0.characters.count > 0}
+            let clearedPrereleaseIdentifier = prereleaseIdentifier.filter {$0.count > 0}
             if clearedPrereleaseIdentifier.count > 0
             {
                 parsedComponents.append(.prereleaseIdentifier(clearedPrereleaseIdentifier))
@@ -244,7 +244,7 @@ open class SemanticVersionParser
         if scanDelimeter(BuildMetaDataDelimeter)
         {
             let BuildMetadataIdentifier = scanIdentifiers()
-            let clearedBuildMetadataIdentifier = BuildMetadataIdentifier.filter {$0.characters.count > 0}
+            let clearedBuildMetadataIdentifier = BuildMetadataIdentifier.filter {$0.count > 0}
             if clearedBuildMetadataIdentifier.count > 0
             {
                 parsedComponents.append(.buildMetadataIdentifier(clearedBuildMetadataIdentifier))
