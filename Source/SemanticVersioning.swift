@@ -21,11 +21,9 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-
 import Foundation
 
-public protocol SemanticVersion: Comparable
-{
+public protocol SemanticVersion: Comparable {
     var major: Int { get }
     var minor: Int { get }
     var patch: Int { get }
@@ -37,95 +35,67 @@ public protocol SemanticVersion: Comparable
 /**
 *  Implements Sematic Version specification 2.0.0
 */
-public struct Version: SemanticVersion, CustomStringConvertible
-{
+public struct Version: SemanticVersion, CustomStringConvertible {
     public var major: Int
     public var minor: Int
     public var patch: Int
     public var preReleaseIdentifier: [String]
     public var buildMetadataIdentifier: [String]
     public var isPrerelease: Bool { return !self.preReleaseIdentifier.isEmpty }
-    
-    /**
-    - returns: returns a SemanticVersion defining the specification that is implemented (http://semver.org/spec/v2.0.0.html)
-    */
-    public static var specification: Version {
-        return Version(major: 2, minor: 0, patch: 0)
-    }
-    
+
     public var description: String {
-        var versionString = "\(self.major).\(self.minor).\(self.patch)"
-        
-        if !self.preReleaseIdentifier.isEmpty
-        {
-            versionString += "-" + self.preReleaseIdentifier.joined(separator: ".")
+        var versionString = "\(major).\(minor).\(patch)"
+
+        if !self.preReleaseIdentifier.isEmpty {
+            versionString += "-"
+            versionString += preReleaseIdentifier.joined(separator: ".")
         }
-        
-        if !self.buildMetadataIdentifier.isEmpty
-        {
-            versionString += "+" + self.buildMetadataIdentifier.joined(separator: ".")
+
+        if !self.buildMetadataIdentifier.isEmpty {
+            versionString += "+"
+            versionString += buildMetadataIdentifier.joined(separator: ".")
         }
-        
+
         return versionString
     }
-    
-    public init(major: Int, minor: Int = 0, patch: Int = 0, preReleaseIdentifier: [String] = [], buildMetadataIdentifier: [String] = [])
-    {
+
+    public init(major: Int,
+                minor: Int = 0,
+                patch: Int = 0,
+                preReleaseIdentifier: [String] = [],
+                buildMetadataIdentifier: [String] = []) {
+
         self.major = major
         self.minor = minor
         self.patch = patch
-        
+
         self.preReleaseIdentifier = preReleaseIdentifier
         self.buildMetadataIdentifier = buildMetadataIdentifier
-    }
-    
-    public init<T: SemanticVersion>(version: T)
-    {
-        self.major = version.major
-        self.minor = version.minor
-        self.patch = version.patch
-        
-        self.preReleaseIdentifier = version.preReleaseIdentifier
-        self.buildMetadataIdentifier = version.buildMetadataIdentifier
-    }
-    
-    fileprivate init()
-    {
-        self = Version(major: 0)
     }
 }
 
 // MARK: comparison
 
 infix operator ≈ : ComparisonPrecedence // { associativity left precedence 140 }
-func ≈ <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
-{
+// swiftlint:disable:next identifier_name
+func ≈ <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool {
     return  (left.major == right.major) &&
             (left.minor == right.minor) &&
             (left.patch == right.patch)
 }
 
-infix operator !≈ : ComparisonPrecedence//{ associativity left precedence 140 }
-func !≈ <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
-{
-    return  !(left ≈ right)
-}
-
-public func == <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
-{
+public func == <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool {
     return  left ≈ right &&
             (left.preReleaseIdentifier == right.preReleaseIdentifier)
 }
 
-
-public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool
-{
+public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool {
 
     // Compare numerical digits
-    for (l, r) in zip([left.major, left.minor, left.patch], [right.major, right.minor, right.patch]) {
-        if l != r {
-            return l < r
-        }
+    for (l, r) in zip([left.major, left.minor, left.patch],
+                      [right.major, right.minor, right.patch])
+        where l != r {
+        return l < r
     }
 
     if left.isPrerelease && !right.isPrerelease {
@@ -133,8 +103,7 @@ public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Boo
     } else if left.isPrerelease && right.isPrerelease {
         // Compare prerelease identifier
         let identifiers = zip(left.preReleaseIdentifier, right.preReleaseIdentifier)
-        for pair in identifiers
-        {
+        for pair in identifiers {
             // Numeric identifiers always have lower precedence than non-numeric identifiers
             let numericLeft = Int(pair.0) ?? Int.max
             let numericRight = Int(pair.1) ?? Int.max
@@ -147,12 +116,12 @@ public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Boo
                 return pair.0 < pair.1
             }
         }
-        
-        // A larger set of pre-release fields has a higher precedence than a smaller set, if all of the preceding identifiers are equal
+
+        /* A larger set of pre-release fields has a higher precedence than a smaller set,
+           if all of the preceding identifiers are equal
+         */
         return left.preReleaseIdentifier.count < right.preReleaseIdentifier.count
     }
 
     return false
 }
-
-

@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AC02F6841AC82AB9005EA738 /* NSOperatingSystemVersion+SemanticVersioning.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02F6831AC82AB9005EA738 /* NSOperatingSystemVersion+SemanticVersioning.swift */; };
-		AC02F6861AC88289005EA738 /* UIDevice+Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02F6851AC88289005EA738 /* UIDevice+Version.swift */; };
 		AC02F68B1AC8872E005EA738 /* FoundationExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02F6871AC88714005EA738 /* FoundationExtensionTests.swift */; };
 		AC02F68E1AC8B538005EA738 /* NSBundle+Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC02F68D1AC8B538005EA738 /* NSBundle+Version.swift */; };
 		AC108A4C1A866DE800BAC3CD /* SemanticVersioningParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC108A4B1A866DE800BAC3CD /* SemanticVersioningParser.swift */; };
@@ -47,8 +45,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AC02F6831AC82AB9005EA738 /* NSOperatingSystemVersion+SemanticVersioning.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOperatingSystemVersion+SemanticVersioning.swift"; sourceTree = "<group>"; };
-		AC02F6851AC88289005EA738 /* UIDevice+Version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+Version.swift"; sourceTree = "<group>"; };
 		AC02F6871AC88714005EA738 /* FoundationExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoundationExtensionTests.swift; sourceTree = "<group>"; };
 		AC02F68D1AC8B538005EA738 /* NSBundle+Version.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSBundle+Version.swift"; sourceTree = "<group>"; };
 		AC108A4B1A866DE800BAC3CD /* SemanticVersioningParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SemanticVersioningParser.swift; sourceTree = "<group>"; };
@@ -108,8 +104,6 @@
 				AC1B79D61A842DB5002DD206 /* SemanticVersioning.swift */,
 				AC108A4B1A866DE800BAC3CD /* SemanticVersioningParser.swift */,
 				AC711DD51ADAAEC3000D854A /* Version+IntegerLiteralConvertible.swift */,
-				AC02F6831AC82AB9005EA738 /* NSOperatingSystemVersion+SemanticVersioning.swift */,
-				AC02F6851AC88289005EA738 /* UIDevice+Version.swift */,
 				AC02F68D1AC8B538005EA738 /* NSBundle+Version.swift */,
 				AC1B79BD1A842D80002DD206 /* Supporting Files */,
 			);
@@ -166,6 +160,7 @@
 				AC1B79B61A842D80002DD206 /* Frameworks */,
 				AC1B79B71A842D80002DD206 /* Headers */,
 				AC1B79B81A842D80002DD206 /* Resources */,
+				BDB467731F24763100A69860 /* Swift Lint */,
 			);
 			buildRules = (
 			);
@@ -208,11 +203,11 @@
 				TargetAttributes = {
 					AC1B79B91A842D80002DD206 = {
 						CreatedOnToolsVersion = 6.1.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 					};
 					AC1B79C41A842D80002DD206 = {
 						CreatedOnToolsVersion = 6.1.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 					};
 				};
 			};
@@ -251,17 +246,32 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		BDB467731F24763100A69860 /* Swift Lint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Swift Lint";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		AC1B79B51A842D80002DD206 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				AC108A4C1A866DE800BAC3CD /* SemanticVersioningParser.swift in Sources */,
-				AC02F6841AC82AB9005EA738 /* NSOperatingSystemVersion+SemanticVersioning.swift in Sources */,
 				AC02F68E1AC8B538005EA738 /* NSBundle+Version.swift in Sources */,
 				AC1B79D71A842DB5002DD206 /* SemanticVersioning.swift in Sources */,
 				AC711DD61ADAAEC3000D854A /* Version+IntegerLiteralConvertible.swift in Sources */,
-				AC02F6861AC88289005EA738 /* UIDevice+Version.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,7 +347,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -386,7 +397,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -408,11 +420,11 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alexander-ney.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -430,10 +442,10 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alexander-ney.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -447,9 +459,9 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alexander-ney.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -459,9 +471,9 @@
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alexander-ney.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

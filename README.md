@@ -21,8 +21,8 @@ Use the struct `Version` to represent a version according to the [Semantic Versi
 ### Requirements
 
 - iOS 8.0+ / Mac OS X 10.9+
-- Xcode 8.0+
-- Swift 3
+- Xcode 9.0+
+- Swift 4
 
 ### Installation
 The easiest way to use SemanticVersion in your project is using the CocaPods package manager.

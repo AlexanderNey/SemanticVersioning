@@ -23,179 +23,151 @@
 
 import XCTest
 import SemanticVersioning
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
 
+class VersioningTests: XCTestCase {
 
-
-class VersioningTests: XCTestCase
-{
-    
-    func testBasicInitialisationWithMajor()
-    {
+    func testBasicInitialisationWithMajor() {
         let ver = Version(major: 2)
-        XCTAssertEqual(ver.major, 2, "major should be 2")
-        XCTAssertEqual(ver.minor, 0, "minor should be 0")
-        XCTAssertEqual(ver.patch, 0, "patch should be 0")
-        
-        XCTAssertEqual(ver.isPrerelease, false, "sould not be a prerelase version")
-        XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
-        
-        XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
-        XCTAssertEqual(ver.description, "2.0.0", "printable version should match")
-    }
-    
-    func testBasicInitialisationWithMajorMinor()
-    {
-        let ver = Version(major: 1, minor: 3)
-        XCTAssertEqual(ver.major, 1, "major should be 1")
-        XCTAssertEqual(ver.minor, 3, "minor should be 3")
-        XCTAssertEqual(ver.patch, 0, "patch should be 0")
-        
-        XCTAssertEqual(ver.isPrerelease, false, "sould not be a prerelase version")
-        XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
-        
-        XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
-        XCTAssertEqual(ver.description, "1.3.0", "printable version should match")
-    }
-    
-    func testBasicInitialisationWithMajorMinorPatch()
-    {
-        let ver = Version(major: 0, minor: 22, patch: 300)
-        XCTAssertEqual(ver.major, 0, "major should be 0")
-        XCTAssertEqual(ver.minor, 22, "minor should be 22")
-        XCTAssertEqual(ver.patch, 300, "patch should be 300")
-        
-        XCTAssertEqual(ver.isPrerelease, false, "sould not be a prerelase version")
-        XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
-        
-        XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
-        XCTAssertEqual(ver.description, "0.22.300", "printable version should match")
-    }
-    
-    func testBasicInitialisationWithMajorMinorPatchPrerelase()
-    {
-        let ver = Version(major: 1, preReleaseIdentifier: ["alpha", "2"])
-        XCTAssertEqual(ver.major, 1, "major should be 1")
-        XCTAssertEqual(ver.minor, 0, "minor should be 0")
-        XCTAssertEqual(ver.patch, 0, "patch should be 0")
-        
-        XCTAssertEqual(ver.isPrerelease, true, "sould be a prerelase version")
-        let hasAllPreRelease = ver.preReleaseIdentifier.contains("alpha") && ver.preReleaseIdentifier.contains("2")
-        XCTAssert(hasAllPreRelease, "prerelease identifiers should contain 'alpha' and '2'")
-        
-        XCTAssert(ver.buildMetadataIdentifier.isEmpty, "build meta data identifiers should be empty")
-        XCTAssertEqual(ver.description, "1.0.0-alpha.2", "printable version should match")
-    }
-    
-    func testBasicInitialisationWithMajorMinorPatchBuildMetadata()
-    {
-        let ver = Version(major: 1, patch: 3, buildMetadataIdentifier: ["build12", "meta"])
-        XCTAssertEqual(ver.major, 1, "major should be 1")
-        XCTAssertEqual(ver.minor, 0, "minor should be 0")
-        XCTAssertEqual(ver.patch, 3, "patch should be 3")
-        
-        XCTAssertEqual(ver.isPrerelease, false, "sould not be a prerelase version")
-        XCTAssert(ver.preReleaseIdentifier.isEmpty, "prerelase identifiers should be empty")
-        
-        let hasAllMetadata = ver.buildMetadataIdentifier.contains("build12") && ver.buildMetadataIdentifier.contains("meta")
-        XCTAssert(hasAllMetadata, "build meta data should contain 'build12' and 'meta'")
-        XCTAssertEqual(ver.description, "1.0.3+build12.meta", "printable version should match")
+        XCTAssertEqual(ver.major, 2)
+        XCTAssertEqual(ver.minor, 0)
+        XCTAssertEqual(ver.patch, 0)
+
+        XCTAssertFalse(ver.isPrerelease)
+        XCTAssertTrue(ver.preReleaseIdentifier.isEmpty)
+
+        XCTAssertTrue(ver.buildMetadataIdentifier.isEmpty)
+        XCTAssertEqual(ver.description, "2.0.0")
     }
 
-    func testBasicInitialisationWithMajorMinorPatchPrereleaseBuildMetadata()
-    {
+    func testBasicInitialisationWithMajorMinor() {
+        let ver = Version(major: 1, minor: 3)
+        XCTAssertEqual(ver.major, 1)
+        XCTAssertEqual(ver.minor, 3)
+        XCTAssertEqual(ver.patch, 0)
+
+        XCTAssertFalse(ver.isPrerelease)
+        XCTAssertTrue(ver.preReleaseIdentifier.isEmpty)
+
+        XCTAssertTrue(ver.buildMetadataIdentifier.isEmpty)
+        XCTAssertEqual(ver.description, "1.3.0")
+    }
+
+    func testBasicInitialisationWithMajorMinorPatch() {
+        let ver = Version(major: 0, minor: 22, patch: 300)
+        XCTAssertEqual(ver.major, 0)
+        XCTAssertEqual(ver.minor, 22)
+        XCTAssertEqual(ver.patch, 300)
+
+        XCTAssertFalse(ver.isPrerelease)
+        XCTAssertTrue(ver.preReleaseIdentifier.isEmpty)
+
+        XCTAssertTrue(ver.buildMetadataIdentifier.isEmpty)
+        XCTAssertEqual(ver.description, "0.22.300")
+    }
+
+    func testBasicInitialisationWithMajorMinorPatchPrerelase() {
+        let ver = Version(major: 1, preReleaseIdentifier: ["alpha", "2"])
+        XCTAssertEqual(ver.major, 1)
+        XCTAssertEqual(ver.minor, 0)
+        XCTAssertEqual(ver.patch, 0)
+
+        XCTAssertTrue(ver.isPrerelease)
+        XCTAssertEqual(ver.preReleaseIdentifier, ["alpha", "2"])
+
+        XCTAssertTrue(ver.buildMetadataIdentifier.isEmpty)
+        XCTAssertEqual(ver.description, "1.0.0-alpha.2")
+    }
+
+    func testBasicInitialisationWithMajorMinorPatchBuildMetadata() {
+        let ver = Version(major: 1, patch: 3, buildMetadataIdentifier: ["build12", "meta"])
+        XCTAssertEqual(ver.major, 1)
+        XCTAssertEqual(ver.minor, 0)
+        XCTAssertEqual(ver.patch, 3)
+
+        XCTAssertFalse(ver.isPrerelease)
+        XCTAssertTrue(ver.preReleaseIdentifier.isEmpty)
+
+        XCTAssertEqual(ver.buildMetadataIdentifier, ["build12", "meta"])
+        XCTAssertEqual(ver.description, "1.0.3+build12.meta")
+    }
+
+    func testBasicInitialisationWithMajorMinorPatchPrereleaseBuildMetadata() {
         let ver = Version(major: 0, preReleaseIdentifier: ["prerelease"], buildMetadataIdentifier: ["meta"])
-        XCTAssertEqual(ver.major, 0, "major should be 0")
-        XCTAssertEqual(ver.minor, 0, "minor should be 0")
-        XCTAssertEqual(ver.patch, 0, "patch should be 0")
-        
-        XCTAssertEqual(ver.isPrerelease, true, "sould be a prerelase version")
-        let hasAllPreRelease = ver.preReleaseIdentifier.contains("prerelease")
-        XCTAssert(hasAllPreRelease, "prerelease identifiers should contain 'prerelease'")
-        
-        let hasAllMetadata = ver.buildMetadataIdentifier.contains("meta")
-        XCTAssert(hasAllMetadata, "build meta data should contain 'meta'")
-        XCTAssertEqual(ver.description, "0.0.0-prerelease+meta", "printable version should match")
+        XCTAssertEqual(ver.major, 0)
+        XCTAssertEqual(ver.minor, 0)
+        XCTAssertEqual(ver.patch, 0)
+
+        XCTAssertTrue(ver.isPrerelease)
+        XCTAssertEqual(ver.preReleaseIdentifier, ["prerelease"])
+
+        XCTAssertEqual(ver.buildMetadataIdentifier, ["meta"])
+        XCTAssertEqual(ver.description, "0.0.0-prerelease+meta")
     }
 
     // MARK: comparison
-    
-    func testEqualityOfMajor()
-    {
+
+    func testEqualityOfMajor() {
         let a = Version(major: 1)
         let b = Version(major: 2)
         let c = Version(major: 1)
-        
-        XCTAssert(a == c, "a must equal c")
-        XCTAssertFalse(a < c, "a must not be smaller than c")
-        XCTAssert(a < b, "a must be less than b")
-        XCTAssert(a != b, "a must not equal b")
-        XCTAssert(c == c, "c must equal c")
+
+        XCTAssertEqual(a, c)
+        XCTAssertFalse(a < c)
+        XCTAssertLessThan(a, b)
+        XCTAssertNotEqual(a, b)
+        XCTAssertEqual(c, c)
     }
-    
-    func testEqualityOfMajorMinor()
-    {
+
+    func testEqualityOfMajorMinor() {
         let a = Version(major: 1, minor: 1)
         let b = Version(major: 1, minor: 10)
         let c = Version(major: 1, minor: 1)
-        
-        XCTAssert(a == c, "a must equal c")
-        XCTAssertFalse(a < c, "a must not be smaller than c")
-        XCTAssert(a < b, "a must be less than b")
-        XCTAssert(a != b, "a must not equal b")
-        XCTAssert(c == c, "c must equal c")
+
+        XCTAssertEqual(a, c)
+        XCTAssertFalse(a < c)
+        XCTAssertLessThan(a, b)
+        XCTAssertNotEqual(a, b)
+        XCTAssertEqual(c, c)
     }
-    
-    func testEqualityOfMajorMinorPatch()
-    {
+
+    func testEqualityOfMajorMinorPatch() {
         let a = Version(major: 0, minor: 1, patch: 2)
         let b = Version(major: 0, minor: 1, patch: 3)
         let c = Version(major: 0, minor: 1, patch: 2)
-        
-        XCTAssert(a == c, "a must equal c")
-        XCTAssertFalse(a < c, "a must not be smaller than c")
-        XCTAssert(a < b, "a must be less than b")
-        XCTAssert(a != b, "a must not equal b")
-        XCTAssert(c == c, "c must equal c")
+
+        XCTAssertEqual(a, c)
+        XCTAssertFalse(a < c)
+        XCTAssertLessThan(a, b)
+        XCTAssertNotEqual(a, b)
+        XCTAssertEqual(c, c)
     }
-    
-    func testEqualityOfPrereleaseVersion()
-    {
+
+    func testEqualityOfPrereleaseVersion() {
         let a = Version(major: 1, preReleaseIdentifier: ["alpha", "1"])
         let b = Version(major: 1, preReleaseIdentifier: ["beta"])
         let c = Version(major: 1, preReleaseIdentifier: ["alpha", "1"])
         let d = Version(major: 1, preReleaseIdentifier: ["alpha", "1", "nightly"])
-        
-        XCTAssert(a == c, "a must equal c")
-        XCTAssertFalse(a < c, "a must not be smaller than c")
-        XCTAssert(a < b, "a must be less than b")
-        XCTAssert(a != b, "a must not equal b")
-        XCTAssert(c == c, "c must equal c")
-        XCTAssert(a < d, "a must be less than d")
-        XCTAssert(a != d, "a must not equal d")
+
+        XCTAssertEqual(a, c)
+        XCTAssertFalse(a < c)
+        XCTAssertLessThan(a, b)
+        XCTAssertNotEqual(a, b)
+        XCTAssertEqual(c, c)
+        XCTAssertLessThan(a, d)
+        XCTAssertNotEqual(a, d)
     }
-    
-    func testEqualityOfPrereleaseVersionStrings()
-    {
+
+    func testEqualityOfPrereleaseVersionStrings() {
         let a = Version(major: 1, preReleaseIdentifier: ["alpha", "1"])
         let c = Version(major: 1, preReleaseIdentifier: ["alpha", "1"])
-        
-        XCTAssert(a == c, "a must equal c")
-        XCTAssertFalse(a < c, "a must not be smaller than c")
-        XCTAssert(a < "1.0.0-beta", "a must be less than b")
-        XCTAssertFalse(a != "1.0.0-alpha.1", "a must equal 1.0.0-alpha.1")
-        XCTAssert(c == c, "c must equal c")
-        XCTAssert(a < "1.0.0-alpha.1.nightly", "a must be less than d")
-        XCTAssert(a != "1.0.0-alpha.1.nightly", "a must not equal d")
+
+        XCTAssertEqual(a, c)
+        XCTAssertFalse(a < c)
+        XCTAssertLessThan(a, "1.0.0-beta")
+        XCTAssertEqual(a, "1.0.0-alpha.1")
+        XCTAssertEqual(c, c)
+        XCTAssertLessThan(a, "1.0.0-alpha.1.nightly")
+        XCTAssertNotEqual(a, "1.0.0-alpha.1.nightly")
     }
-    
+
 }
