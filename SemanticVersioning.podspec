@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'SemanticVersioning'
-  s.version = '1.2.0'
+  s.version = '2.0.0'
   s.license = { :type => "MIT" }
   s.summary = 'Elegant Semantic Versioning in Swift 3'
   s.homepage = 'https://github.com/AlexanderNey/SemanticVersioning'
