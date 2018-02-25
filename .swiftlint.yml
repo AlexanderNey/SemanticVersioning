@@ -1,0 +1,5 @@
+included:
+  - Source
+  - Tests
+disabled_rules:
+  - xctfail_message
