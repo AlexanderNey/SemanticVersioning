@@ -18,7 +18,7 @@ extension Version {
     }
 }
 
-extension Version : ExpressibleByIntegerLiteral {
+extension Version: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: IntegerLiteralType) {
         self.init(major: max(0, value))
     }

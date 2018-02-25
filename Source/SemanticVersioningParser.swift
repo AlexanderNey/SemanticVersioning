@@ -140,7 +140,7 @@ open class SemanticVersionParser {
 
     fileprivate func scanNumericComponent(_ scanner: Scanner, upTo delimeter: String = defaultDelimeter) throws -> Int {
         var string: NSString?
-        scanner.scanCharacters(from: numericCharacterSet, into:&string)
+        scanner.scanCharacters(from: numericCharacterSet, into: &string)
         guard let numberString = string as String?,
               let number = Int(numberString) else {
             throw ConsistencyError.nonNumericValue
@@ -152,7 +152,7 @@ open class SemanticVersionParser {
         var identifiers: [String] = []
         repeat {
             var string: NSString?
-            scanner.scanCharacters(from: indentifierCharacterSet, into:&string)
+            scanner.scanCharacters(from: indentifierCharacterSet, into: &string)
             guard let identifier = string as String?, !identifier.isEmpty else {
                 throw ConsistencyError.malformedIdentifiers(identifiers)
 
