@@ -92,10 +92,10 @@ public func == <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bo
 public func < <T: SemanticVersion, U: SemanticVersion>(left: T, right: U) -> Bool {
 
     // Compare numerical digits
-    for (l, r) in zip([left.major, left.minor, left.patch],
+    for (ldigit, rdigit) in zip([left.major, left.minor, left.patch],
                       [right.major, right.minor, right.patch])
-        where l != r {
-        return l < r
+        where ldigit != rdigit {
+        return ldigit < rdigit
     }
 
     if left.isPrerelease && !right.isPrerelease {
