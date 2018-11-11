@@ -8,10 +8,9 @@ Pod::Spec.new do |s|
   s.authors = { 'Alexander Ney' => 'alexander.ney@me.com' }
   s.source = { :git => 'https://github.com/AlexanderNey/SemanticVersioning.git', :branch => 'master', :tag => "v#{s.version}" }
   s.requires_arc = true
-  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.0' }
   s.ios.deployment_target = '9.0'
   s.osx.deployment_target = '10.9'
-
+  s.swift_version = '4.0'
   s.source_files = 'Source/*.swift'
 
 end
