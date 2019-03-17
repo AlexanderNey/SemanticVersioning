@@ -3,10 +3,12 @@ language: objective-c
 
 env:
   matrix:
-    - DESTINATION="platform=macOS, OS=10.13"
-    - DESTINATION="platform=watchOS Simulator, OS=5.0"
+    - DESTINATION="platform=macOS,OS=10.13"
+    - DESTINATION="platform=watchOS Simulator,OS=5.0"
     - DESTINATION="platform=tvOS Simulator"
     - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=9.0"
     - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=12.0"
 script:
   - xcodebuild clean build -project SemanticVersioning.xcodeproj -scheme "SemanticVersioning" -destination "$DESTINATION" -enableCodeCoverage YES test
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -cF "$DESTINATION"
