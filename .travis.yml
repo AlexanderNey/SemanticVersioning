@@ -1,6 +1,9 @@
 osx_image: xcode10
 language: objective-c
 
+before_install:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
 env:
   global: 
     - CC_TEST_REPORTER_ID=5860b6420d0dcf6420987edc10d3d072e38e7ebfc22d02fe8002aa3af5d02b1f
@@ -10,8 +13,6 @@ env:
     - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=11.1"
     - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=12.0"
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
   - xcodebuild clean build -project SemanticVersioning.xcodeproj -scheme "SemanticVersioning" -destination "$DESTINATION" -enableCodeCoverage YES test
