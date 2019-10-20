@@ -35,14 +35,4 @@ class VersionIntegerLiteralConvertibleTests: XCTestCase {
         let versionB = Version(major: 2)
         XCTAssert(versionB == 2, "version must equal 2")
     }
-
-    func testGetFloatValue() {
-        let versionA = Version(major: 8)
-        let versionB = Version(major: 0, minor: 1002)
-        let versionC = Version(major: 2, minor: 5431)
-
-        XCTAssert(versionA.floatValue() == 8.0, "version must equal 8.0")
-        XCTAssert(versionB.floatValue() >= 0.1002, "version must be bigger or equal then 0.1002")
-        XCTAssert(versionC.floatValue() >= 2.5431, "version must be bigger or equal 2.5431")
-    }
 }
