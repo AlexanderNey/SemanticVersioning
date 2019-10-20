@@ -1,12 +1,6 @@
-osx_image: xcode10
-language: objective-c
+osx_image: xcode11.2
+language: swift
 
-env:
-  - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=9.0"
-  - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=10.0"
-  - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=11.1"
-  - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=12.0"
 script:
-  - xcodebuild clean build -project SemanticVersioning.xcodeproj -scheme "SemanticVersioning" -destination "$DESTINATION" -enableCodeCoverage YES test
-after_success:
-  - bash <(curl -s https://codecov.io/bash) -J "$DESTINATION" -t cee9d255-69c0-455d-83d4-eb28f696a299
+  - swift build
+  - swift test
