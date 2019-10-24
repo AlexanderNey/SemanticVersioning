@@ -5,9 +5,9 @@ before_script:
   - swift package clean
   - swift package generate-xcodeproj
 env:
-  - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=9.0"
-  - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=10.0"
-  - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=11.1"
-  - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=12.0"
+  - DESTINATION="platform:tvOS Simulator, OS:11.0, name:Apple TV"
+  - DESTINATION="platform:iOS Simulator, OS:11.0.1, name:iPhone X"
+  - DESTINATION="platform:watchOS Simulator, OS:3.2, name:Apple Watch - 38mm"
+  - DESTINATION="platform:macOS, arch:x86_64"
 script:
   - xcodebuild clean build -project SemanticVersioning.xcodeproj -scheme "SemanticVersioning-Package" -destination "$DESTINATION" -enableCodeCoverage YES test
