@@ -1,12 +1,9 @@
 osx_image: xcode11.2
 language: swift
 
-script:
+before_script:
   - swift package clean
   - swift package generate-xcodeproj
-  - swift build
-  - swift test
-
 env:
   - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=9.0"
   - DESTINATION="platform=iOS Simulator,name=iPhone 6,OS=10.0"
