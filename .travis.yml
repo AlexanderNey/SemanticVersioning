@@ -1,13 +1,12 @@
 osx_image: xcode11.2
 language: swift
-
-before_script:
-  - swift package clean
-  - swift package generate-xcodeproj
 env:
   - DESTINATION="platform:tvOS Simulator, OS:11.0, name:Apple TV"
   - DESTINATION="platform:iOS Simulator, OS:11.0.1, name:iPhone X"
   - DESTINATION="platform:watchOS Simulator, OS:3.2, name:Apple Watch - 38mm"
   - DESTINATION="platform:macOS, arch:x86_64"
+before_script:
+  - swift package clean
+  - swift package generate-xcodeproj
 script:
   - xcodebuild clean build -project SemanticVersioning.xcodeproj -scheme "SemanticVersioning-Package" -destination "$DESTINATION" -enableCodeCoverage YES test
