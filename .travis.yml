@@ -5,13 +5,13 @@ osx_image: xcode11.1
 jobs:
   include:
     - name: "TV OS"
-      env: DESTINATION="platform=tvOS Simulator, OS=11.0, name=Apple TV"
+      env: DESTINATION="platform=tvOS Simulator,OS=11.0,name=Apple TV"
     - name: "iOS"
-      env: DESTINATION="platform=iOS Simulator, OS=11.0.1, name=iPhone X"
+      env: DESTINATION="platform=iOS Simulator,OS=11.0.1,name=iPhone X"
     - name: "WatchOS"
-      env: DESTINATION="platform=watchOS Simulator, OS=3.2, name=Apple Watch - 38mm"
+      env: DESTINATION="platform=watchOS Simulator,OS=3.2,name=Apple Watch - 38mm"
     - name: "Mac"
-      env: DESTINATION="platform=macOS, arch=x86_64"
+      env: DESTINATION="platform=macOS,arch=x86_64"
 script:
   - swift package generate-xcodeproj
   - echo "build for $DESTINATION"
