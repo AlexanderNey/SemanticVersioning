@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SemanticVersioning",
     platforms: [
-        .macOS(.v10_13), .iOS(.v11), .tvOS(.v11)
+        .macOS(.v10_13), .iOS(.v11), .tvOS(.v11), .watchOS(.v3)
     ],
     products: [
         .library(name: "SemanticVersioning", targets: ["SemanticVersioning"]),
