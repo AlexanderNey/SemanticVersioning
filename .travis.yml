@@ -13,6 +13,6 @@ jobs:
     - name: "Mac"
       env: DESTINATION="platform:macOS, arch:x86_64"
 script:
-  - swift package clean
   - swift package generate-xcodeproj
-  - xcodebuild clean build -project SemanticVersioning.xcodeproj -scheme "SemanticVersioning-Package" -destination "$DESTINATION" -enableCodeCoverage YES test | xcpretty
+  - echo "build for $DESTINATION"
+  - xcodebuild clean build -project SemanticVersioning.xcodeproj -scheme "SemanticVersioning-Package" -destination "$DESTINATION" -enableCodeCoverage YES test
