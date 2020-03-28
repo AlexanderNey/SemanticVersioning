@@ -220,12 +220,4 @@ extension Version: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
         self = (try? Version(value)) ?? Version(major: 0)
     }
-
-    public init(extendedGraphemeClusterLiteral value: String) {
-        self = (try? Version(value)) ?? Version(major: 0)
-    }
-
-    public init(unicodeScalarLiteral value: String) {
-        self = (try? Version(value)) ?? Version(major: 0)
-    }
 }
