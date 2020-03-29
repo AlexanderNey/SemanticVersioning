@@ -1,6 +1,6 @@
 language: swift
 os: osx
-osx_image: xcode11.2
+osx_image: xcode11.3
 
 jobs:
   include:
@@ -8,8 +8,6 @@ jobs:
       env: DESTINATION="platform=tvOS Simulator,OS=11.0,name=Apple TV"
     - name: "iOS"
       env: DESTINATION="platform=iOS Simulator,OS=11.0.1,name=iPhone X"
-    - name: "WatchOS"
-      env: DESTINATION="platform=watchOS Simulator,OS=4.0,name=Apple Watch - 38mm"
     - name: "Mac"
       env: DESTINATION="platform=macOS,arch=x86_64"
 script:
