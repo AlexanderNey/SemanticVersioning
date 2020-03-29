@@ -6,12 +6,12 @@ import PackageDescription
 let package = Package(
     name: "SemanticVersioning",
     platforms: [
-        .macOS(.v10_13), .iOS(.v11), .tvOS(.v11), .watchOS(.v3)
+        .macOS(.v10_13), .iOS(.v11), .tvOS(.v11), .watchOS(.v4)
     ],
     products: [
         .library(name: "SemanticVersioning", targets: ["SemanticVersioning"]),
     ],
-    dependencies: [ ],
+    dependencies: [],
     targets: [
         .target(
             name: "SemanticVersioning",
@@ -21,5 +21,6 @@ let package = Package(
             name: "SemanticVersioningTests",
             dependencies: ["SemanticVersioning"],
             path: "Tests"),
-    ]
+    ],
+    swiftLanguageVersions: [.v5]
 )

@@ -9,7 +9,7 @@ jobs:
     - name: "iOS"
       env: DESTINATION="platform=iOS Simulator,OS=11.0.1,name=iPhone X"
     - name: "WatchOS"
-      env: DESTINATION="platform=watchOS Simulator,OS=3.2,name=Apple Watch - 38mm"
+      env: DESTINATION="platform=watchOS Simulator,OS=4.0,name=Apple Watch - 38mm"
     - name: "Mac"
       env: DESTINATION="platform=macOS,arch=x86_64"
 script:
