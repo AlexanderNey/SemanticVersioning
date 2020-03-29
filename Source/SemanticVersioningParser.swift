@@ -35,7 +35,7 @@ private let indentifierCharacterSet: CharacterSet = {
 }()
 
 /**
-* SemanticVersionParser parses a semantic version string and returns the parsed compoentns
+* SemanticVersionParser parses a semantic version string and returns the parsed components
 */
 open class SemanticVersionParser {
 
@@ -52,7 +52,7 @@ open class SemanticVersionParser {
     /**
     Represents the result of the string parsing
     
-    - Success: Success case with an array of sucessfully parsed components
+    - Success: Success case with an array of successfully parsed components
     - Failure: Failure case with the location in the original string,
      the failed component and the already successful parsed components
     */
@@ -86,7 +86,7 @@ open class SemanticVersionParser {
 
     /**
     starts parsing the version string
-    - returns: Result object represeting the success of the parsing operation
+    - returns: Result object representing the success of the parsing operation
     */
     open func parse() throws -> Result {
 
@@ -177,7 +177,7 @@ open class SemanticVersionParser {
 
 /**
 *  Extension of SemanticVersion the conform to StringLiteralConvertible
-*  so Versions can be initalized by assigning a String like:
+*  so Versions can be initialized by assigning a String like:
 *  `let version : SemanticVersion = "1.2.0"`
 */
 extension Version: ExpressibleByStringLiteral {
@@ -186,8 +186,8 @@ extension Version: ExpressibleByStringLiteral {
     Will try to initialize a SemanticVersion from a specified String
     
     - parameter versionString: String representing a version
-    - parameter strict: Bool specifies if the string should be parsed strictly accoring to the
-     Semantic Versioning sepcification or not. If strict is false usually obligatory values like
+    - parameter strict: Bool specifies if the string should be parsed strictly according to the
+     Semantic Versioning specification or not. If strict is false usually obligatory values like
      minor and path can be omitted
     - returns: initialized SemanticVersion or nil if version string could not be parsed
     */

@@ -33,7 +33,7 @@ public protocol SemanticVersion: Comparable {
 }
 
 /**
-*  Implements Sematic Version specification 2.0.0
+*  Implements Semantic Version specification 2.0.0
 */
 public struct Version: SemanticVersion, CustomStringConvertible {
     public var major: Int
