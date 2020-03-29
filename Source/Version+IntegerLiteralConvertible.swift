@@ -1,5 +1,5 @@
 //
-//  Versionin+IntegerLiteralConvertible.swift
+//  Version+IntegerLiteralConvertible.swift
 //  SemanticVersioning
 //
 //  Created by Alexander Ney on 12/04/2015.
