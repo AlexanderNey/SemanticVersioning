@@ -23,12 +23,12 @@
 
 import Foundation
 
-private let defaultDelimeter = "."
-private let prereleaseDelimeter = "-"
-private let buildMetaDataDelimeter = "+"
+private let defaultDelimiter = "."
+private let prereleaseDelimiter = "-"
+private let buildMetaDataDelimiter = "+"
 
 private let numericCharacterSet = CharacterSet.decimalDigits
-private let indentifierCharacterSet: CharacterSet = {
+private let identifierCharacterSet: CharacterSet = {
     var characterSet = NSMutableCharacterSet.alphanumeric()
     characterSet.addCharacters(in: "-")
     return characterSet as CharacterSet
@@ -65,7 +65,7 @@ open class SemanticVersionParser {
 
     public enum ConsistencyError: Error {
         case nonNumericValue
-        case delimeterExpected
+        case delimiterExpected
         case malformedIdentifiers([String])
         case endOfStringExpected
     }
@@ -96,16 +96,16 @@ open class SemanticVersionParser {
 
         do {
             result.major = try scanNumericComponent(scanner)
-            try scanDelimeter(defaultDelimeter, scanner)
+            try scanDelimiter(defaultDelimiter, scanner)
 
             component = .minor
             result.minor = try scanNumericComponent(scanner)
-            try scanDelimeter(defaultDelimeter, scanner)
+            try scanDelimiter(defaultDelimiter, scanner)
 
             component = .patch
             result.patch = try scanNumericComponent(scanner)
 
-            if scanOptionalDelimeter(prereleaseDelimeter, scanner) {
+            if scanOptionalDelimiter(prereleaseDelimiter, scanner) {
                 component = .prereleaseIdentifiers
                 do {
                     result.prereleaseIdentifiers = try scanIdentifiersComponent(scanner)
@@ -115,7 +115,7 @@ open class SemanticVersionParser {
                 }
             }
 
-            if scanOptionalDelimeter(buildMetaDataDelimeter, scanner) {
+            if scanOptionalDelimiter(buildMetaDataDelimiter, scanner) {
                 component = .buildMetadataIdentifiers
                 do {
                     result.buildMetadataIdentifiers = try scanIdentifiersComponent(scanner)
@@ -138,7 +138,7 @@ open class SemanticVersionParser {
         return result
     }
 
-    fileprivate func scanNumericComponent(_ scanner: Scanner, upTo delimeter: String = defaultDelimeter) throws -> Int {
+    fileprivate func scanNumericComponent(_ scanner: Scanner, upTo delimiter: String = defaultDelimiter) throws -> Int {
         var string: NSString?
         scanner.scanCharacters(from: numericCharacterSet, into: &string)
         guard let numberString = string as String?,
@@ -152,24 +152,24 @@ open class SemanticVersionParser {
         var identifiers: [String] = []
         repeat {
             var string: NSString?
-            scanner.scanCharacters(from: indentifierCharacterSet, into: &string)
+            scanner.scanCharacters(from: identifierCharacterSet, into: &string)
             guard let identifier = string as String?, !identifier.isEmpty else {
                 throw ConsistencyError.malformedIdentifiers(identifiers)
 
             }
             identifiers.append(identifier)
-            guard scanOptionalDelimeter(defaultDelimeter, scanner) else { break }
+            guard scanOptionalDelimiter(defaultDelimiter, scanner) else { break }
         } while (true)
         return identifiers
     }
 
-    private func scanOptionalDelimeter(_ delimeter: String, _ scanner: Scanner) -> Bool {
-        return scanner.scanString(delimeter, into: nil)
+    private func scanOptionalDelimiter(_ delimiter: String, _ scanner: Scanner) -> Bool {
+        return scanner.scanString(delimiter, into: nil)
     }
 
-    private func scanDelimeter(_ delimeter: String, _ scanner: Scanner) throws {
-        guard scanOptionalDelimeter(delimeter, scanner) else {
-            throw ConsistencyError.delimeterExpected
+    private func scanDelimiter(_ delimiter: String, _ scanner: Scanner) throws {
+        guard scanOptionalDelimiter(delimiter, scanner) else {
+            throw ConsistencyError.delimiterExpected
         }
     }
 
