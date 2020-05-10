@@ -3,7 +3,7 @@
 ![Platform](https://img.shields.io/cocoapods/v/SemanticVersioning.svg)
 ![Platform](https://img.shields.io/cocoapods/p/SemanticVersioning.svg)
 ![License](https://img.shields.io/cocoapods/l/SemanticVersioning.svg)
-![](https://github.com/AlexanderNey/SemanticVersioning/.github/workflows/main.yml/badge.svg)
+![Actions Status](https://github.com/AlexanderNey/SemanticVersioning/workflows/.github/workflows/main.yml/badge.svg)
 [![Swift Version](https://img.shields.io/badge/Swift-5.2-F16D39.svg?style=flat)](https://developer.apple.com/swift)
 
 
