@@ -1,14 +1,13 @@
-name: Swift
-
+name: CI
 on: [push, pull_request]
 
 jobs:
-  build-macos:
+  swiftpm-test:
+  name: Run SwiftPM Tests
     runs-on: macos-latest
     steps:
-    # Checks-out the repo. More at: https://github.com/actions/checkout
     - uses: actions/checkout@v2
     - name: Select Xcode version
       run: sudo xcode-select -switch /Applications/Xcode_11.4.app
     - name: Test
-      run: swift test -c release
+      run: swift test -c release 2>&1 | xcpretty
