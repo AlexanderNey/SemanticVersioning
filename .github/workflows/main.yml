@@ -1,0 +1,13 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  swiftpm-test:
+    name: Build and Test
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Select Xcode version
+      run: sudo xcode-select -switch /Applications/Xcode_11.4.app
+    - name: Test
+      run: swift test -c release 2>&1 | xcpretty
