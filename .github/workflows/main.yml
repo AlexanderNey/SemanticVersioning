@@ -3,7 +3,7 @@ on: [push, pull_request]
 
 jobs:
   swiftpm-test:
-    name: SwiftPM Tests
+    name: Build and Test
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
