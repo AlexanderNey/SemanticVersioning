@@ -1,0 +1,14 @@
+name: Swift
+
+on: [push, pull_request]
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+    # Checks-out the repo. More at: https://github.com/actions/checkout
+    - uses: actions/checkout@v2
+    - name: Select Xcode version
+      run: sudo xcode-select -switch /Applications/Xcode_11.4.app
+    - name: Test
+      run: swift test -c release
